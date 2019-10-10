@@ -5,9 +5,8 @@ const path = require('path');
 
 router.post('/register', userController.register);
 router.post('/signin', userController.signin);
-router.get('/', (req, res) => {
-    // console.log(path.resolve(__dirname, '../'));
-    res.sendFile('under_construction.html', { root: path.resolve(__dirname, '../')})
-});
+// router.get('/', (req, res) => {
+//     res.sendFile('index.html', { root: path.resolve(__dirname, '../')})
+// });
 
 module.exports = router;

@@ -37,23 +37,32 @@ function signin(req, res, next){
         if (err){
             next(err);
         } else {
-            const match = await bcrypt.compare(req.body.password, userInfo.password);
-            if (match){
-                const token = jwt.sign(
-                    {id: userInfo._id},
-                    req.app.get('secretKey'),
-                    {expiresIn: 300}); //5 minute JWT tokens for now
-                res.json({
-                    status: "success",
-                    message: "User found.",
-                    data: {token: token},
-                })
-            } else {
+            try{
+                const match = await bcrypt.compare(req.body.password, userInfo.password);
+                if (match){
+                    const token = jwt.sign(
+                        {id: userInfo._id},
+                        req.app.get('secretKey'),
+                        {expiresIn: 300}); //5 minute JWT tokens for now
+                    res.json({
+                        status: "success",
+                        message: "User found.",
+                        data: {token: token},
+                    })
+                } else {
+                    res.json({
+                        status: "error",
+                        message: "Invalid email/password.",
+                        data: null,
+                    });
+                }
+            } catch (err) {
                 res.json({
                     status: "error",
                     message: "Invalid email/password.",
                     data: null,
                 });
+                next(err);
             }
         }
     });

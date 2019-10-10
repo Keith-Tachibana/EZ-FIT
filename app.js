@@ -7,17 +7,19 @@ const jwt = require('jsonwebtoken');
 const home = require('./routes/home');
 const users = require('./routes/users');
 const mongoose = require('./config/database'); //database configeration
+const port = process.env.PORT || 8080;
 
 const app = express();
 app.set('secretKey', process.env.SECRET_KEY);
+app.use(favicon(path.join(__dirname, 'client/public', '/favicon.ico')))
+
 //Connect to mongodb
 mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 
 //Static files
-app.use(express.static('public'))
-app.use(favicon(path.join(__dirname, 'public', 'favicons/favicon.ico')))
+app.use(express.static('client/public'))
 
 
 //Public route
@@ -62,6 +64,6 @@ app.use((err, req, res, next) => {
     }
 });
 
-app.listen(3000, () => {
-    console.log('Node server listening on port 3000');
+app.listen(port, () => {
+    console.log('Node server listening on port ' + port);
 });
