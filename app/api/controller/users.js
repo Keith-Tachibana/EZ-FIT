@@ -1,6 +1,7 @@
 const userModel = require('../models/users');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const validator = require('validator');
 
 function register(req, res, next){
     userModel.create({
@@ -8,7 +9,7 @@ function register(req, res, next){
             firstName: req.body.firstName,
             lastName: req.body.lastName,
         },
-        email: req.body.email,
+        email: validator.normalizeEmail(req.body.email),
         password: req.body.password,
     }, (err, result) => {
         if (err){

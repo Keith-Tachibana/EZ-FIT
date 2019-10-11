@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const validator = require('validator');
 const saltRounds = 12;
 
 const Schema = mongoose.Schema;
@@ -7,18 +8,23 @@ const Schema = mongoose.Schema;
 var addressSchema = new Schema({
     street: {
         type: String,
+        trim: true,
     },
     city: {
         type: String,
+        trim: true,
     },
     state: {
         type: String,
+        trim: true,
     },
     postalCode: {
         type: String,
+        trim: true,
     },
     country: {
         type: String,
+        trim: true,
     },
 
 });
@@ -26,43 +32,46 @@ var addressSchema = new Schema({
 var phoneSchema = new Schema({
     home: {
         type: String,
+        trim: true,
     },
     mobile: {
         type: String,
+        trim: true,
     },
     business: {
         type: String,
+        trim: true,
     },
 })
 
 var contactSchema = new Schema({
     firstName: {
         type: String,
+        trim: true,
     },
     lastName: {
         type: String,
+        trim: true,
     },
     address: {
         type: addressSchema,
     },
     phoneNumber: {
         type: phoneSchema,
-    }
+    },
+    email: {
+        type: String,
+        trim: true,
+        maxlength: 320,
+        unique: true,
+        validate: [(value) => {
+            return validator.isEmail(value);
+        }, "Invalid email."], 
+    },
 })
 
 var doctorSchema = new Schema({
-    firstName: {
-        type: String,
-    },
-    lastName: {
-        type: String,
-    },
-    address: {
-        type: addressSchema,
-    },
-    phoneNumber: {
-        type: phoneSchema,
-    },
+    contact: contactSchema,
     notes: {
         type: String,
     }
@@ -75,9 +84,9 @@ var userSchema = new Schema({
         maxlength: 320,
         required: true,
         unique: true,
-        validate: (value) => {
-            return true; //TODO: Add validator for email
-        },
+        validate: [(value) => {
+            return validator.isEmail(value);
+        }, "Invalid email."],
     },
     password: {
         type: String,
@@ -100,6 +109,7 @@ var userSchema = new Schema({
     },
     bloodType: {
         type: String,
+        trim: true,
     },
     allergies: {
         type: [String],
