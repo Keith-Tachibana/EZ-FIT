@@ -10,7 +10,8 @@ const mongoose = require('./config/database'); //database configeration
 const port = process.env.PORT || 8080;
 
 const app = express();
-app.set('secretKey', process.env.SECRET_KEY);
+const SECRET_KEY = process.env.SECRET_KEY || "TEST_KEY";
+app.set('secretKey', SECRET_KEY);
 app.use(favicon(path.join(__dirname, 'client/public', '/favicon.ico')))
 
 //Connect to mongodb
