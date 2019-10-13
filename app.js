@@ -6,16 +6,19 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const home = require('./routes/home');
 const users = require('./routes/users');
-const mongoose = require('./config/database'); //database configeration
+// const mongoose = require('./config/database'); //database configuration
 const port = process.env.PORT || 8080;
 
 const app = express();
 const SECRET_KEY = process.env.SECRET_KEY || "TEST_KEY";
 app.set('secretKey', SECRET_KEY);
+
 app.use(favicon(path.join(__dirname, 'client/public', '/favicon.ico')))
+//Add file name as last arg to change initial file to be loaded
+app.use(express.static(path.join(__dirname, 'client/build')))
 
 //Connect to mongodb
-mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
+// mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 

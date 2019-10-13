@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.js": "/harrynp/ezphr/static/js/main.ce5b5ebd.chunk.js",
+    "main.js.map": "/harrynp/ezphr/static/js/main.ce5b5ebd.chunk.js.map",
+    "runtime-main.js": "/harrynp/ezphr/static/js/runtime-main.584ee896.js",
+    "runtime-main.js.map": "/harrynp/ezphr/static/js/runtime-main.584ee896.js.map",
+    "static/js/2.0b4ee2c2.chunk.js": "/harrynp/ezphr/static/js/2.0b4ee2c2.chunk.js",
+    "static/js/2.0b4ee2c2.chunk.js.map": "/harrynp/ezphr/static/js/2.0b4ee2c2.chunk.js.map",
+    "index.html": "/harrynp/ezphr/index.html",
+    "precache-manifest.4c306c268fa89c66393cbbfb73b6eaaf.js": "/harrynp/ezphr/precache-manifest.4c306c268fa89c66393cbbfb73b6eaaf.js",
+    "service-worker.js": "/harrynp/ezphr/service-worker.js"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.584ee896.js",
+    "static/js/2.0b4ee2c2.chunk.js",
+    "static/js/main.ce5b5ebd.chunk.js"
+  ]
+}

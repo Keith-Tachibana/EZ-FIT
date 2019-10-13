@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../app/api/controller/users');
 const { check, validationResult } = require('express-validator');
-
+router.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+});
 router.post('/register', [
     // check if is an email
     check('email').isEmail(),
