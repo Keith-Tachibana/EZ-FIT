@@ -6,7 +6,7 @@ const path = require('path');
 const jwt = require('jsonwebtoken');
 const home = require('./routes/home');
 const users = require('./routes/users');
-// const mongoose = require('./config/database'); //database configuration
+const mongoose = require('./config/database'); //database configuration
 const port = process.env.PORT || 8080;
 
 const app = express();
@@ -18,9 +18,10 @@ app.use(favicon(path.join(__dirname, 'client/public', '/favicon.ico')))
 app.use(express.static(path.join(__dirname, 'client/build')))
 
 //Connect to mongodb
-// mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
+mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(logger('dev'));
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 //Static files
 app.use(express.static('client/public'))
@@ -47,6 +48,7 @@ function validateUser(req, res, next){
                 message: err.message,
                 data: null,
             });
+            // res.redirect("/")
         } else {
             //add user id to request
             req.body.userId = decoded.id;

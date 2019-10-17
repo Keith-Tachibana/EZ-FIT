@@ -32,6 +32,14 @@ function register(req, res, next){
 };
 
 function signin(req, res, next){
+    const email = validator.normalizeEmail(req.body.email);
+    if (!validator.isEmail(email)){
+        return res.json({
+                    status: "error",
+                    message: "Invalid email.",
+                    data: null,
+                });
+    }
     userModel.findOne({
         'email': req.body.email,
     }, async (err, userInfo) => {
