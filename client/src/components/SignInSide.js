@@ -14,7 +14,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import ErrorIcon from '@material-ui/icons/Error';
-const axios = require('axios');
+import axios from 'axios';
 
 
 const Link1 = React.forwardRef((props, ref) => (
@@ -77,7 +77,6 @@ export default function SignInSide() {
       password: passwordValue,
     })
     .then(res => {
-      // console.log(res);
       if (res.data.status === "error"){
         setStatus(res.data.message);
       } else if (res.data.status === "success") {

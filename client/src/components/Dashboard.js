@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -19,7 +19,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
-const axios = require('axios');
+import axios from 'axios';
 
 const Link1 = React.forwardRef((props, ref) => (
   <RouterLink innerRef={ref} {...props} />
@@ -135,7 +135,7 @@ export default function Dashboard() {
     'x-access-token': sessionStorage.getItem("access-token"),
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function fetchName(){
       const res = await axios.get('/user', {headers});
       try {
@@ -177,7 +177,7 @@ export default function Dashboard() {
             {(name ? name + "'s " : "") + "Dashboard"}
           </Typography>
           <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
+            <Badge badgeContent={0} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
@@ -196,7 +196,9 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider />
-        <List>{mainListItems}</List>
+        <List>
+        {mainListItems}
+        </List>
         <Divider />
         <List>{secondaryListItems}</List>
       </Drawer>

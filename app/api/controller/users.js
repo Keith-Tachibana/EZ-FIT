@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const validator = require('validator');
 
 function register(req, res, next){
+    // console.log(req.body);
     userModel.create({
         contact: {
             firstName: req.body.firstName,
@@ -32,6 +33,7 @@ function register(req, res, next){
 };
 
 function signin(req, res, next){
+    // console.log(req.body);
     const email = validator.normalizeEmail(req.body.email);
     if (!validator.isEmail(email)){
         return res.json({
