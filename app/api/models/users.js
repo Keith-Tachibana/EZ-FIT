@@ -29,20 +29,20 @@ var addressSchema = new Schema({
 
 });
 
-var phoneSchema = new Schema({
-    home: {
-        type: String,
-        trim: true,
-    },
-    mobile: {
-        type: String,
-        trim: true,
-    },
-    business: {
-        type: String,
-        trim: true,
-    },
-})
+// var phoneSchema = new Schema({
+//     home: {
+//         type: String,
+//         trim: true,
+//     },
+//     mobile: {
+//         type: String,
+//         trim: true,
+//     },
+//     business: {
+//         type: String,
+//         trim: true,
+//     },
+// })
 
 var contactSchema = new Schema({
     firstName: {
@@ -57,7 +57,8 @@ var contactSchema = new Schema({
         type: addressSchema,
     },
     phoneNumber: {
-        type: phoneSchema,
+        type: String,
+        trim: true,
     },
     email: {
         type: String,
@@ -68,6 +69,11 @@ var contactSchema = new Schema({
             return validator.isEmail(value);
         }, "Invalid email."], 
     },
+    additionalInfo: {
+        type: String,
+        trim: true,
+        maxlength: 500,
+    }
 })
 
 var doctorSchema = new Schema({
