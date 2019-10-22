@@ -20,26 +20,27 @@ const useStyles = makeStyles(theme => ({
 export default function PasswordForm(props){
     const classes = useStyles();
     
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-
+    const [password, setPassword] = useState({
+        password: '',
+        confirmPassword: '',
+    });
     const [error, setError] = useState(0);
 
     const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-    }
-    
-    const handleConfirmPasswordChange = (e) => {
-        setConfirmPassword(e.target.value);
+        setPassword({
+            ...password,
+            [e.target.name]: e.target.value,
+        });
     }
 
+
     useEffect(() => {
-        if (password === confirmPassword){
+        if (password.password === password.confirmPassword){
             setError(null);
         } else {
             setError("Password do not match")
         }
-    }, [password, confirmPassword]);
+    }, [password]);
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -96,7 +97,7 @@ export default function PasswordForm(props){
                                     type="password"
                                     id="confirmPassword"
                                     autoComplete="new-password"
-                                    onChange={handleConfirmPasswordChange}
+                                    onChange={handlePasswordChange}
                                 />
                             </Grid>
                         </Grid>
