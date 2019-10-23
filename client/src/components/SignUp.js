@@ -74,7 +74,7 @@ export default function SignUp() {
       password: passwordValue,
     })
     .then(res => {
-      // console.log(res);
+      console.log(res);
       if (res.data.status === "error"){
         setStatus(res.data.message);
       } else if (res.data.status === "success") {
