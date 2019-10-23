@@ -18,5 +18,5 @@ router.post('/register', [
     userController.register(req, res, next);
 });
 router.post('/signin', userController.signin);
-
+router.post('/updatePassword',userController.updatePassword);
 module.exports = router;
