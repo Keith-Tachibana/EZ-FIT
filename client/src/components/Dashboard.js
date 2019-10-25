@@ -155,6 +155,7 @@ export default function Dashboard() {
       }
     }
     fetchName();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
