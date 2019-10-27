@@ -60,7 +60,6 @@ export default function PasswordForm(){
       setError("Passwords do not match");
       return;
     }
-    console.log('what do we have here?',)
     const accessToken = sessionStorage.getItem("access-token")
     axios.post("/updatePassword", {
       oldPassword: oldPasswordValue,
