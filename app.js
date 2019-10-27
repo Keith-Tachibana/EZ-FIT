@@ -52,7 +52,7 @@ function validateUser(req, res, next){
         } else {
             //add user id to request
             req.body.userId = decoded.id;
-            next();
+            next(req);
         }
     });
 }
@@ -73,3 +73,5 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
     console.log('Node server listening on port ' + port);
 });
+
+module.exports = { validateUser };

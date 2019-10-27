@@ -58,10 +58,14 @@ export default function PasswordForm(props) {
       setError("Passwords do not match");
       return;
     }
+    console.log('what do we have here?',)
+    const accessToken = sessionStorage.getItem("access-token")
     axios.post("/updatePassword", {
       oldPassword: oldPasswordValue,
-      password: passwordValue
+      password: passwordValue,
+      token:accessToken
     });
+    console.log('here');
   };
 
   return (
@@ -79,7 +83,7 @@ export default function PasswordForm(props) {
           <CardContent>
           <CardHeader subheader="Enter your old password" />
           <Grid container spacing = {2}>
-          <Grid item xs={12} sm={12}>
+          <Grid item xs={12}>
                 <TextField
                   variant="outlined"
                   margin="normal"
@@ -94,7 +98,7 @@ export default function PasswordForm(props) {
               </Grid>    
             </Grid>  
           <CardHeader subheader="Enter the new password" />
-              <Grid item xs={12} sm={12}>
+              <Grid item xs={12}>
                 <TextField
                   variant="outlined"
                   margin="normal"
@@ -110,7 +114,7 @@ export default function PasswordForm(props) {
                 />
               </Grid>
           <CardHeader subheader="Reenter the new password" />
-              <Grid item xs={12} sm={12}>
+              <Grid item xs={12}>
                 <TextField
                   variant="outlined"
                   margin="normal"
