@@ -2,6 +2,7 @@ import React from 'react'
 import { Route, Redirect, useRouteMatch } from 'react-router-dom'
 import Dashboard from './Dashboard'
 import PasswordForm from './PasswordForm'
+import PersonalInfoForm from './PersonalInfoForm'
 
 const User = () => {
     let match = useRouteMatch();
@@ -12,6 +13,7 @@ const User = () => {
             </Route>
             <Route path={`${match.path}/dashboard`} component={Dashboard}/>
             <Route path={`${match.path}/updatepassword`} component={PasswordForm}/>
+            <Route path={`${match.path}/updatepersonalinfo`} component={PersonalInfoForm}/>
         </main>
     );
 };

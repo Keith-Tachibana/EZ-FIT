@@ -24,29 +24,31 @@ const useStyles = makeStyles(theme => ({
   submit: {}
 }));
 
-export default function PasswordForm(props) {
-  const classes = useStyles();
+export default function PasswordForm(){
+   const classes = useStyles();
 
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+   const [password, setPassword] = useState({
+        password: '',
+        confirmPassword: '',
+   });
 
   const [error, setError] = useState(0);
 
   const handlePasswordChange = e => {
-    setPassword(e.target.value);
+    setPassword({
+        ...password,
+        [e.target.name]: e.target.value,
+    });
   };
 
-  const handleConfirmPasswordChange = e => {
-    setConfirmPassword(e.target.value);
-  };
 
   useEffect(() => {
-    if (password === confirmPassword) {
+    if (password.password === password.confirmPassword) {
       setError(null);
     } else {
       setError("Passwords do not match");
     }
-  }, [password, confirmPassword]);
+  }, [password]);
 
   const submitHandler = e => {
     e.preventDefault();
@@ -110,7 +112,6 @@ export default function PasswordForm(props) {
                   name="password"
                   autoComplete="new-password"
                   onChange={handlePasswordChange}
-                  autoFocus
                 />
               </Grid>
           <CardHeader subheader="Reenter the new password" />
@@ -125,7 +126,7 @@ export default function PasswordForm(props) {
                   type="password"
                   id="confirmPassword"
                   autoComplete="new-password"
-                  onChange={handleConfirmPasswordChange}
+                  onChange={handlePasswordChange}
                 />
               </Grid>
             <span id="error" style={{ display: error ? "inline" : "none" }}>
