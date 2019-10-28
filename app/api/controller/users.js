@@ -2,6 +2,7 @@ const userModel = require("../models/users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
+var ObjectID = require('mongodb').ObjectID;
 
 function register(req, res, next) {
   userModel.create(
@@ -61,8 +62,8 @@ function signin(req, res, next) {
             const token = jwt.sign(
               { id: userInfo._id },
               req.app.get("secretKey"),
-              { expiresIn: 300 }
-            ); //5 minute JWT tokens for now
+              { expiresIn: 30000 }
+            ); //500 minute JWT tokens for now
             res.json({
               status: "success",
               message: "User found.",
@@ -88,28 +89,51 @@ function signin(req, res, next) {
   );
 }
 function updatePassword(req, res, next) {
-  console.log("Just checking if I'm here");
-  const userToken = sessionStorage.getItem("access-token");
-  if (userToken !== null) {
-    var decoded = jwt.verify(userToken, req.app.get("secretKey"));
-    var userId = decoded.id;
-    userModel.findOne({ _id: userId }).then(function(err, userInfo) {
+  const token = req.body.token;
+  console.log('Did i get the tokeN?',token);
+  let decoded;
+  try{
+    decoded = jwt.verify(token,"TEST_KEY");
+    console.log('Did i get the code',decoded);
+  }
+  catch(err){
+    res.json({
+      status:"error",
+      message:"Couldn't authorize token",
+      data:null
+    });
+    next(err);
+  }
+  var userId = decoded.id;
+  console.log('DId ig tet the IDee',userId);
+  if (userId !== null) {
+    userModel.findById(userId,async (err, userInfo) => {
       if (err) {
         next(err);
       } else {
         try {
-          if (bcrypt.match(req.body.oldPassword, userInfo.password))
+          console.log('Old with the new',req.body.oldPassword,'vs',userInfo.password)
+          const match = await bcrypt.compare(req.body.oldPassword, userInfo.password);
+          if (match){
+            userModel.updateOne({
+              "_id": ObjectID(userId)
+            },{$set: { "password" : req.body.password}}, async (err) =>{
             res.json({
-              status: "success",
-              message: "Correct old password",
-              data: null
+              status:"success",
+              message:"Successfully updated password",
+              data:null
             });
+            console.log("Didya?",res.json.message);
+          });
+          }
           else {
+            console.log("Its a failer");
             res.json({
               status: "error",
               message: "Couldn't validate old password",
               data: null
             });
+            next();
           }
         } catch (err) {
           res.json({
@@ -122,7 +146,6 @@ function updatePassword(req, res, next) {
       }
     });
   }
-  console.log(userToken);
 }
 
 module.exports = { register, signin, updatePassword };
