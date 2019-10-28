@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const validator = require("validator");
 
 function register(req, res, next) {
-  // console.log(req.body);
   userModel.create(
     {
       contact: {
