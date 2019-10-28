@@ -48,11 +48,10 @@ function validateUser(req, res, next){
                 message: err.message,
                 data: null,
             });
-            // res.redirect("/")
         } else {
             //add user id to request
             req.body.userId = decoded.id;
-            next(req);
+            next();
         }
     });
 }
