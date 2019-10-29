@@ -7,10 +7,10 @@ const jwt = require('jsonwebtoken');
 const home = require('./routes/home');
 const users = require('./routes/users');
 const mongoose = require('./config/database'); //database configuration
-const port = process.env.PORT || 8080;
-
+const appConfig = require('./config/appConfig');
+const SECRET_KEY = appConfig.secretKey;
+const port = appConfig.port;
 const app = express();
-const SECRET_KEY = process.env.SECRET_KEY || "TEST_KEY";
 app.set('secretKey', SECRET_KEY);
 
 app.use(favicon(path.join(__dirname, 'client/public', '/favicon.ico')))

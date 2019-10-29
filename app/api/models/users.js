@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
-const saltRounds = 12;
-
+const appConfig = require('../../../config/appConfig');
+const saltRounds = appConfig.saltRounds;
 const Schema = mongoose.Schema;
 
 var addressSchema = new Schema({
@@ -143,5 +143,4 @@ userSchema.pre('save', async function(next){
     this.password = await bcrypt.hash(this.password, saltRounds);
     next();
 });
-
-module.exports = mongoose.model('Users', userSchema);
+module.exports = mongoose.model('Users',userSchema);

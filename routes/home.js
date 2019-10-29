@@ -31,7 +31,6 @@ router.post('/signin', [
     }
     userController.signin(req, res, next);
 });
-router.post('/updatePassword',userController.updatePassword);
 
 
 module.exports = router;

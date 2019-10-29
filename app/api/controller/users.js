@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
 var ObjectID = require('mongodb').ObjectID;
-
+const  appConfig = require('../../../config/appConfig');
 function register(req, res, next) {
   userModel.create(
     {
@@ -89,51 +89,41 @@ function signin(req, res, next) {
   );
 }
 function updatePassword(req, res, next) {
-  const token = req.body.token;
-  console.log('Did i get the tokeN?',token);
-  let decoded;
-  try{
-    decoded = jwt.verify(token,"TEST_KEY");
-    console.log('Did i get the code',decoded);
-  }
-  catch(err){
-    res.json({
+  if(req.body.oldPassword === req.body.password){
+    req.json({
       status:"error",
-      message:"Couldn't authorize token",
+      message:"New password must not be the same as the current password",
       data:null
     });
     next(err);
   }
-  var userId = decoded.id;
-  console.log('DId ig tet the IDee',userId);
+  var userId = req.body.userId;
+  console.log(userId,"not found");
   if (userId !== null) {
     userModel.findById(userId,async (err, userInfo) => {
       if (err) {
         next(err);
       } else {
         try {
-          console.log('Old with the new',req.body.oldPassword,'vs',userInfo.password)
           const match = await bcrypt.compare(req.body.oldPassword, userInfo.password);
           if (match){
+            const hashedPassword = await bcrypt.hash(req.body.password,appConfig.saltRounds);
             userModel.updateOne({
               "_id": ObjectID(userId)
-            },{$set: { "password" : req.body.password}}, async (err) =>{
+            },{$set: { "password" : hashedPassword}}, async (err) =>{
             res.json({
               status:"success",
               message:"Successfully updated password",
               data:null
             });
-            console.log("Didya?",res.json.message);
           });
           }
           else {
-            console.log("Its a failer");
             res.json({
               status: "error",
               message: "Couldn't validate old password",
               data: null
             });
-            next();
           }
         } catch (err) {
           res.json({

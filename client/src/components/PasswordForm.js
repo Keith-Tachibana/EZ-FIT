@@ -31,7 +31,7 @@ export default function PasswordForm(){
         password: '',
         confirmPassword: '',
    });
-
+  const [status, setStatus] = useState(0);
   const [error, setError] = useState(0);
 
   const handlePasswordChange = e => {
@@ -41,7 +41,9 @@ export default function PasswordForm(){
     });
   };
 
-
+  const headers = {
+    'x-access-token': sessionStorage.getItem("access-token"),
+  };
   useEffect(() => {
     if (password.password === password.confirmPassword) {
       setError(null);
@@ -60,14 +62,27 @@ export default function PasswordForm(){
       setError("Passwords do not match");
       return;
     }
+    if(passwordValue === oldPasswordValue){
+      setError("New password cannot be the same as the current password");
+      return;
+    }
     const accessToken = sessionStorage.getItem("access-token")
-    axios.post("/updatePassword", {
+    axios.post("/user/updatePassword", {
       oldPassword: oldPasswordValue,
       password: passwordValue,
-      token:accessToken
-    });
-    console.log('here');
-  };
+    }, {headers}).then(res => {
+      console.log(res);
+      if (res.data.status !== "error"){
+        setError(res.data.message);
+        // setStatus(res.data.message);
+      } else if (res.data.status === "success") {
+        setError(res.data.message);
+      }
+    }).catch(err =>{
+      setError(err.response.data.message);
+      console.log(err.response);
+    })
+    };
 
   return (
     <Container maxWidth="sm">
