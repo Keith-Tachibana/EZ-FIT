@@ -1,1 +1,1 @@
-web: node app.js
+web: mpm run deploy
