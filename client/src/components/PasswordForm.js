@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   root: {},
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   submit: {}
 }));
@@ -66,13 +66,13 @@ export default function PasswordForm(){
       setError("New password cannot be the same as the current password");
       return;
     }
-    const accessToken = sessionStorage.getItem("access-token")
+
     axios.post("/user/updatePassword", {
       oldPassword: oldPasswordValue,
       password: passwordValue,
     }, {headers}).then(res => {
       console.log(res);
-      if (res.data.status !== "error"){
+      if (res.data.status === "error"){
         setError(res.data.message);
         // setStatus(res.data.message);
       } else if (res.data.status === "success") {
@@ -94,10 +94,9 @@ export default function PasswordForm(){
           method="post"
           noValidate
         >
-          <CardHeader title="Update Password" />
+          <CardHeader title="Password" subheader="Update password" />
           <Divider />
           <CardContent>
-          <CardHeader subheader="Enter your old password" />
           <Grid container spacing = {2}>
           <Grid item xs={12}>
                 <TextField
@@ -113,7 +112,6 @@ export default function PasswordForm(){
                 />
               </Grid>    
             </Grid>  
-          <CardHeader subheader="Enter the new password" />
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
@@ -128,7 +126,6 @@ export default function PasswordForm(){
                   onChange={handlePasswordChange}
                 />
               </Grid>
-          <CardHeader subheader="Reenter the new password" />
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
