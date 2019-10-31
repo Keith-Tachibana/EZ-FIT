@@ -14,12 +14,16 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
-import { Link as RouterLink, useHistory } from "react-router-dom";
+import { Switch, Route, Link as RouterLink, useHistory } from "react-router-dom";
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { mainListItems, secondaryListItems } from './listItems';
 import axios from 'axios';
+import DashboardContent from './DashboardContent';
+import PasswordForm from './PasswordForm';
+import PersonalInfoForm from './PersonalInfoForm';
 
 const Link1 = React.forwardRef((props, ref) => (
   <RouterLink innerRef={ref} {...props} />
@@ -131,6 +135,11 @@ export default function Dashboard() {
   };
   const [name, setName] = React.useState(0);
 
+  const signout = () => {
+    sessionStorage.removeItem("access-token");
+    history.push("/")
+  }
+
   const headers = {
     'x-access-token': sessionStorage.getItem("access-token"),
   };
@@ -177,10 +186,12 @@ export default function Dashboard() {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             {(name ? name + "'s " : "") + "Dashboard"}
           </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={0} color="secondary">
-              <NotificationsIcon />
-            </Badge>
+          <IconButton 
+            color="inherit" 
+            aria-label="signout"
+            onClick={signout}
+          >
+            <ExitToAppIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -205,28 +216,21 @@ export default function Dashboard() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                {/* <Chart /> */}
-              </Paper>
-            </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                {/* <Deposits /> */}
-              </Paper>
-            </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                {/* <Orders /> */}
-              </Paper>
-            </Grid>
-          </Grid>
-        </Container>
+          <Switch>
+            <Route path='/user/dashboard' component={DashboardContent} />
+            <Route path='/user/updatepersonalinfo'>
+            <Container maxWidth="lg" className={classes.container}>
+              <Grid container>
+                <Grid item xs={12} sm={8}>
+                  <PersonalInfoForm />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <PasswordForm />
+                </Grid>
+              </Grid>
+              </Container>
+            </Route>
+          </Switch>
         <Copyright />
       </main>
     </div>

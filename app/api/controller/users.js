@@ -88,6 +88,15 @@ function signin(req, res, next) {
     }
   );
 }
+
+function signout(req, res, next) {
+  res.json({
+    status: "success",
+    message: "Successfully signed out",
+    data: null,
+  });
+}
+
 function updatePassword(req, res, next) {
   if(req.body.oldPassword === req.body.password){
     req.json({

@@ -13,8 +13,7 @@ const User = () => {
                     <Redirect to={`${match.path}/dashboard`} />
                 </Route>
                 <Route path={`${match.path}/dashboard`} component={Dashboard}/>
-                <Route path={`${match.path}/updatepassword`} component={PasswordForm}/>
-                <Route path={`${match.path}/updatepersonalinfo`} component={PersonalInfoForm}/>
+                <Route path={`${match.path}/updatepersonalinfo`} component={Dashboard}/>
             </Switch>
         </main>
     );
