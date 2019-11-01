@@ -1,1 +1,1 @@
-web: npm clean install && npm run deploy
+web: npm run deploy
