@@ -1,1 +1,1 @@
-web: mpm run deploy
+web: npm run deploy
