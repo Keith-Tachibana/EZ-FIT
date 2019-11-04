@@ -36,53 +36,53 @@ function register(req, res, next) {
 }
 
 function signin(req, res, next) {
-  // console.log(req.body);
-  const email = validator.normalizeEmail(req.body.email);
-  if (!validator.isEmail(email)) {
-    return res.json({
-      status: "error",
-      message: "Invalid email.",
-      data: null
-    });
-  }
+  console.log(req.body.email);
   userModel.findOne(
     {
-      email: req.body.email
+      email: validator.normalizeEmail(req.body.email),
     },
     async (err, userInfo) => {
-      if (err) {
-        next(err);
+      if (!userInfo) {
+        res.json({
+          status: "error",
+          message: "Invalid email/password.",
+          data: null
+        });
       } else {
-        try {
-          const match = await bcrypt.compare(
-            req.body.password,
-            userInfo.password
-          );
-          if (match) {
-            const token = jwt.sign(
-              { id: userInfo._id },
-              req.app.get("secretKey"),
-              { expiresIn: 30000 }
-            ); //500 minute JWT tokens for now
-            res.json({
-              status: "success",
-              message: "User found.",
-              data: { token: token }
-            });
-          } else {
+        if (err) {
+          next(err);
+        } else {
+          try {
+            const match = await bcrypt.compare(
+              req.body.password,
+              userInfo.password
+            );
+            if (match) {
+              const token = jwt.sign(
+                { id: userInfo._id },
+                req.app.get("secretKey"),
+                { expiresIn: 30000 }
+              ); //500 minute JWT tokens for now
+              res.json({
+                status: "success",
+                message: "User found.",
+                data: { token: token }
+              });
+            } else {
+              res.json({
+                status: "error",
+                message: "Invalid email/password.",
+                data: null
+              });
+            }
+          } catch (err) {
             res.json({
               status: "error",
               message: "Invalid email/password.",
               data: null
             });
+            next(err);
           }
-        } catch (err) {
-          res.json({
-            status: "error",
-            message: "Invalid email/password.",
-            data: null
-          });
-          next(err);
         }
       }
     }
@@ -107,7 +107,6 @@ function updatePassword(req, res, next) {
     next(err);
   }
   var userId = req.body.userId;
-  console.log(userId,"not found");
   if (userId !== null) {
     userModel.findById(userId,async (err, userInfo) => {
       if (err) {
@@ -147,4 +146,46 @@ function updatePassword(req, res, next) {
   }
 }
 
-module.exports = { register, signin, updatePassword };
+function forgetPassword(req, res, next) {
+  userModel.findOne(
+    {
+      email: validator.normalizeEmail(req.body.email),
+    },
+    async (err, userInfo) => {
+      if (!userInfo) {
+        return res.json({
+          status: "success",
+          message: "Reset email sent.",
+          data: null,
+        });
+      }
+      if (err){
+        next(err);
+      } else {
+        try {
+          createdDate = new Date(userInfo.createdDate);
+          let secret = userInfo.password + createdDate.toISOString();
+          console.log(secret);
+          const token = jwt.sign(
+            { id: userInfo._id },
+            secret,
+            { expiresIn: 60 * 60 * 24 }
+          );
+          res.json({
+            status: "success",
+            message: "Reset email sent.",
+            data: token,
+          });
+        } catch (err) {
+          next(err);
+        }
+      }
+    }
+  )
+}
+
+function resetPassword(req, res, next) {
+
+}
+
+module.exports = { register, signin, signout, updatePassword, forgetPassword, resetPassword };

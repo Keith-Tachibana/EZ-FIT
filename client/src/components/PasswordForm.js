@@ -13,6 +13,7 @@ import {
   Grid
 } from "@material-ui/core";
 import ErrorIcon from "@material-ui/icons/Error";
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
@@ -59,10 +60,12 @@ export default function PasswordForm(){
     const passwordValue = e.target.password.value;
     const confirmPasswordValue = e.target.confirmPassword.value;
     if (passwordValue !== confirmPasswordValue) {
+      setStatus(0);
       setError("Passwords do not match");
       return;
     }
     if(passwordValue === oldPasswordValue){
+      setStatus(0);
       setError("New password cannot be the same as the current password");
       return;
     }
@@ -73,10 +76,14 @@ export default function PasswordForm(){
     }, {headers}).then(res => {
       console.log(res);
       if (res.data.status === "error"){
+        if (res.data.message === "jwt expired"){
+          //pass
+        }
+        setStatus(0);
         setError(res.data.message);
-        // setStatus(res.data.message);
       } else if (res.data.status === "success") {
-        setError(res.data.message);
+        setError(0);
+        setStatus(res.data.message);
       }
     }).catch(err =>{
       setError(err.response.data.message);
@@ -156,6 +163,18 @@ export default function PasswordForm(){
                   </Typography>
                 </Grid>
               </Grid>
+            </span>
+            <span id="status" style={{display: status ? 'inline' : 'none' }}>
+                <Grid container direction="row" alignItems="center">
+                    <Grid item>
+                        <CheckCircleIcon color="primary"/>
+                    </Grid>
+                    <Grid item>
+                        <Typography id="statusMessage" variant="subtitle1" display="inline">
+                            {status}
+                        </Typography>
+                    </Grid>
+                </Grid>
             </span>
           </CardContent>
           <Divider />

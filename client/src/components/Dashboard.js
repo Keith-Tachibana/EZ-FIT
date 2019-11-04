@@ -136,8 +136,19 @@ export default function Dashboard() {
   const [name, setName] = React.useState(0);
 
   const signout = () => {
-    sessionStorage.removeItem("access-token");
-    history.push("/")
+    async function getSignout() {
+      const res = await axios.get('/user/signout', {headers});
+      try {
+        if (res.data.status === "success") {
+          sessionStorage.removeItem("access-token");
+          history.push("/");
+        }
+      }
+      catch (err) {
+        console.log(err.response);
+      }
+    }
+    getSignout();
   }
 
   const headers = {
@@ -146,7 +157,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function fetchName(){
-      const res = await axios.get('/user', {headers});
+      const res = await axios.get('/user/getname', {headers});
       try {
         console.log(res);
         if (res.data.status === "error"){

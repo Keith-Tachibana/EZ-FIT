@@ -108,9 +108,9 @@ export default function SignUp() {
     event.preventDefault();
   };
 
-  React.useEffect(() => {
-    console.log(errors);
-  }, [errors])
+  // React.useEffect(() => {
+  //   console.log(errors);
+  // }, [errors])
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -159,7 +159,7 @@ export default function SignUp() {
         });
       }
       setErrors(currentErrors);
-      console.log(err.response);
+      // console.log(err.response);
     })
   };
 
