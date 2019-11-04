@@ -5,7 +5,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { Button, CardHeader, Divider, TextField, Container, Grid } from '@material-ui/core';
-import ErrorIcon from '@material-ui/icons/Error';
+import { useHistory } from "react-router-dom";
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
@@ -18,6 +19,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function PersonalInfoForm(){
+    const history = useHistory();
     const classes = useStyles();
     
     const [values, setValues] = useState({
@@ -33,7 +35,7 @@ export default function PersonalInfoForm(){
         additionalInfo: '',
     });
 
-    const [error, setError] = useState(0);
+    const [status, setStatus] = useState(0);
 
     const handleChange = (e) => {
         setValues({
@@ -42,24 +44,66 @@ export default function PersonalInfoForm(){
         });
     }
 
+    const headers = {
+        'x-access-token': sessionStorage.getItem("access-token"),
+    };
+
     useEffect(() => {
         //TODO: Retrieve personal info from server with a GET to fill in default values
-        setValues({
-            ...values,
-            firstName: "Test",
-            lastName: "User",
-        })
+        async function fetchPersonalInfo(){
+            const res = await axios.get('/user/getpersonalinfo', {headers});
+            try{
+                // console.log(res.data);
+                if (res.data.status === "error"){
+                    if (res.data.message === "jwt expired"){
+                        //pass
+                    }
+                sessionStorage.removeItem("access-token");
+                history.push("/");
+                } else {
+                    let info = res.data.data
+                    let currentInfo = {
+                        ...values
+                    };
+                    Object.assign(currentInfo, info);
+                    setValues(currentInfo);
+                }
+            }
+            catch (err) {
+                console.log(err.response);
+            }
+        };
+        fetchPersonalInfo();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    useEffect(() => {
-        //TODO: Validation
-        // console.log(values);
-    }, [values]);
+    // useEffect(() => {
+    //     //TODO: Validation
+    //     console.log(values);
+    // }, [values]);
 
     const submitHandler = (e) => {
         e.preventDefault();
-        axios.post('/updatepersonalinfo', values);
+        async function updatePersonalInfo(){
+            const res = await axios.post('/user/updatepersonalinfo', values, {headers});
+            try {
+                console.log(res.data);
+                if (res.data.status === "error"){
+                    setStatus(0);
+                    if (res.data.message === "jwt expired"){
+                        //pass
+                    }
+                sessionStorage.removeItem("access-token");
+                history.push("/");
+                } else {
+                    setStatus(res.data.message);
+                }
+            }
+            catch (err) {
+                console.log(err.response);
+            }
+        }
+        updatePersonalInfo();
     };
 
     return (
@@ -91,6 +135,7 @@ export default function PersonalInfoForm(){
                                     autoComplete="given-name"
                                     value={values.firstName}
                                     onChange={handleChange}
+                                    autoFocus
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -174,10 +219,10 @@ export default function PersonalInfoForm(){
                                     margin="normal"
                                     required
                                     fullWidth
+                                    name="state"
                                     id="state"
                                     label="State"
-                                    type="state"
-                                    name="text"
+                                    type="text"
                                     autoComplete="address-level1"
                                     value={values.state}
                                     onChange={handleChange}
@@ -231,15 +276,15 @@ export default function PersonalInfoForm(){
                                 />
                             </Grid>
                         </Grid>
-                        <span id="error" style={{display: error ? 'inline' : 'none' }}>
+                        <span id="status" style={{display: status ? 'inline' : 'none' }}>
                             <Grid container direction="row" alignItems="center">
                                 <Grid item>
-                                <ErrorIcon color="error" />
+                                    <CheckCircleIcon color="primary"/>
                                 </Grid>
                                 <Grid item>
-                                <Typography id="errorMessage" variant="subtitle1" color="error" display="inline">
-                                    {error}
-                                </Typography>
+                                    <Typography id="statusMessage" variant="subtitle1" display="inline">
+                                        {status}
+                                    </Typography>
                                 </Grid>
                             </Grid>
                         </span>
