@@ -2,9 +2,11 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../app/api/controller/users');
 const { check, validationResult } = require('express-validator');
+
 router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
 });
+
 router.post('/register', [
     // check if firstName exists
     check('firstName').isLength({ min: 1 }).withMessage('First name can\'t be blank.'),
@@ -21,6 +23,7 @@ router.post('/register', [
     }
     userController.register(req, res, next);
 });
+
 router.post('/signin', [
     // check if is an email
     check('email').isEmail().withMessage('Invalid email.'),
@@ -32,5 +35,19 @@ router.post('/signin', [
     userController.signin(req, res, next);
 });
 
+router.post('/forgetpassword', [
+    // check if is an email
+    check('email').isEmail().withMessage('Invalid email.'),
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ status:"error", errors: errors.array() });
+    }
+    userController.forgetPassword(req, res, next);
+});
+
+router.post('/resetpassword', (req, res, next) => {
+    userController.resetPassword(req, res, next);
+});
 
 module.exports = router;

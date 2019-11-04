@@ -226,7 +226,7 @@ export default function SignIn() {
           <Grid container>
             <Grid item xs>
               {/* Add forgot password functionality */}
-              <Link component={Link1} to="/" variant="body2">
+              <Link component={Link1} to="/forgetpassword" variant="body2">
                 Forgot password?
               </Link>
             </Grid>

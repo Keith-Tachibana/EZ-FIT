@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Switch, Route } from 'react-router-dom'
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import ForgetPasswordForm from "./ForgetPasswordForm";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -47,6 +48,7 @@ export default function SideImagePane() {
         <Switch>
           <Route path='/signin' component={SignIn}/>
           <Route path='/register' component={SignUp}/>
+          <Route path='/forgetpassword' component={ForgetPasswordForm}/>
         </Switch>
       </Grid>
     </Grid>
