@@ -36,7 +36,6 @@ function register(req, res, next) {
 }
 
 function signin(req, res, next) {
-  console.log(req.body.email);
   userModel.findOne(
     {
       email: validator.normalizeEmail(req.body.email),
@@ -49,6 +48,7 @@ function signin(req, res, next) {
           data: null
         });
       } else {
+        let expireTime = req.body.remember ? 86400 : 300; // 24 hour if remember else 5 mins
         if (err) {
           next(err);
         } else {
@@ -61,8 +61,8 @@ function signin(req, res, next) {
               const token = jwt.sign(
                 { id: userInfo._id },
                 req.app.get("secretKey"),
-                { expiresIn: 30000 }
-              ); //500 minute JWT tokens for now
+                { expiresIn: expireTime }
+              ); 
               res.json({
                 status: "success",
                 message: "User found.",
@@ -169,7 +169,7 @@ function forgetPassword(req, res, next) {
           const token = jwt.sign(
             { id: userInfo._id },
             secret,
-            { expiresIn: 60 * 60 * 24 }
+            { expiresIn: 86400 } // 24 hour expiration
           );
           res.json({
             status: "success",

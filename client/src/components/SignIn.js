@@ -71,6 +71,7 @@ export default function SignIn() {
       email: '',
       password: '',
       showPassword: false,
+      remember: false,
     });
   
     const [errors, setErrors] = useState({
@@ -100,12 +101,19 @@ export default function SignIn() {
     const handleMouseDownPassword = event => {
       event.preventDefault();
     };
+
+    const handleRememberChange = event => {
+      setValues({ 
+        ...values, 
+        remember: event.target.checked });
+    };
   
     const submitHandler = (e) => {
       e.preventDefault();
       axios.post('/signin', {
         email: values.email,
         password: values.password,
+        remember: values.remember,
       })
       .then(res => {
         if (res.data.status === "error"){
@@ -199,7 +207,7 @@ export default function SignIn() {
             fullWidth
           />
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={<Checkbox value="remember" color="primary" onChange={handleRememberChange} value={values.remember} />}
             label="Remember me"
           />
           <span id="error" style={{display: status ? 'inline' : 'none' }}>
