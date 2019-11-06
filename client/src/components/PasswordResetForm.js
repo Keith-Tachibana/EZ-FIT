@@ -10,10 +10,14 @@ import {
   Divider,
   TextField,
   Container,
-  Grid
+  Grid,
+  IconButton,
+  InputAdornment,
 } from "@material-ui/core";
 import ErrorIcon from "@material-ui/icons/Error";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
@@ -25,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   submit: {}
 }));
 
-export default function PasswordResetForm(){
+export default function PasswordResetForm(props){
    const classes = useStyles();
 
    const [password, setPassword] = useState({
@@ -34,6 +38,20 @@ export default function PasswordResetForm(){
    });
   const [status, setStatus] = useState(0);
   const [error, setError] = useState(0);
+  const [values, setValues] = useState({
+    showOldPassword: false,
+    showNewPassword: false,
+    showConfirmPassword: false,
+  });
+  const query = new URLSearchParams(props.location.search);
+
+  useEffect(() => {
+    if (password.password === password.confirmPassword) {
+      setError(null);
+    } else {
+      setError("Passwords do not match");
+    }
+  }, [password]);
 
   const handlePasswordChange = e => {
     setPassword({
@@ -42,16 +60,23 @@ export default function PasswordResetForm(){
     });
   };
 
-  const headers = {
-    'x-reset-token': sessionStorage.getItem("access-token"),
+  const handleClickShowNewPassword = () => {
+    setValues({
+      ...values, 
+      showNewPassword: !values.showNewPassword,
+    });
   };
-  useEffect(() => {
-    if (password.password === password.confirmPassword) {
-      setError(null);
-    } else {
-      setError("Passwords do not match");
-    }
-  }, [password]);
+
+  const handleClickShowConfirmPassword = () => {
+    setValues({
+      ...values, 
+      showConfirmPassword: !values.showConfirmPassword,
+    });
+  };
+
+  const handleMouseDownPassword = event => {
+    event.preventDefault();
+  };
 
   const submitHandler = e => {
     e.preventDefault();
@@ -62,13 +87,15 @@ export default function PasswordResetForm(){
       return;
     }
 
-    axios.post("/user/updatePassword", {
+    axios.post("/resetpassword", {
       password: passwordValue,
-    }, {headers}).then(res => {
-      console.log(res);
+    }, { params: {
+      id: query.get('id'),
+      token: query.get('token'),
+    },}).then(res => {
       if (res.data.status === "error"){
-        setError(res.data.message);
         setStatus(0);
+        setError(res.data.message);
       } else if (res.data.status === "success") {
         setError(0);
         setStatus(res.data.message);
@@ -101,10 +128,24 @@ export default function PasswordResetForm(){
                   fullWidth
                   id="password"
                   label="Password"
-                  type="password"
+                  type={values.showNewPassword ? 'text' : 'password'}
                   name="password"
                   autoComplete="new-password"
                   onChange={handlePasswordChange}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          edge="end"
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowNewPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {values.showNewPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -115,10 +156,24 @@ export default function PasswordResetForm(){
                   fullWidth
                   name="confirmPassword"
                   label="Confirm Password"
-                  type="password"
+                  type={values.showConfirmPassword ? 'text' : 'password'}
                   id="confirmPassword"
                   autoComplete="new-password"
                   onChange={handlePasswordChange}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          edge="end"
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowConfirmPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {values.showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
             <span id="error" style={{ display: error ? "inline" : "none" }}>

@@ -10,10 +10,14 @@ import {
   Divider,
   TextField,
   Container,
-  Grid
+  Grid,
+  IconButton,
+  InputAdornment,
 } from "@material-ui/core";
 import ErrorIcon from "@material-ui/icons/Error";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
@@ -34,13 +38,11 @@ export default function PasswordForm(){
    });
   const [status, setStatus] = useState(0);
   const [error, setError] = useState(0);
-
-  const handlePasswordChange = e => {
-    setPassword({
-        ...password,
-        [e.target.name]: e.target.value,
-    });
-  };
+  const [values, setValues] = useState({
+    showOldPassword: false,
+    showNewPassword: false,
+    showConfirmPassword: false,
+  });
 
   const headers = {
     'x-access-token': sessionStorage.getItem("access-token"),
@@ -52,6 +54,38 @@ export default function PasswordForm(){
       setError("Passwords do not match");
     }
   }, [password]);
+
+  const handlePasswordChange = e => {
+    setPassword({
+        ...password,
+        [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleClickShowOldPassword = () => {
+    setValues({
+      ...values, 
+      showOldPassword: !values.showOldPassword,
+    });
+  };
+
+  const handleClickShowNewPassword = () => {
+    setValues({
+      ...values, 
+      showNewPassword: !values.showNewPassword,
+    });
+  };
+
+  const handleClickShowConfirmPassword = () => {
+    setValues({
+      ...values, 
+      showConfirmPassword: !values.showConfirmPassword,
+    });
+  };
+
+  const handleMouseDownPassword = event => {
+    event.preventDefault();
+  };
 
   const submitHandler = e => {
     e.preventDefault();
@@ -113,9 +147,23 @@ export default function PasswordForm(){
                   fullWidth
                   id="oldPassword"
                   label="Old Password"
-                  type="password"
+                  type={values.showOldPassword ? 'text' : 'password'}
                   name="oldPassword"
                   autoFocus
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          edge="end"
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowOldPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {values.showOldPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>    
             </Grid>  
@@ -127,10 +175,24 @@ export default function PasswordForm(){
                   fullWidth
                   id="password"
                   label="Password"
-                  type="password"
+                  type={values.showNewPassword ? 'text' : 'password'}
                   name="password"
                   autoComplete="new-password"
                   onChange={handlePasswordChange}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          edge="end"
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowNewPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {values.showNewPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -141,10 +203,24 @@ export default function PasswordForm(){
                   fullWidth
                   name="confirmPassword"
                   label="Confirm Password"
-                  type="password"
+                  type={values.showConfirmPassword ? 'text' : 'password'}
                   id="confirmPassword"
                   autoComplete="new-password"
                   onChange={handlePasswordChange}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          edge="end"
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowConfirmPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {values.showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
             <span id="error" style={{ display: error ? "inline" : "none" }}>
