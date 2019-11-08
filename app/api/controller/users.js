@@ -174,7 +174,8 @@ function forgetPassword(req, res, next) {
           res.json({
             status: "success",
             message: "Reset email sent.",
-            data: token,
+            id: userInfo._id,
+            token: token,
           });
         } catch (err) {
           next(err);
@@ -184,8 +185,58 @@ function forgetPassword(req, res, next) {
   )
 }
 
-function resetPassword(req, res, next) {
-
+async function resetPassword(req, res, next) {
+  let userId = req.query.id;
+  let resetToken = req.query.token;
+  if (userId !== null) {
+    const userInfo = await userModel.findById(userId);
+    try {
+      createdDate = new Date(userInfo.createdDate);
+      let secret = userInfo.password + createdDate.toISOString();
+      jwt.verify(resetToken, secret, async (err, decoded) => {
+        if (err){
+          res.json({
+            status: "error",
+            message: "Invalid reset token",
+            data: null
+          });
+        } else {
+          // check if reset token id is same as user id
+          if (userId !== decoded.id) {
+            res.json({
+              status: "error",
+              message: "Invalid reset token",
+              data: null
+            });
+          } else {
+            userInfo.password = req.body.password;
+            await userInfo.save();
+            try {
+              res.json({
+                status: "success",
+                message: "Successfully reset password",
+                data: null,
+              })
+            } catch (err) {
+              res.json({
+                status: "error",
+                message: "Invalid reset token",
+                data: null
+              });
+              next(err);
+            }
+          }
+        }
+      });
+    } catch (err) {
+      res.json({
+        status: "error",
+        message: "Invalid reset token",
+        data: null
+      });
+      next(err);
+    }
+  }
 }
 
 module.exports = { register, signin, signout, updatePassword, forgetPassword, resetPassword };

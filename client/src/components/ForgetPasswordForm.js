@@ -93,7 +93,8 @@ export default function ForgetPasswordForm() {
     })
     .then(res => {
       setStatus(res.data.message);
-      sessionStorage.setItem('reset-token', res.data.data);
+      sessionStorage.setItem('id', res.data.id)
+      sessionStorage.setItem('reset-token', res.data.token);
     })
     .catch(err => {
       setStatus(0);
