@@ -228,15 +228,15 @@ export default function Dashboard() {
           <Switch>
             <Route path='/user/dashboard' component={DashboardContent} />
             <Route path='/user/updatepersonalinfo'>
-            <Container maxWidth="lg" className={classes.container}>
-              <Grid container>
-                <Grid item xs={12} sm={8}>
-                  <PersonalInfoForm />
+              <Container maxWidth="lg" spacing={2} className={classes.container}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} sm={8}>
+                    <PersonalInfoForm />
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <PasswordForm />
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={4}>
-                  <PasswordForm />
-                </Grid>
-              </Grid>
               </Container>
             </Route>
           </Switch>

@@ -107,200 +107,198 @@ export default function PersonalInfoForm(){
     };
 
     return (
-        <Container maxWidth="md">
-            <Card className={classes.root}>
-                <form
-                    className={classes.form}
-                    onSubmit={submitHandler}
-                    action="updatepersonalinfo"
-                    method="post"
-                    noValidate>
-                    <CardHeader 
-                        title="Personal Information"
-                        subheader="Update personal information"
-                    />
-                    <Divider />
-                    <CardContent>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
-                                <TextField 
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    id="firstName"
-                                    label="First name"
-                                    type="text"
-                                    name="firstName"
-                                    autoComplete="given-name"
-                                    value={values.firstName}
-                                    onChange={handleChange}
-                                    autoFocus
-                                />
+        <Card className={classes.root}>
+            <form
+                className={classes.form}
+                onSubmit={submitHandler}
+                action="updatepersonalinfo"
+                method="post"
+                noValidate>
+                <CardHeader 
+                    title="Personal Information"
+                    subheader="Update personal information"
+                />
+                <Divider />
+                <CardContent>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                            <TextField 
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="firstName"
+                                label="First name"
+                                type="text"
+                                name="firstName"
+                                autoComplete="given-name"
+                                value={values.firstName}
+                                onChange={handleChange}
+                                autoFocus
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField 
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="lastName"
+                                label="Last name"
+                                type="text"
+                                id="lastName"
+                                autoComplete="family-name"
+                                value={values.lastName}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField 
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email"
+                                type="email"
+                                name="email"
+                                autoComplete="email"
+                                value={values.email}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField 
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="phoneNumber"
+                                label="Phone"
+                                type="tel"
+                                id="phoneNumber"
+                                autoComplete="tel"
+                                value={values.phoneNumber}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField 
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="street"
+                                label="Street"
+                                type="text"
+                                name="street"
+                                autoComplete="street-address"
+                                value={values.street}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField 
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="city"
+                                label="City"
+                                type="text"
+                                id="city"
+                                autoComplete="address-level2"
+                                value={values.city}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField 
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="state"
+                                id="state"
+                                label="State"
+                                type="text"
+                                autoComplete="address-level1"
+                                value={values.state}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField 
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="postal"
+                                label="Postal"
+                                type="text"
+                                id="postal"
+                                autoComplete="postal-code"
+                                value={values.postal}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField 
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="country"
+                                label="Country"
+                                type="text"
+                                id="country"
+                                autoComplete="country-name"
+                                value={values.country}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField 
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="additionalInfo"
+                                label="Additional Information"
+                                type="text"
+                                id="additionalInfo"
+                                autoComplete="new-password"
+                                multiline
+                                rows={3}
+                                value={values.additionalInfo}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                    </Grid>
+                    <span id="status" style={{display: status ? 'inline' : 'none' }}>
+                        <Grid container direction="row" alignItems="center">
+                            <Grid item>
+                                <CheckCircleIcon color="primary"/>
                             </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField 
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    name="lastName"
-                                    label="Last name"
-                                    type="text"
-                                    id="lastName"
-                                    autoComplete="family-name"
-                                    value={values.lastName}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField 
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    id="email"
-                                    label="Email"
-                                    type="email"
-                                    name="email"
-                                    autoComplete="email"
-                                    value={values.email}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField 
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    name="phoneNumber"
-                                    label="Phone"
-                                    type="tel"
-                                    id="phoneNumber"
-                                    autoComplete="tel"
-                                    value={values.phoneNumber}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField 
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    id="street"
-                                    label="Street"
-                                    type="text"
-                                    name="street"
-                                    autoComplete="street-address"
-                                    value={values.street}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField 
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    name="city"
-                                    label="City"
-                                    type="text"
-                                    id="city"
-                                    autoComplete="address-level2"
-                                    value={values.city}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField 
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    name="state"
-                                    id="state"
-                                    label="State"
-                                    type="text"
-                                    autoComplete="address-level1"
-                                    value={values.state}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField 
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    name="postal"
-                                    label="Postal"
-                                    type="text"
-                                    id="postal"
-                                    autoComplete="postal-code"
-                                    value={values.postal}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField 
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    name="country"
-                                    label="Country"
-                                    type="text"
-                                    id="country"
-                                    autoComplete="country-name"
-                                    value={values.country}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField 
-                                    variant="outlined"
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    name="additionalInfo"
-                                    label="Additional Information"
-                                    type="text"
-                                    id="additionalInfo"
-                                    autoComplete="new-password"
-                                    multiline
-                                    rows={3}
-                                    value={values.additionalInfo}
-                                    onChange={handleChange}
-                                />
+                            <Grid item>
+                                <Typography id="statusMessage" variant="subtitle1" display="inline">
+                                    {status}
+                                </Typography>
                             </Grid>
                         </Grid>
-                        <span id="status" style={{display: status ? 'inline' : 'none' }}>
-                            <Grid container direction="row" alignItems="center">
-                                <Grid item>
-                                    <CheckCircleIcon color="primary"/>
-                                </Grid>
-                                <Grid item>
-                                    <Typography id="statusMessage" variant="subtitle1" display="inline">
-                                        {status}
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                        </span>
-                    </CardContent>
-                    <Divider />
-                    <CardActions>
-                        <Button 
-                            type="submit"
-                            color="primary"
-                            variant="contained"
-                            className={classes.submit}>
-                            Update
-                        </Button>
-                    </CardActions>
-                </form>
-            </Card>
-        </Container>
+                    </span>
+                </CardContent>
+                <Divider />
+                <CardActions>
+                    <Button 
+                        type="submit"
+                        color="primary"
+                        variant="contained"
+                        className={classes.submit}>
+                        Update
+                    </Button>
+                </CardActions>
+            </form>
+        </Card>
     );
 }

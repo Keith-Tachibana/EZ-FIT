@@ -126,146 +126,144 @@ export default function PasswordForm(){
     };
 
   return (
-    <Container maxWidth="sm">
-      <Card className={classes.root}>
-        <form
-          className={classes.form}
-          onSubmit={submitHandler}
-          action="updatePassword"
-          method="post"
-          noValidate
-        >
-          <CardHeader title="Password" subheader="Update password" />
-          <Divider />
-          <CardContent>
-          <Grid container spacing = {2}>
-          <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="oldPassword"
-                  label="Old Password"
-                  type={values.showOldPassword ? 'text' : 'password'}
-                  name="oldPassword"
-                  autoFocus
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          edge="end"
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowOldPassword}
-                          onMouseDown={handleMouseDownPassword}
-                        >
-                          {values.showOldPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>    
-            </Grid>  
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="password"
-                  label="Password"
-                  type={values.showNewPassword ? 'text' : 'password'}
-                  name="password"
-                  autoComplete="new-password"
-                  onChange={handlePasswordChange}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          edge="end"
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowNewPassword}
-                          onMouseDown={handleMouseDownPassword}
-                        >
-                          {values.showNewPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
+    <Card className={classes.root}>
+      <form
+        className={classes.form}
+        onSubmit={submitHandler}
+        action="updatePassword"
+        method="post"
+        noValidate
+      >
+        <CardHeader title="Password" subheader="Update password" />
+        <Divider />
+        <CardContent>
+        <Grid container spacing={2}>
+        <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="oldPassword"
+                label="Old Password"
+                type={values.showOldPassword ? 'text' : 'password'}
+                name="oldPassword"
+                autoFocus
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        edge="end"
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowOldPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {values.showOldPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>    
+          </Grid>  
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="password"
+                label="Password"
+                type={values.showNewPassword ? 'text' : 'password'}
+                name="password"
+                autoComplete="new-password"
+                onChange={handlePasswordChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        edge="end"
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowNewPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {values.showNewPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="confirmPassword"
+                label="Confirm Password"
+                type={values.showConfirmPassword ? 'text' : 'password'}
+                id="confirmPassword"
+                autoComplete="new-password"
+                onChange={handlePasswordChange}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        edge="end"
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowConfirmPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {values.showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Grid>
+          <span id="error" style={{ display: error ? "inline" : "none" }}>
+            <Grid container direction="row" alignItems="center">
+              <Grid item>
+                <ErrorIcon color="error" />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="confirmPassword"
-                  label="Confirm Password"
-                  type={values.showConfirmPassword ? 'text' : 'password'}
-                  id="confirmPassword"
-                  autoComplete="new-password"
-                  onChange={handlePasswordChange}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          edge="end"
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowConfirmPassword}
-                          onMouseDown={handleMouseDownPassword}
-                        >
-                          {values.showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
+              <Grid item>
+                <Typography
+                  id="errorMessage"
+                  variant="subtitle1"
+                  color="error"
+                  display="inline"
+                >
+                  {error}
+                </Typography>
               </Grid>
-            <span id="error" style={{ display: error ? "inline" : "none" }}>
+            </Grid>
+          </span>
+          <span id="status" style={{display: status ? 'inline' : 'none' }}>
               <Grid container direction="row" alignItems="center">
-                <Grid item>
-                  <ErrorIcon color="error" />
-                </Grid>
-                <Grid item>
-                  <Typography
-                    id="errorMessage"
-                    variant="subtitle1"
-                    color="error"
-                    display="inline"
-                  >
-                    {error}
-                  </Typography>
-                </Grid>
+                  <Grid item>
+                      <CheckCircleIcon color="primary"/>
+                  </Grid>
+                  <Grid item>
+                      <Typography id="statusMessage" variant="subtitle1" display="inline">
+                          {status}
+                      </Typography>
+                  </Grid>
               </Grid>
-            </span>
-            <span id="status" style={{display: status ? 'inline' : 'none' }}>
-                <Grid container direction="row" alignItems="center">
-                    <Grid item>
-                        <CheckCircleIcon color="primary"/>
-                    </Grid>
-                    <Grid item>
-                        <Typography id="statusMessage" variant="subtitle1" display="inline">
-                            {status}
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </span>
-          </CardContent>
-          <Divider />
-          <CardActions>
-            <Button
-              type="submit"
-              color="primary"
-              variant="contained"
-              className={classes.submit}
-            >
-              Update
-            </Button>
-          </CardActions>
-        </form>
-      </Card>
-    </Container>
+          </span>
+        </CardContent>
+        <Divider />
+        <CardActions>
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            className={classes.submit}
+          >
+            Update
+          </Button>
+        </CardActions>
+      </form>
+    </Card>
   );
 }
