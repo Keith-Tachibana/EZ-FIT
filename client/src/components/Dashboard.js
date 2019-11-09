@@ -239,6 +239,14 @@ export default function Dashboard() {
                 </Grid>
               </Container>
             </Route>
+            <Route path='/user/connecttracker'>
+              <Container maxWidth="lg" className={classes.container}>
+                  <Grid container>
+                    <Grid item xs={12} sm={6}>
+                    </Grid>
+                  </Grid>
+              </Container>
+            </Route>
           </Switch>
         <Copyright />
       </main>

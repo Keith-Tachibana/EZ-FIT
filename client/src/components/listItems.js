@@ -5,8 +5,18 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import AssignmentIcon from '@material-ui/icons/Assignment';
+import LinkIcon from '@material-ui/icons/Link';
 import { Link } from "react-router-dom";
+import { Icon } from '@material-ui/core';
+
+
+const FitbitIcon = () => {
+  return (
+    <Icon>
+      <img src="/Fitbit_app_icon.png" height={24} width={24} alt="Fitbit icon"/>
+    </Icon>
+  );
+};
 
 export const mainListItems = (
   <div>
@@ -21,6 +31,12 @@ export const mainListItems = (
         <AccountBoxIcon />
       </ListItemIcon>
       <ListItemText primary="Personal Info" />
+    </ListItem>
+    <ListItem button component={Link} to="/user/connecttracker">
+      <ListItemIcon>
+          <LinkIcon />
+      </ListItemIcon>
+      <ListItemText primary="Connect Tracker" />
     </ListItem>
   </div>
 );
