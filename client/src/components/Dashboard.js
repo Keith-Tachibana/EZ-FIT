@@ -22,6 +22,7 @@ import axios from 'axios';
 import DashboardContent from './DashboardContent';
 import PasswordForm from './PasswordForm';
 import PersonalInfoForm from './PersonalInfoForm';
+import FitbitConnection from './FitbitConnection';
 
 const Link1 = React.forwardRef((props, ref) => (
   <RouterLink innerRef={ref} {...props} />
@@ -243,6 +244,7 @@ export default function Dashboard() {
               <Container maxWidth="lg" className={classes.container}>
                   <Grid container>
                     <Grid item xs={12} sm={6}>
+                      <FitbitConnection />
                     </Grid>
                   </Grid>
               </Container>

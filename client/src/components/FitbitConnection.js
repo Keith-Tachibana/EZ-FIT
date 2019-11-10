@@ -1,33 +1,66 @@
-import React from 'react';
-import clsx from 'clsx';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles(theme => ({
-    paper: {
-        padding: theme.spacing(2),
-        display: 'flex',
-        overflow: 'auto',
-        flexDirection: 'column',
-    },
-    fixedHeight: {
-        height: 240,
-    },
-}));
+const useStyles = makeStyles({
+  card: {
+    paddingTop: 10,
+  },
+  media: {
+    padding: 5,
+    width: 300,
+    margin: 'auto',
+  }
+});
 
+export default function MediaCard() {
+  const classes = useStyles();
+  const [connectionStatus, setConnectionStatus] = useState(false);
 
+  useEffect(() => {
+    // TODO: Get fitbit connection status
+  },[]);
 
-export default function DashboardContent() {
-    const classes = useStyles();
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  const handleConnection = () => {
+    // TODO: Add fitbit connection oauth flow
+    console.log("Connecting...");
+    setConnectionStatus(true);
+    console.log("Connected!")
+  };
 
-    return (
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <Paper className={fixedHeightPaper}>
-            </Paper>
-          </Grid>
-        </Grid>
-    );
+  const handleDisconnection = () => {
+    // TODO: Add fitbit disconnection flow
+    console.log("Disconnecting...");
+    setConnectionStatus(false);
+    console.log("Disconnected!")
+  };
+
+  return (
+    <Card className={classes.card}>
+      <CardMedia className={classes.media}>
+        <img src='/Fitbit_logo_RGB.png' alt='Fitbit logo' height='100%' width='100%'/>
+      </CardMedia>
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="h2" align='center'>
+          {connectionStatus ? "Connected" : "Not connected"}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p">
+          Connect your Fitbit account and your data will sync with the dashboard automatically
+          on login or you can start a sync manually using the sync button.
+        </Typography>
+      </CardContent>
+      <Button 
+        variant="contained" 
+        color={connectionStatus ? "secondary" : "primary"} 
+        fullWidth
+        onClick={connectionStatus ? handleDisconnection : handleConnection}
+        >
+        {connectionStatus ? "Disconnect" : "Connect"}
+      </Button>
+    </Card>
+  );
 }
