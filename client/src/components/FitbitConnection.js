@@ -17,7 +17,32 @@ const useStyles = makeStyles({
   }
 });
 
-export default function MediaCard() {
+function ConnectDescription() {
+  return(
+    <Typography variant="body2" color="textSecondary" component="p">
+      Connect your Fitbit account and your data will sync with the dashboard automatically
+      on login or you can start a sync manually using the sync button.
+    </Typography>
+  );
+}
+
+function DisconnectDescription() {
+  return(
+    <Typography variant="body2" color="textSecondary" component="p">
+      Disconnect your Fitbit account and your data will not sync with the Dashboard.
+    </Typography>
+  );
+}
+
+function Description(props) {
+  if (!props.connected) {
+    return <ConnectDescription />
+  } else {
+    return <DisconnectDescription />
+  }
+}
+
+export default function FitbitConnection() {
   const classes = useStyles();
   const [connectionStatus, setConnectionStatus] = useState(false);
 
@@ -48,10 +73,7 @@ export default function MediaCard() {
         <Typography gutterBottom variant="h5" component="h2" align='center'>
           {connectionStatus ? "Connected" : "Not connected"}
         </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          Connect your Fitbit account and your data will sync with the dashboard automatically
-          on login or you can start a sync manually using the sync button.
-        </Typography>
+        <Description connected={connectionStatus} />
       </CardContent>
       <Button 
         variant="contained" 
