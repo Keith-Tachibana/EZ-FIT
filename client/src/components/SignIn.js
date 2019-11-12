@@ -39,12 +39,6 @@ const useStyles = makeStyles(theme => ({
     root: {
       height: "100vh"
     },
-    image: {
-      backgroundImage: "url(https://source.unsplash.com/random)",
-      backgroundRepeat: "no-repeat",
-      backgroundSize: "cover",
-      backgroundPosition: "center"
-    },
     paper: {
       margin: theme.spacing(8, 4),
       display: "flex",
@@ -80,8 +74,9 @@ export default function SignIn() {
         message: null,
       },
     });
+
     const [status, setStatus] = useState(0);
-  
+ 
     const classes = useStyles();
   
     const handleChange = (e) => {
@@ -207,7 +202,7 @@ export default function SignIn() {
             fullWidth
           />
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" onChange={handleRememberChange} value={values.remember} />}
+            control={<Checkbox color="primary" onChange={handleRememberChange} value={values.remember} />}
             label="Remember me"
           />
           <span id="error" style={{display: status ? 'inline' : 'none' }}>

@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import ErrorIcon from '@material-ui/icons/Error';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import axios from 'axios';
@@ -59,7 +60,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function SignUp() {
-  const history = useHistory();
   const [values, setValues] = useState({
     firstName: '',
     lastName: '',
@@ -87,6 +87,7 @@ export default function SignUp() {
     },
   });
 
+  const [error, setError] = useState(0);
   const [status, setStatus] = useState(0);
   const classes = useStyles();
 
@@ -123,10 +124,9 @@ export default function SignUp() {
     .then(res => {
       console.log(res);
       if (res.data.status === "error"){
-        setStatus(res.data.message);
+        setError(res.data.message);
       } else if (res.data.status === "success") {
-        setStatus(null);
-        history.push('/signin');
+        setStatus(res.data.message);
       }
     })
     .catch(err => {
@@ -253,17 +253,34 @@ export default function SignUp() {
                 fullWidth
               />
             </Grid>
-            <span id="error" style={{display: status ? 'inline' : 'none' }}>
+            <span id="error" style={{ display: error ? "inline" : "none" }}>
               <Grid container direction="row" alignItems="center">
                 <Grid item>
                   <ErrorIcon color="error" />
                 </Grid>
                 <Grid item>
-                  <Typography id="errorMessage" variant="subtitle1" color="error" display="inline">
-                    {status}
+                  <Typography
+                    id="errorMessage"
+                    variant="subtitle1"
+                    color="error"
+                    display="inline"
+                  >
+                    {error}
                   </Typography>
                 </Grid>
               </Grid>
+            </span>
+            <span id="status" style={{display: status ? 'inline' : 'none' }}>
+                <Grid container direction="row" alignItems="center">
+                    <Grid item>
+                        <CheckCircleIcon color="primary"/>
+                    </Grid>
+                    <Grid item>
+                        <Typography id="statusMessage" variant="subtitle1" display="inline">
+                            {status}
+                        </Typography>
+                    </Grid>
+                </Grid>
             </span>
           </Grid>
           <Button

@@ -4,7 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { Button, CardHeader, Divider, TextField, Container, Grid } from '@material-ui/core';
+import { Button, CardHeader, Divider, TextField, Grid } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import axios from 'axios';
@@ -49,7 +49,6 @@ export default function PersonalInfoForm(){
     };
 
     useEffect(() => {
-        //TODO: Retrieve personal info from server with a GET to fill in default values
         async function fetchPersonalInfo(){
             const res = await axios.get('/user/getpersonalinfo', {headers});
             try{
@@ -77,17 +76,12 @@ export default function PersonalInfoForm(){
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // useEffect(() => {
-    //     //TODO: Validation
-    //     console.log(values);
-    // }, [values]);
-
     const submitHandler = (e) => {
         e.preventDefault();
         async function updatePersonalInfo(){
             const res = await axios.post('/user/updatepersonalinfo', values, {headers});
             try {
-                console.log(res.data);
+                // console.log(res.data);
                 if (res.data.status === "error"){
                     setStatus(0);
                     if (res.data.message === "jwt expired"){
