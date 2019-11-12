@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -13,8 +13,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import axios from 'axios';
-
-const Link1 = React.forwardRef((props, ref) => <RouterLink innerRef={ref} {...props} />);
 
 function Copyright() {
   return (
@@ -82,9 +80,9 @@ export default function ForgetPasswordForm() {
     history.push('/signin');
   };
 
-  React.useEffect(() => {
-    console.log(errors);
-  }, [errors])
+  // React.useEffect(() => {
+  //   console.log(errors);
+  // }, [errors])
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -92,9 +90,8 @@ export default function ForgetPasswordForm() {
       email: values.email,
     })
     .then(res => {
+      console.log(res);
       setStatus(res.data.message);
-      sessionStorage.setItem('id', res.data.id)
-      sessionStorage.setItem('reset-token', res.data.token);
     })
     .catch(err => {
       setStatus(0);

@@ -43,31 +43,6 @@ async function getPersonalInfo(req, res, next){
 };
 
 async function updatePersonalInfo(req, res, next){
-    // const doc = await userModel.findById(req.body.userId);
-    // try {
-    //     doc.contact.firstName = req.body.firstName;
-    //     doc.contact.lastName = req.body.lastName;
-    //     doc.email = req.body.email;
-    //     doc.contact.address.phone = req.body.phone;
-    //     doc.contact.address.street = req.body.street;
-    //     doc.contact.address.city = req.body.city;
-    //     doc.contact.address.state = req.body.state;
-    //     doc.contact.address.postal = req.body.postal;
-    //     doc.contact.address.country = req.body.country;
-    //     doc.contact.additionalInfo = req.body.additionalInfo;
-    //     await doc.save();
-    //     try {
-    //         res.json({
-    //             status: "success",
-    //             message: "Successfully updated personal information",
-    //             data: null,
-    //             });
-    //     } catch (err){
-    //         next(err);
-    //     }
-    // } catch (err) {
-    //     next(err);
-    // }   
     await userModel.updateOne({
         "_id": req.body.userId,
       } ,{$set: { 

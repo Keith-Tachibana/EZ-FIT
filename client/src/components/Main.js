@@ -12,6 +12,7 @@ const Main = () => (
       </Route>
       <Route path='/signin' component={SideImagePane}/>
       <Route path='/register' component={SideImagePane}/>
+      <Route path='/verify' component={SideImagePane}/>
       <Route path='/forgetpassword' component={SideImagePane}/>
       <Route path='/resetpassword' component={PasswordResetForm}/>
       <Route path='/user' component={User}/>

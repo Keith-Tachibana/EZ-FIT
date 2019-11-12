@@ -7,6 +7,7 @@ import { Switch, Route } from 'react-router-dom'
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import ForgetPasswordForm from "./ForgetPasswordForm";
+import Verify from "./Verify";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -48,6 +49,7 @@ export default function SideImagePane() {
         <Switch>
           <Route path='/signin' component={SignIn}/>
           <Route path='/register' component={SignUp}/>
+          <Route path='/verify' component={Verify}/>
           <Route path='/forgetpassword' component={ForgetPasswordForm}/>
         </Switch>
       </Grid>

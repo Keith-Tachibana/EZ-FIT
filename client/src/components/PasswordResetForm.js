@@ -18,7 +18,13 @@ import ErrorIcon from "@material-ui/icons/Error";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Link from "@material-ui/core/Link";
+import { Link as RouterLink } from "react-router-dom";
 import axios from "axios";
+
+const Link1 = React.forwardRef((props, ref) => (
+  <RouterLink innerRef={ref} {...props} />
+));
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -49,6 +55,7 @@ export default function PasswordResetForm(props){
     if (password.password === password.confirmPassword) {
       setError(null);
     } else {
+      setStatus(null);
       setError("Passwords do not match");
     }
   }, [password]);
@@ -101,8 +108,7 @@ export default function PasswordResetForm(props){
         setStatus(res.data.message);
       }
     }).catch(err =>{
-      setError(err.response.data.message);
-      console.log(err.response);
+      setError(err.response.data.errors[0].msg);
     })
     };
 
@@ -203,6 +209,11 @@ export default function PasswordResetForm(props){
                             {status}
                         </Typography>
                     </Grid>
+                </Grid>
+                <Grid container>
+                  <Link component={Link1} to="/signin" variant="subtitle1">
+                      Click here to return to sign in page.
+                  </Link>
                 </Grid>
             </span>
           </Grid>

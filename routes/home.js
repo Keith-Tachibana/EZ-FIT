@@ -7,6 +7,10 @@ router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
 });
 
+router.get('/verify', (req, res, next) => {
+    userController.verify(req, res, next);
+});
+
 router.post('/register', [
     // check if firstName exists
     check('firstName').isLength({ min: 1 }).withMessage('First name can\'t be blank.'),
@@ -46,7 +50,13 @@ router.post('/forgetpassword', [
     userController.forgetPassword(req, res, next);
 });
 
-router.post('/resetpassword', (req, res, next) => {
+router.post('/resetpassword', [
+    check('password').isLength({ min: 8 }).withMessage('Password must be 8 chars long.'),
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ status:"error", errors: errors.array() });
+    }
     userController.resetPassword(req, res, next);
 });
 
