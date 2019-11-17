@@ -35,6 +35,7 @@
     "mongoose": "^5.7.5",
     "morgan": "^1.9.1",
     "npm-check-updates": "^3.1.25",
+    "prettier": "^1.19.1",
     "querystring": "^0.2.0",
     "react": "^16.11.0",
     "react-oauth-popup": "^0.1.0",
