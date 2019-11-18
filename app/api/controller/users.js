@@ -6,13 +6,100 @@ const axios = require('axios');
 const qs = require('querystring');
 var ObjectID = require('mongodb').ObjectID;
 const appConfig = require('../../../config/appConfig');
+const mailgun = require("mailgun-js");
 
-function sendVerificationEmail(
-	email,
-	verificationLink
-) {}
+const DOMAIN = "sandboxd31d40913ae7494594ae79a6b92131df.mailgun.org";
+const mg = mailgun({apiKey: appConfig.mailgunApiKey, domain: DOMAIN});
 
-function sendResetEmail(email, resetLink) {}
+function sendVerificationEmail(email, verificationLink) {
+	const data = {
+		from: "Mailgun Sandbox <postmaster@sandboxd31d40913ae7494594ae79a6b92131df.mailgun.org>",
+		to: email,
+		subject: "[EZ-FIT] Activate your account",
+		template: "confirm_email",
+		'v:verification_link': verificationLink,
+	};
+	mg.messages().send(data, function (error, body) {
+		console.log(body);
+		if (error) {
+			console.log(error);
+		}
+	});
+}
+
+function sendResetEmail(email, resetLink) {
+	const data = {
+		from: "Mailgun Sandbox <postmaster@sandboxd31d40913ae7494594ae79a6b92131df.mailgun.org>",
+		to: email,
+		subject: "[EZ-FIT] Password reset",
+		template: "reset_email",
+		'v:reset_link': resetLink,
+	};
+	mg.messages().send(data, function (error, body) {
+		console.log(body);
+		if (error) {
+			console.log(error);
+		}
+	});
+}
+
+async function resendVerificationEmail(req, res, next) {
+	try {
+		const userInfo = await userModel.findById(req.body.userId);
+		if (!userInfo) {
+			return res.json({
+				status: 'success',
+				message: 'Verification email sent.',
+				data: null,
+			});
+		}
+		if (userInfo.isVerified){
+			return res.json({
+				status: 'success',
+				message: 'User already verificed.',
+				data: null,
+			});
+		}
+		const createdDate = new Date(
+			userInfo.createdDate
+		);
+		const secret =
+			userInfo.password +
+			createdDate.toISOString();
+		const token = jwt.sign(
+			{
+				id: userInfo._id,
+				email: userInfo.email
+			},
+			secret,
+			{ expiresIn: 86400 } // 24 hour expiration
+		);
+		const verificationLink =
+			req.protocol +
+			'://' +
+			req.hostname +
+			'/verify?id=' +
+			userInfo._id +
+			'&token=' +
+			token;
+		sendVerificationEmail(
+			userInfo.email,
+			verificationLink
+		);
+		res.json({
+			status: 'success',
+			message: 'Verification email sent.',
+			data: null,
+		});
+	} catch (err) {
+		console.log(err);
+		return res.json({
+			status: 'error',
+			message: 'Error sending verification email',
+			data: null,
+		});
+	}
+}
 
 async function register(req, res, next) {
 	try {
@@ -24,10 +111,12 @@ async function register(req, res, next) {
 			email: validator.normalizeEmail(
 				req.body.email
 			),
-			password: req.body.password
+			password: req.body.password,
+			fitbitToken: {
+			},
 		});
 		if (userInfo) {
-			createdDate = new Date(
+			const createdDate = new Date(
 				userInfo.createdDate
 			);
 			const secret =
@@ -56,7 +145,7 @@ async function register(req, res, next) {
 			res.json({
 				status: 'success',
 				message: 'User added successfully',
-				data: verificationLink
+				data: null,
 			});
 		} else {
 			res.json({
@@ -98,7 +187,7 @@ async function signin(req, res, next) {
 		} else {
 			const expireTime = req.body.remember
 				? 86400
-				: 300; // 24 hour if remember else 5 mins
+				: 3600; // 24 hour if remember else 1 hour
 			try {
 				const match = await bcrypt.compare(
 					req.body.password,
@@ -422,6 +511,21 @@ async function connectFitbit(req, res, next) {
 		);
 		if (resp.status === 200) {
 			console.log('Token', resp.data);
+			try {
+				await userModel.updateOne({
+					"_id": req.body.userId,
+				  } ,{$set: { 
+						"fitbitToken.accessToken": resp.data.access_token,
+						"fitbitToken.expiresIn": Date.now() + (resp.data.expires_in * 1000),
+						"fitbitToken.refreshToken": resp.data.refresh_token,
+						"fitbitToken.scope": resp.data.scope,
+						"fitbitToken.tokenType": resp.data.token_type,
+						"fitbitToken.userId": resp.data.user_id,
+					}
+				});
+			} catch (err){
+				console.log(err);
+			}
 		}
 	} catch (err) {
 		console.log(

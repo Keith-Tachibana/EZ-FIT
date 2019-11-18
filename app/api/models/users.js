@@ -53,7 +53,39 @@ var contactSchema = new Schema({
         default: '',
         maxlength: 500,
     }
-})
+});
+
+var fitBitTokenSchema = new Schema({
+    accessToken: {
+        type: String,
+        trim: true,
+        default: '',
+    },
+    expiresIn: {
+        type: Date,
+        default: Date.now,
+    },
+    refreshToken: {
+        type: String,
+        trim: true,
+        default: '',
+    },
+    scope: {
+        type: String,
+        trim: true,
+        default: '',
+    },
+    tokenType: {
+        type: String,
+        trim: true,
+        default: '',
+    },
+    userId: {
+        type: String,
+        trim: true,
+        default: '',
+    },
+});
 
 var userSchema = new Schema({
     email: {
@@ -82,24 +114,8 @@ var userSchema = new Schema({
     contact: {
         type: contactSchema,
     },
-    bloodType: {
-        type: String,
-        trim: true,
-    },
-    allergies: {
-        type: [String],
-    },
-    medications: {
-        type: [String],
-    },
-    illnesses: {
-        type: [String],
-    },
-    surgeries: {
-        type: [String],
-    },
-    organ_donor: {
-        type: Boolean,
+    fitbitToken: {
+        type: fitBitTokenSchema,
     },
     weight: {
         type: [Number],
