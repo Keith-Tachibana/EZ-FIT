@@ -23,6 +23,7 @@ import DashboardContent from './DashboardContent';
 import PasswordForm from './PasswordForm';
 import PersonalInfoForm from './PersonalInfoForm';
 import FitbitConnection from './FitbitConnection';
+import BodyStatusForm from './BodyStatusForm';
 
 function Copyright() {
   return (
@@ -121,7 +122,7 @@ const useStyles = makeStyles(theme => ({
 export default function Dashboard() {
   const history = useHistory();
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -224,6 +225,7 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
           <Switch>
             <Route path='/user/dashboard' component={DashboardContent} />
+            <Route path='/user/updatebodystatus' component={BodyStatusForm} />
             <Route path='/user/updatepersonalinfo'>
               <Container maxWidth="lg" spacing={2} className={classes.container}>
                 <Grid container spacing={3}>
