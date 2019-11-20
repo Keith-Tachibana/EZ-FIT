@@ -12,7 +12,7 @@ function CustomLabel({viewBox, value1, value2}){
     )
   }
 
-export default function Calories() {
+export default function StepsGoal() {
     const goal = 10000;
     const steps = 3783;
     const remainingSteps = (goal - steps) < 0 ? 0 : (goal - steps);
@@ -36,7 +36,7 @@ export default function Calories() {
                         {`${steps} steps`}
                     </Label>
                 </Pie>
-                <Tooltip />
+                <Tooltip position={{ x: 0, y: 0 }} />
 
             </PieChart>
         </ResponsiveContainer>
