@@ -1,18 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import Link from '@material-ui/core/Link';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import ErrorIcon from '@material-ui/icons/Error';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import axios from 'axios';
 
 const Link1 = React.forwardRef((props, ref) => <RouterLink innerRef={ref} {...props} />);
 
@@ -55,10 +60,111 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function SignUp() {
+  const [values, setValues] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    showPassword: false,
+  });
+
+  const [errors, setErrors] = useState({
+    firstName: {
+      status: false,
+      message: null,
+    },
+    lastName: {
+      status: false,
+      message: null,
+    },
+    email: {
+      status: false,
+      message: null,
+    },
+    password: {
+      status: false,
+      message: null,
+    },
+  });
+
+  const [error, setError] = useState(0);
+  const [status, setStatus] = useState(0);
   const classes = useStyles();
 
+  const handleChange = (e) => {
+    setValues({
+        ...values,
+        [e.target.name]: e.target.value,
+    });
+  };
+  
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values, 
+      showPassword: !values.showPassword 
+    });
+  };
+
+  const handleMouseDownPassword = event => {
+    event.preventDefault();
+  };
+
+  // React.useEffect(() => {
+  //   console.log(errors);
+  // }, [errors])
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    axios.post('/register', {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      password: values.password,
+    })
+    .then(res => {
+      console.log(res);
+      if (res.data.status === "error"){
+        setError(res.data.message);
+      } else if (res.data.status === "success") {
+        setStatus(res.data.message);
+      }
+    })
+    .catch(err => {
+      const errs = err.response.data.errors;
+      let currentErrors = {
+        firstName: {
+          status: false,
+          message: null,
+        },
+        lastName: {
+          status: false,
+          message: null,
+        },
+        email: {
+          status: false,
+          message: null,
+        },
+        password: {
+          status: false,
+          message: null,
+        },
+      };
+      let error;
+      for (error of errs){
+        Object.assign(currentErrors, {
+          [error.param]: {
+            status: true,
+            message: error.msg,
+          },
+        });
+      }
+      setErrors(currentErrors);
+      // console.log(err.response);
+    })
+  };
+
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -67,60 +173,115 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} action="register" method="post" noValidate>
+        <form 
+          className={classes.form}
+          onSubmit={submitHandler}
+          action="register" 
+          method="post" 
+          noValidate
+          >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="fname"
                 name="firstName"
                 variant="outlined"
-                required
-                fullWidth
                 id="firstName"
                 label="First Name"
+                autoComplete="fname"
+                onChange={handleChange}
+                error={errors.firstName.status}
+                helperText={errors.firstName.message}
+                required
+                fullWidth
                 autoFocus
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
-                required
-                fullWidth
                 id="lastName"
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
+                onChange={handleChange}
+                error={errors.lastName.status}
+                helperText={errors.lastName.message}
+                required
+                fullWidth
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-                required
-                fullWidth
                 id="email"
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={handleChange}
+                error={errors.email.status}
+                helperText={errors.email.message}
+                required
+                fullWidth
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
-                required
-                fullWidth
                 name="password"
                 label="Password"
-                type="password"
                 id="password"
-                autoComplete="current-password"
+                autoComplete="new-password"
+                type={values.showPassword ? 'text' : 'password'}
+                onChange={handleChange}
+                error={errors.password.status}
+                helperText={errors.password.message}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        edge="end"
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                required
+                fullWidth
               />
             </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid>
+            <span id="error" style={{ display: error ? "inline" : "none" }}>
+              <Grid container direction="row" alignItems="center">
+                <Grid item>
+                  <ErrorIcon color="error" />
+                </Grid>
+                <Grid item>
+                  <Typography
+                    id="errorMessage"
+                    variant="subtitle1"
+                    color="error"
+                    display="inline"
+                  >
+                    {error}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </span>
+            <span id="status" style={{display: status ? 'inline' : 'none' }}>
+                <Grid container direction="row" alignItems="center">
+                    <Grid item>
+                        <CheckCircleIcon color="primary"/>
+                    </Grid>
+                    <Grid item>
+                        <Typography id="statusMessage" variant="subtitle1" display="inline">
+                            {status}
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </span>
           </Grid>
           <Button
             type="submit"

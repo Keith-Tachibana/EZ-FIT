@@ -1,81 +1,59 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
-const saltRounds = 12;
-
+const appConfig = require('../../../config/appConfig');
+const saltRounds = appConfig.saltRounds;
 const Schema = mongoose.Schema;
-
-var addressSchema = new Schema({
-    street: {
-        type: String,
-        trim: true,
-    },
-    city: {
-        type: String,
-        trim: true,
-    },
-    state: {
-        type: String,
-        trim: true,
-    },
-    postalCode: {
-        type: String,
-        trim: true,
-    },
-    country: {
-        type: String,
-        trim: true,
-    },
-
-});
-
-var phoneSchema = new Schema({
-    home: {
-        type: String,
-        trim: true,
-    },
-    mobile: {
-        type: String,
-        trim: true,
-    },
-    business: {
-        type: String,
-        trim: true,
-    },
-})
 
 var contactSchema = new Schema({
     firstName: {
         type: String,
         trim: true,
+        required: true,
     },
     lastName: {
         type: String,
         trim: true,
+        required: true,
     },
     address: {
-        type: addressSchema,
+        street: {
+            type: String,
+            trim: true,
+            default: '',
+        },
+        city: {
+            type: String,
+            trim: true,
+            default: '',
+        },
+        state: {
+            type: String,
+            trim: true,
+            default: '',
+        },
+        postal: {
+            type: String,
+            trim: true,
+            default: '',
+        },
+        country: {
+            type: String,
+            trim: true,
+            default: '',
+        },
     },
-    phoneNumber: {
-        type: phoneSchema,
-    },
-    email: {
+    phone: {
         type: String,
         trim: true,
-        maxlength: 320,
-        unique: true,
-        validate: [(value) => {
-            return validator.isEmail(value);
-        }, "Invalid email."], 
     },
-})
-
-var doctorSchema = new Schema({
-    contact: contactSchema,
-    notes: {
+    additionalInfo: {
         type: String,
-    }
-})
+        trim: true,
+        default: '',
+        maxlength: 500,
+    },
+});
 
 var userSchema = new Schema({
     email: {
@@ -84,9 +62,12 @@ var userSchema = new Schema({
         maxlength: 320,
         required: true,
         unique: true,
-        validate: [(value) => {
-            return validator.isEmail(value);
-        }, "Invalid email."],
+        validate: [
+            value => {
+                return validator.isEmail(value);
+            },
+            'Invalid email.',
+        ],
     },
     password: {
         type: String,
@@ -104,34 +85,44 @@ var userSchema = new Schema({
     contact: {
         type: contactSchema,
     },
-    doctors: {
-        type: [doctorSchema],
-    },
-    bloodType: {
-        type: String,
-        trim: true,
-    },
-    allergies: {
-        type: [String],
-    },
-    medications: {
-        type: [String],
-    },
-    illnesses: {
-        type: [String],
-    },
-    surgeries: {
-        type: [String],
-    },
-    organ_donor: {
-        type: Boolean,
+    authToken: {
+        access_token: {
+            type: String,
+            trim: true,
+            default: '',
+        },
+        expires_in: {
+            type: Number,
+            trim: true,
+            default: 0,
+        },
+        refresh_token: {
+            type: String,
+            trim: true,
+            default: '',
+        },
+        scope: {
+            type: String,
+            trim: true,
+            default: '',
+        },
+        token_type: {
+            type: String,
+            trim: true,
+            default: '',
+        },
+        user_id: {
+            type: String,
+            trim: true,
+            default: '',
+        },
     },
     weight: {
         type: [Number],
     },
 });
 
-userSchema.pre('save', async function(next){
+userSchema.pre('save', async function(next) {
     this.password = await bcrypt.hash(this.password, saltRounds);
     next();
 });
