@@ -67,36 +67,55 @@ export default function FitbitConnection() {
                     headers,
                 }
             );
-            if (response.status === 'success') setConnectionStatus(true);
+            console.log('Whats the reponse', response);
+            console.log('Entering success');
+            if (response.data.status === 'success')
+                setConnectionStatus(true);
+            else {
+                setConnectionStatus(false);
+            }
         } catch (err) {
             console.log(err.response.data.errors);
-            setConnectionStatus(false);
         }
     };
     const syncConnection = async code => {
+        handleConnection(code);
         console.log(code);
     };
-    const handleConnection = async respUrl => {
+    const handleConnection = async code => {
         // TODO: Add fitbit connection oauth flow
         console.log('Connecting...');
-        const oauthCode = respUrl;
-        setConnectionStatus(true);
+        const oauthCode = code;
         try {
-            const res = await axios.post(
-                '/user/connectFitbit',
+            const resultToken = await axios.post(
+                '/user/obtainToken',
                 { code: oauthCode },
                 { headers }
             );
+            console.log('Resultstokens', resultToken);
+            if (resultToken.data.status === 'success')
+                setConnectionStatus(true);
+            else setConnectionStatus(false);
         } catch (err) {
             console.log(err.message);
         }
     };
 
-    const handleDisconnection = () => {
+    const handleDisconnection = async () => {
         // TODO: Add fitbit disconnection flow
-        console.log('Disconnecting...');
-        setConnectionStatus(false);
-        console.log('Disconnected!');
+        try {
+            console.log('Disconnecting...');
+            const res = await axios.post(
+                '/user/revokeToken',
+                {},
+                { headers }
+            );
+            console.log(res, 'Before response');
+            if (res.data.status === 'success') setConnectionStatus(false);
+            console.log('Disconnected!');
+        } catch (err) {
+            console.log(err.message);
+        }
     };
 
     return (
@@ -120,18 +139,26 @@ export default function FitbitConnection() {
                 </Typography>
                 <Description connected={connectionStatus} />
             </CardContent>
-            <OauthPopup
-                url="https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22BC4H&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fuser%2Fconnecttracker&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800"
-                onCode={syncConnection}
-            >
+            <span style={{ display: connectionStatus ? 'none' : '' }}>
+                <OauthPopup
+                    url="https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22BC4H&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fuser%2FcheckOAuthTokenStatus&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800"
+                    onCode={syncConnection}
+                >
+                    <Button variant="contained" color="primary" fullWidth>
+                        {connectionStatus ? 'Disconnect' : 'Connect'}
+                    </Button>
+                </OauthPopup>
+            </span>
+            <span style={{ display: connectionStatus ? '' : 'none' }}>
                 <Button
+                    onClick={handleDisconnection}
                     variant="contained"
-                    color={connectionStatus ? 'secondary' : 'primary'}
+                    color="secondary"
                     fullWidth
                 >
                     {connectionStatus ? 'Disconnect' : 'Connect'}
                 </Button>
-            </OauthPopup>
+            </span>
         </Card>
     );
 }
