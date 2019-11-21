@@ -8,13 +8,13 @@ var ObjectID = require('mongodb').ObjectID;
 const appConfig = require('../../../config/appConfig');
 const mailgun = require('mailgun-js');
 
-const DOMAIN = 'sandboxd31d40913ae7494594ae79a6b92131df.mailgun.org';
+const DOMAIN = appConfig.mailDomain;
 const mg = mailgun({ apiKey: appConfig.mailgunApiKey, domain: DOMAIN });
 
 function sendVerificationEmail(email, verificationLink) {
     const data = {
         from:
-            'Mailgun Sandbox <postmaster@sandboxd31d40913ae7494594ae79a6b92131df.mailgun.org>',
+            'EZ-FIT <no-reply@mail.ezfit.rocks>',
         to: email,
         subject: '[EZ-FIT] Activate your account',
         template: 'confirm_email',
@@ -31,7 +31,7 @@ function sendVerificationEmail(email, verificationLink) {
 function sendResetEmail(email, resetLink) {
     const data = {
         from:
-            'Mailgun Sandbox <postmaster@sandboxd31d40913ae7494594ae79a6b92131df.mailgun.org>',
+            'EZ-FIT <no-reply@mail.ezfit.rocks>',
         to: email,
         subject: '[EZ-FIT] Password reset',
         template: 'reset_email',
