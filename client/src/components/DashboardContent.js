@@ -4,6 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import StepsGoal from './StepsGoal';
+import Calories from './Calories';
+
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -27,23 +30,62 @@ export default function DashboardContent() {
 
     return (
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            {/* Chart */}
+          <Grid container spacing={2}>
+            {/* Calories */}
             <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
-                {/* <Chart /> */}
+                <Calories />
               </Paper>
             </Grid>
-            {/* Recent Deposits */}
+            {/* Calories Goal */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
-                {/* <Deposits /> */}
+                <p>Calorie Goals</p>
+                {/* <CaloriesGoal /> */}
               </Paper>
             </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                {/* <Orders /> */}
+            {/* Exercise */}
+            <Grid item xs={12} md={8} lg={9}>
+              <Paper className={fixedHeightPaper}>
+                <p>Exercise</p>
+              </Paper>
+            </Grid>
+            {/* Steps */}
+            <Grid item xs={12} md={3} lg={3}>
+              <Paper className={fixedHeightPaper}>
+                  <StepsGoal />
+              </Paper>
+            </Grid>
+            {/* Heart Rate */}
+            <Grid item xs={12} md={6} lg={6}>
+              <Paper className={fixedHeightPaper}>
+                <p>Heart Rate</p>
+                {/* <HeartRateZones /> */}
+              </Paper>
+            </Grid>
+            {/* Resting Heart Rate */}
+            <Grid item xs={12} md={6} lg={6}>
+              <Paper className={fixedHeightPaper}>
+                <p>Resting Heart Rate</p>
+                {/* <RestingHeartRate /> */}
+              </Paper>
+            </Grid>
+            {/* Weight */}
+            <Grid item xs={12} md={6} lg={6}>
+              <Paper className={fixedHeightPaper}>
+                <p>Weight</p>
+              </Paper>
+            </Grid>
+            {/* Weight goal */}
+            <Grid item xs={12} md={3} lg={3}>
+              <Paper className={fixedHeightPaper}>
+                <p>Weight goal</p>
+              </Paper>
+            </Grid>
+            {/* BMI */}
+            <Grid item xs={12} md={3} lg={3}>
+              <Paper className={fixedHeightPaper}>
+                <p>BMI</p>
               </Paper>
             </Grid>
           </Grid>

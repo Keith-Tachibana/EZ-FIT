@@ -5,6 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import AccessibilityNewIcon from '@material-ui/icons/AccessibilityNew';
 import LinkIcon from '@material-ui/icons/Link';
 import { Link } from "react-router-dom";
 import { Icon } from '@material-ui/core';
@@ -25,6 +26,12 @@ export const mainListItems = (
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
+    </ListItem>
+    <ListItem button component={Link} to="/user/updatebodystatus">
+      <ListItemIcon>
+          <AccessibilityNewIcon />
+      </ListItemIcon>
+      <ListItemText primary="Body Status" />
     </ListItem>
     <ListItem button component={Link} to="/user/updatepersonalinfo">
       <ListItemIcon>
