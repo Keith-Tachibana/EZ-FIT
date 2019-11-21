@@ -85,41 +85,6 @@ async function updatePersonalInfo(req, res, next){
     });
 };
 
-async function getCalories(req, res, next) {
-    try {
-        const userInfo = await userModel.findById(req.body.userId);
-        const accessToken = userInfo.authToken.access_token;
-        const userId = userInfo.authToken.user_id;
-        try {
-            const resp = await axios.get(
-                `https://api.fitbit.com/1/user/${userId}/activities/calories/date/today/30d.json`,
-                {
-                    headers: {
-                        'content-type': 'application/x-www-form-urlencoded',
-                        Authorization: 'Bearer ' + accessToken,
-                    },
-                }
-            );
-            // console.log(resp.data);
-            const caloriesBurnedData = resp.data;
-            res.json({
-                status: "success",
-                message: "Successfully retrieved calories",
-                data: caloriesBurnedData,
-            });
-        } catch (err) {
-            console.log(err.response.data.errors);
-            res.json({
-                status: "error",
-                message: "Error getting calories data",
-                data: null,
-              });
-        }
-    } catch (err) {
-        next(err);
-    }
-}
-
 async function getActivitySummary(req, res, next) {
     try {
         const userInfo = await userModel.findById(req.body.userId);
@@ -149,6 +114,46 @@ async function getActivitySummary(req, res, next) {
                 message: "Error retrieving activity summary",
                 data: null,
             })
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+async function getCalories(req, res, next) {
+    try {
+        const userInfo = await userModel.findById(req.body.userId);
+        const accessToken = userInfo.authToken.access_token;
+        const userId = userInfo.authToken.user_id;
+        try {
+            const resp = await axios.get(
+                `https://api.fitbit.com/1/user/${userId}/activities/calories/date/today/30d.json`,
+                {
+                    headers: {
+                        'content-type': 'application/x-www-form-urlencoded',
+                        Authorization: 'Bearer ' + accessToken,
+                    },
+                }
+            );
+            console.log(resp.data);
+            const caloriesBurnedData = resp.data['activities-calories'].map(obj => {
+                let rObj = {};
+                rObj.dateTime = obj.dateTime;
+                rObj.value = parseInt(obj.value);
+                return rObj;
+            });
+            res.json({
+                status: "success",
+                message: "Successfully retrieved calories",
+                data: {"activities-calories": caloriesBurnedData},
+            });
+        } catch (err) {
+            console.log(err.response.data.errors);
+            res.json({
+                status: "error",
+                message: "Error getting calories data",
+                data: null,
+              });
         }
     } catch (err) {
         next(err);

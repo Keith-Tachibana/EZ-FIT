@@ -155,7 +155,7 @@ export default function Dashboard() {
     async function fetchName(){
       try {
         const res = await axios.get('/user/getname', {headers});
-        console.log(res);
+        // console.log(res);
         if (res.data.status === "error"){
           if (res.data.message === "jwt expired"){
             //pass

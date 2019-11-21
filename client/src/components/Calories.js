@@ -23,7 +23,7 @@ export default function Calories(props) {
                     left: 24,
                 }}
             >
-                <XAxis dataKey='dateTime' />
+                <XAxis dataKey='dateTime' padding={{ left: 5, right: 5 }}/>
                 <YAxis dataKey='value' />
                 <Tooltip formatter={(value, name, props) => ( [`${value} calories`] )} />
                 <Bar dataKey='value' fill='#8884d8' />
