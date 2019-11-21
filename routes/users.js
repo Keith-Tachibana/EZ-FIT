@@ -12,5 +12,7 @@ router.post('/updatepassword', userController.updatePassword);
 router.get('/checkOAuthTokenStatus', authController.checkOAuthTokenStatus);
 router.post('/obtainToken', authController.obtainToken);
 router.post('/revokeToken', authController.revokeToken);
+router.get('/getcalories', dashboardController.getCalories);
+router.get('/getactivitysummary', dashboardController.getActivitySummary);
 
 module.exports = router;

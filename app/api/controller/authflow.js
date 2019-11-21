@@ -7,6 +7,7 @@ const clientSecret = appConfig.clientSecret;
 const encString = Buffer.from(`${clientId}:${clientSecret}`).toString(
     'base64'
 );
+
 async function revokeToken(req, res, next) {
     console.log('Did i revoke?');
     try {

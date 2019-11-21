@@ -11,21 +11,20 @@ function CustomLabel({viewBox, value1, value2}){
     )
   }
 
-export default function StepsGoal(props) {
-    const remainingSteps = (props.goal - props.current) < 0 ? 0 : (props.goal - props.current);
+export default function CaloriesGoal(props) {
+    const remainingCalories = (props.goal - props.current) < 0 ? 0 : (props.goal - props.current);
 
     const [data, setData] = useState([
-        {name: "Steps", value: props.current, fill: '#8884d8'},
-        {name: "Remaining Steps", value: remainingSteps, fill: '#eee'},
+        {name: "Calories", value: props.current, fill: '#8884d8'},
+        {name: "Remaining Calories", value: remainingCalories, fill: '#eee'},
     ]);
 
     useEffect(() => {
         setData([
-            {name: "Steps", value: props.current, fill: '#8884d8'},
-            {name: "Remaining Steps", value: remainingSteps, fill: '#eee'},
-        ]);
+            {name: "Calories", value: props.current, fill: '#8884d8'},
+            {name: "Remaining Calories", value: remainingCalories, fill: '#eee'},  
+        ])
     }, [props.current, props.goal]);
-
 
     return (
     <React.Fragment>
@@ -35,8 +34,8 @@ export default function StepsGoal(props) {
                     innerRadius='60%' outerRadius='90%'
                     startAngle={90} endAngle={-270}>
                     <Label width={30} position="center"
-                    content={<CustomLabel value1={props.current} value2='steps'/>}>
-                        {`${props.current} steps`}
+                    content={<CustomLabel value1={props.current} value2='calories'/>}>
+                        {`${props.current} Calories`}
                     </Label>
                 </Pie>
                 <Tooltip position={{ x: 0, y: 0 }} />

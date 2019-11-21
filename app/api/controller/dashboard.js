@@ -1,4 +1,5 @@
 const userModel = require('../models/users');
+const axios = require('axios');
 
 async function getNameById(req, res, next){
     await userModel.findById(req.body.userId, (err, userInfo) => {
@@ -76,13 +77,82 @@ async function updatePersonalInfo(req, res, next){
               next(err);
           } else {
             res.json({
-                status:"success",
-                message:"Successfully updated personal information",
-                data:null
+                status: "success",
+                message: "Successfully updated personal information",
+                data: null
               });
           }
     });
 };
 
+async function getCalories(req, res, next) {
+    try {
+        const userInfo = await userModel.findById(req.body.userId);
+        const accessToken = userInfo.authToken.access_token;
+        const userId = userInfo.authToken.user_id;
+        try {
+            const resp = await axios.get(
+                `https://api.fitbit.com/1/user/${userId}/activities/calories/date/today/30d.json`,
+                {
+                    headers: {
+                        'content-type': 'application/x-www-form-urlencoded',
+                        Authorization: 'Bearer ' + accessToken,
+                    },
+                }
+            );
+            // console.log(resp.data);
+            const caloriesBurnedData = resp.data;
+            res.json({
+                status: "success",
+                message: "Successfully retrieved calories",
+                data: caloriesBurnedData,
+            });
+        } catch (err) {
+            console.log(err.response.data.errors);
+            res.json({
+                status: "error",
+                message: "Error getting calories data",
+                data: null,
+              });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
 
-module.exports = {getNameById, getPersonalInfo, updatePersonalInfo};
+async function getActivitySummary(req, res, next) {
+    try {
+        const userInfo = await userModel.findById(req.body.userId);
+        const accessToken = userInfo.authToken.access_token;
+        const userId = userInfo.authToken.user_id;
+        try {
+            const resp = await axios.get(
+                `https://api.fitbit.com/1/user/${userId}/activities/date/today.json`,
+                {
+                    headers: {
+                        'content-type': 'application/x-www-form-urlencoded',
+                        'Accept-Language': 'en_US',
+                        Authorization: 'Bearer ' + accessToken,
+                    },
+                }
+            );
+            // console.log(resp.data);
+            res.json({
+                status: "success",
+                message: "Successfully retrieved activity summary",
+                data: resp.data,
+            });
+        } catch (err) {
+            console.log(err.response.data.errors);
+            res.json({
+                status: "error",
+                message: "Error retrieving activity summary",
+                data: null,
+            })
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+module.exports = {getNameById, getPersonalInfo, updatePersonalInfo, getActivitySummary, getCalories};

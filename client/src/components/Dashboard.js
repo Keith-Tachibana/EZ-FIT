@@ -133,8 +133,8 @@ export default function Dashboard() {
 
   const signout = () => {
     async function getSignout() {
-      const res = await axios.get('/user/signout', {headers});
       try {
+        const res = await axios.get('/user/signout', {headers});
         if (res.data.status === "success") {
           sessionStorage.removeItem("access-token");
           history.push("/");
@@ -153,8 +153,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function fetchName(){
-      const res = await axios.get('/user/getname', {headers});
       try {
+        const res = await axios.get('/user/getname', {headers});
         console.log(res);
         if (res.data.status === "error"){
           if (res.data.message === "jwt expired"){
