@@ -6,11 +6,12 @@
         "@material-ui/core": "^4.5.0",
         "@material-ui/icons": "^4.4.3",
         "axios": "^0.19.0",
-        "prettier": "^1.19.1",
         "chart.js": "^2.9.3",
+        "prettier": "^1.19.1",
         "react": "^16.10.2",
         "react-chartjs-2": "^2.8.0",
         "react-dom": "^16.10.2",
+        "react-oauth-popup": "^0.1.0",
         "react-router-dom": "^5.1.2",
         "react-scripts": "3.2.0",
         "recharts": "^1.8.5"
