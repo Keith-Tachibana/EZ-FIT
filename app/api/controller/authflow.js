@@ -169,7 +169,7 @@ async function obtainToken(req, res, next) {
         if (resp.statusText === 'OK') {
             try {
                 const respJson = await storeToken(req.body.userId, resp);
-                console.log(respJson, 'Is what we are looking for');
+                // console.log(respJson, 'Is what we are looking for');
                 res.json(respJson);
             } catch (err) {
                 next(err);
@@ -188,7 +188,10 @@ function checkTokenValidity(userToken) {
         userToken.access_token === null ||
         userToken.authToken === null ||
         userToken.refresh_token === null ||
-        userToken.user_id === null
+        userToken.user_id === null ||
+        userToken.access_token === '' ||
+        userToken.authToken === '' ||
+        userToken.refreshToken === ''
     )
         return false;
     return true;
@@ -207,7 +210,7 @@ async function checkOAuthTokenStatus(req, res, next) {
                     });
                 }
                 const tokenExpiry = userInfo.authToken.expires_in;
-                if (tokenExpiry !== '') {
+                if (tokenExpiry !== 0) {
                     console.log('Entering expiry', tokenExpiry);
                     const refreshRequired =
                         Date.now() > tokenExpiry ? true : false;
