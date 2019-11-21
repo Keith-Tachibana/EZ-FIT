@@ -5,13 +5,16 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
+import Title from './Title';
 import StepsGoal from './StepsGoal';
 import Calories from './Calories';
 import CaloriesGoal from './CaloriesGoal';
+import RestingHeartRate from './RestingHeartRate';
 import FloorsGoal from './FloorsGoal';
 import ActiveMinutesGoal from './ActiveMinutesGoal';
 import DistanceGoal from './DistanceGoal';
-import Title from './Title';
+import WeightGoal from './WeightGoal';
+import ConnectDialog from './ConnectDialog';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -447,8 +450,10 @@ export default function DashboardContent() {
         })
       }, 2000);
     }, []);
+
     return (
         <Container maxWidth="lg" className={classes.container}>
+          <ConnectDialog connection={connectionStatus} />
           <Grid container spacing={2}>
             {/* Steps Goal */}
             <Grid item xs={12} md={3} lg={3}>
@@ -502,8 +507,8 @@ export default function DashboardContent() {
             {/* Resting Heart Rate */}
             <Grid item xs={12} md={6} lg={6}>
               <Paper className={fixedHeightPaper}>
-                <Title>Resting Heart Rate</Title>
-                {/* <RestingHeartRate heartRateData={heartRateData} /> */}
+                {/* <Title>Resting Heart Rate</Title> */}
+                <RestingHeartRate heartRateData={heartRateData} />
               </Paper>
             </Grid>
             {/* Weight */}
