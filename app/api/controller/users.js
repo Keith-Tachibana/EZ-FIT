@@ -129,7 +129,7 @@ async function register(req, res, next) {
             sendVerificationEmail(userInfo.email, verificationLink);
             res.json({
                 status: 'success',
-                message: 'User added successfully',
+                message: 'Your account has been created.  Please check your email for verification.',
                 data: null,
             });
         } else {
