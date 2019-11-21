@@ -13,7 +13,6 @@ import RestingHeartRate from './RestingHeartRate';
 import FloorsGoal from './FloorsGoal';
 import ActiveMinutesGoal from './ActiveMinutesGoal';
 import DistanceGoal from './DistanceGoal';
-import WeightGoal from './WeightGoal';
 import ConnectDialog from './ConnectDialog';
 
 const useStyles = makeStyles(theme => ({
