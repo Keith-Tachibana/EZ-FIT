@@ -8,7 +8,6 @@ const encString = Buffer.from(`${clientId}:${clientSecret}`).toString(
     'base64'
 );
 async function revokeToken(req, res, next) {
-    console.log('Did i revoke?');
     try {
         const userId = req.body.userId;
         if (userId) {
@@ -49,9 +48,7 @@ async function revokeToken(req, res, next) {
                             message: 'Revoked token successfully',
                         });
                     }
-                    console.log('Revoking token', revokeResult);
                 } catch (err) {
-                    console.log(err.response.data.errors, 'checkhere');
                     if (err.response.status === 401) {
                         await userModel.updateOne(
                             { _id: req.body.userId },
@@ -72,7 +69,13 @@ async function revokeToken(req, res, next) {
                             status: 'success',
                             message: 'Revoked token successfully',
                         });
-                    } else next(err);
+                    } else {
+                        next(err);
+                        console.log(
+                            err.response.data.errors,
+                            'Logging error message'
+                        );
+                    }
                 }
             }
         }
@@ -95,7 +98,6 @@ async function refreshToken(req, userInfo) {
                 },
             }
         );
-        console.log('Checking refresh result =', refreshResult.status);
         if (refreshResult.status === 200) {
             await storeToken(req.body.userId, refreshResult);
             return {
@@ -120,7 +122,6 @@ async function refreshToken(req, userInfo) {
 
 async function storeToken(userId, resp) {
     try {
-        console.log('Expiration date is:', resp.data.expires_in);
         await userModel.updateOne(
             {
                 _id: userId,
@@ -165,11 +166,9 @@ async function obtainToken(req, res, next) {
                 },
             }
         );
-        console.log('Whatsup token', resp.statusText);
         if (resp.statusText === 'OK') {
             try {
                 const respJson = await storeToken(req.body.userId, resp);
-                console.log(respJson, 'Is what we are looking for');
                 res.json(respJson);
             } catch (err) {
                 next(err);
@@ -199,7 +198,6 @@ async function checkOAuthTokenStatus(req, res, next) {
         try {
             const userInfo = await userModel.findById(userId);
             if (userInfo) {
-                console.log('Hey token', userInfo.authToken);
                 if (checkTokenValidity(userInfo.authToken) === false) {
                     return res.json({
                         status: 'fail',
@@ -208,17 +206,9 @@ async function checkOAuthTokenStatus(req, res, next) {
                 }
                 const tokenExpiry = userInfo.authToken.expires_in;
                 if (tokenExpiry !== '') {
-                    console.log('Entering expiry', tokenExpiry);
                     const refreshRequired =
                         Date.now() > tokenExpiry ? true : false;
-                    console.log(
-                        'Refresh req=',
-                        Date.now(),
-                        'versus',
-                        tokenExpiry
-                    );
                     if (refreshRequired) {
-                        console.log('Entering refresh');
                         refreshResult = await refreshToken(req, userInfo);
                         if (refreshResult.status === 200) {
                             res.json({
@@ -233,14 +223,12 @@ async function checkOAuthTokenStatus(req, res, next) {
                             });
                         }
                     } else {
-                        console.log('Entering non-refresh');
                         res.json({
                             status: 'success',
                             message: 'Valid token present',
                         });
                     }
                 } else {
-                    console.log('Stage two');
                     res.json({
                         status: 'fail',
                         message: 'No token found',
