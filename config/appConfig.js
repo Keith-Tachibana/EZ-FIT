@@ -1,3 +1,5 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const port = process.env.PORT || 8080;
 const mongodbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/ezfit';
 const saltRounds = process.env.SALT_ROUNDS || 12;
