@@ -82,7 +82,7 @@ async function revokeToken(req, res, next) {
         next(err);
     }
 }
-async function refreshToken(req, userInfo) {
+async function refreshToken(userInfo) {
     try {
         console.log(userInfo.authToken);
         const refreshResult = await axios.post(
@@ -99,7 +99,7 @@ async function refreshToken(req, userInfo) {
             }
         );
         if (refreshResult.status === 200) {
-            await storeToken(req.body.userId, refreshResult);
+            await storeToken(userInfo._id, refreshResult);
             return {
                 status: 200,
             };
@@ -110,7 +110,7 @@ async function refreshToken(req, userInfo) {
             refreshResult.data.scope = '';
             refreshResult.data.token_type = '';
             refreshResult.data.userId = '';
-            await storeToken(req.body.userId, refreshResult);
+            await storeToken(userInfo._id, refreshResult);
             return {
                 status: refreshResult.status,
             };
@@ -204,10 +204,10 @@ function checkTokenValidity(userToken) {
         return false;
     return true;
 }
-async function checkTokenExpiry(tokenExpiry, req, userInfo, res) {
+async function checkTokenExpiry(tokenExpiry, userInfo, res) {
     const refreshRequired = Date.now() > tokenExpiry ? true : false;
     if (refreshRequired) {
-        refreshResult = await refreshToken(req, userInfo);
+        refreshResult = await refreshToken(userInfo);
         if (refreshResult.status === 200) {
             res.json({
                 status: 'success',
@@ -241,7 +241,7 @@ async function checkOAuthTokenStatus(req, res, next) {
                 }
                 const tokenExpiry = userInfo.authToken.expires_in;
                 if (tokenExpiry !== 0) {
-                    await checkTokenExpiry(tokenExpiry, req, userInfo, res);
+                    await checkTokenExpiry(tokenExpiry, userInfo, res);
                     return res;
                 } else {
                     res.json({
