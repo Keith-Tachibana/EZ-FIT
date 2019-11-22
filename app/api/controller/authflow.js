@@ -4,9 +4,7 @@ const qs = require('querystring');
 const appConfig = require('../../../config/appConfig');
 const clientId = appConfig.clientID;
 const clientSecret = appConfig.clientSecret;
-const encString = Buffer.from(`${clientId}:${clientSecret}`).toString(
-    'base64'
-);
+const encString = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
 async function revokeToken(req, res, next) {
     try {
@@ -118,6 +116,9 @@ async function refreshToken(req, userInfo) {
             };
         }
     } catch (err) {
+        if (err.response.status === 400 || err.respponse.status === 401) {
+            return err.response.status;
+        }
         throw err;
     }
 }
@@ -132,8 +133,7 @@ async function storeToken(userId, resp) {
                 $set: {
                     authToken: {
                         access_token: resp.data.access_token,
-                        expires_in:
-                            Date.now() + resp.data.expires_in * 1000,
+                        expires_in: Date.now() + resp.data.expires_in * 1000,
                         refresh_token: resp.data.refresh_token,
                         scope: resp.data.scope,
                         token_type: resp.data.token_type,
@@ -175,6 +175,12 @@ async function obtainToken(req, res, next) {
             } catch (err) {
                 next(err);
             }
+        } else {
+            res.json({
+                status: 'fail',
+                message: resp.statusText,
+                data: resp,
+            });
         }
     } catch (err) {
         console.log(
@@ -211,6 +217,7 @@ async function checkTokenExpiry(tokenExpiry, req, userInfo, res) {
             res.json({
                 status: 'fail',
                 message: "Token couldn't be refreshed",
+                data: refreshResult,
             });
         }
     } else {
@@ -234,12 +241,7 @@ async function checkOAuthTokenStatus(req, res, next) {
                 }
                 const tokenExpiry = userInfo.authToken.expires_in;
                 if (tokenExpiry !== 0) {
-                    await checkTokenExpiry(
-                        tokenExpiry,
-                        req,
-                        userInfo,
-                        res
-                    );
+                    await checkTokenExpiry(tokenExpiry, req, userInfo, res);
                     return res;
                 } else {
                     res.json({
