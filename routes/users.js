@@ -18,7 +18,8 @@ router.post('/obtainToken', authController.obtainToken);
 router.post('/revokeToken', authController.revokeToken);
 
 /* Fitbit API integration routes */
-router.get('/getcalories', fitbitApiController.getCalories);
-router.get('/getActivitySummary', fitbitApiController.getActivitySummary);
+router.get('/getcaloriesburned', fitbitApiController.getCaloriesBurned);
+router.get('/getactivitysummary', fitbitApiController.getActivitySummary);
+router.get('/getheartrate', fitbitApiController.getHeartRate);
 
 module.exports = router;

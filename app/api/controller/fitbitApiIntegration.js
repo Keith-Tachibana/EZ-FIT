@@ -8,7 +8,7 @@ async function checkTokenExpiry(tokenExpiry, userInfo) {
     try {
         const refreshRequired = Date.now() > tokenExpiry ? true : false;
         if (refreshRequired) {
-            refreshResult = await authFlow.refreshToken(req, userInfo);
+            refreshResult = await authFlow.refreshToken(userInfo);
             if (refreshResult.status === 200) {
                 return true;
             } else {
@@ -53,7 +53,7 @@ async function getActivitySummary(req, res, next) {
         const tokenStatus = await checkTokenStatus(userInfo);
         if (tokenStatus === false) {
             return res.json({
-                status: 'fail',
+                status: 'error',
                 message: "Couldn't refresh token",
             });
         }
@@ -62,8 +62,6 @@ async function getActivitySummary(req, res, next) {
                 `https://api.fitbit.com/1/user/${userId}/activities/date/today.json`,
                 {
                     headers: {
-                        'content-type':
-                            'application/x-www-form-urlencoded',
                         'Accept-Language': 'en_US',
                         Authorization: 'Bearer ' + accessToken,
                     },
@@ -87,7 +85,7 @@ async function getActivitySummary(req, res, next) {
         next(err);
     }
 }
-async function getCalories(req, res, next) {
+async function getCaloriesBurned(req, res, next) {
     try {
         const userInfo = await userModel.findById(req.body.userId);
         const accessToken = userInfo.authToken.access_token;
@@ -95,7 +93,7 @@ async function getCalories(req, res, next) {
         const tokenStatus = await checkTokenStatus(userInfo);
         if (tokenStatus === false) {
             return res.json({
-                status: 'fail',
+                status: 'error',
                 message: "Couldn't refresh token",
             });
         }
@@ -104,13 +102,11 @@ async function getCalories(req, res, next) {
                 `https://api.fitbit.com/1/user/${userId}/activities/calories/date/today/30d.json`,
                 {
                     headers: {
-                        'content-type':
-                            'application/x-www-form-urlencoded',
                         Authorization: 'Bearer ' + accessToken,
                     },
                 }
             );
-            console.log(resp.data);
+            // console.log(resp.data);
             const caloriesBurnedData = resp.data[
                 'activities-calories'
             ].map(obj => {
@@ -137,4 +133,45 @@ async function getCalories(req, res, next) {
     }
 }
 
-module.exports = { getActivitySummary, getCalories };
+async function getHeartRate(req, res, next) {
+    try {
+        const userInfo = await userModel.findById(req.body.userId);
+        const accessToken = userInfo.authToken.access_token;
+        const userId = userInfo.authToken.user_id;
+        const tokenStatus = await checkTokenStatus(userInfo);
+        if (tokenStatus === false) {
+            return res.json({
+                status: 'error',
+                message: "Couldn't refresh token",
+            });
+        }
+        try {
+            const resp = await axios.get(
+                `https://api.fitbit.com/1/user/${userId}/activities/heart/date/today/30d.json`,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                    },
+                }
+            );
+            // console.log(resp.data);
+            const heartRateData = resp.data;
+            res.json({
+                status: 'success',
+                message: 'Successfully retrieved heart rate data',
+                data: heartRateData,
+            });
+        } catch (err) {
+            console.log(err.response.data.errors);
+            res.json({
+                status: 'error',
+                message: 'Error getting heart rate data',
+                data: null,
+            });
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+module.exports = { getActivitySummary, getCaloriesBurned, getHeartRate };

@@ -7,12 +7,13 @@ import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import Title from './Title';
 import StepsGoal from './StepsGoal';
-import Calories from './Calories';
-import CaloriesGoal from './CaloriesGoal';
-import RestingHeartRate from './RestingHeartRate';
+import DistanceGoal from './DistanceGoal';
 import FloorsGoal from './FloorsGoal';
 import ActiveMinutesGoal from './ActiveMinutesGoal';
-import DistanceGoal from './DistanceGoal';
+import Calories from './Calories';
+import CaloriesGoal from './CaloriesGoal';
+import HeartRateZones from './HeartRateZones';
+import RestingHeartRate from './RestingHeartRate';
 import ConnectDialog from './ConnectDialog';
 
 const useStyles = makeStyles(theme => ({
@@ -111,7 +112,7 @@ export default function DashboardContent() {
       'x-access-token': sessionStorage.getItem("access-token"),
     };
     
-    const checkTokenStatus = async () => {
+    async function checkTokenStatus() {
       try {
           const res = await axios.get('/user/checkOAuthTokenStatus',{ headers });
           if (res.data.status === 'success')
@@ -120,13 +121,28 @@ export default function DashboardContent() {
               setConnectionStatus(false);
           }
       } catch (err) {
-          console.log(err.response.data.errors);
+        if (err.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        } else if (err.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(err.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', err.message);
+        }
+        console.log(err.config);
       }
   };
 
     async function getCaloriesBurnedData() {
       try {
-        const res = await axios.get('/user/getcalories', { headers });
+        const res = await axios.get('/user/getcaloriesburned', { headers });
         if (res.data.status === 'success') {
           const caloriesBurnedData = res.data.data;
           setCaloriesBurnedData(caloriesBurnedData['activities-calories']);
@@ -166,11 +182,31 @@ export default function DashboardContent() {
         console.log(err.response);
       }
     };
-    
-    useEffect(() => {
-      checkTokenStatus();
+
+    async function getHeartRateData() {
+      try {
+        const res = await axios.get('/user/getheartrate', {headers});
+        if (res.data.status === 'success') {
+          const heartRateData = res.data.data;
+          setHeartRateData(heartRateData['activities-heart']);
+        }
+      } catch (err) {
+        console.log(err.response);
+      }
+    }
+
+    async function getAllData() {
       getActivitySummary();
       getCaloriesBurnedData();
+      getHeartRateData();
+    }
+    
+    useEffect(() => {
+      async function initialLoad() {
+        await checkTokenStatus();
+        getAllData();
+      }
+      initialLoad();
 
       // setTimeout(function(){
       //   setSteps({
@@ -239,195 +275,195 @@ export default function DashboardContent() {
       //   ]);
       // }, 5000);
 
-      setTimeout(function(){
-        setHeartRateData([
-          {
-              "dateTime": "2015-08-04",
-              "value": {
-                  "customHeartRateZones": [],
-                  "heartRateZones": [
-                      {
-                          "caloriesOut": 740.15264,
-                          "max": 94,
-                          "min": 30,
-                          "minutes": 593,
-                          "name": "Out of Range"
-                      },
-                      {
-                          "caloriesOut": 249.66204,
-                          "max": 132,
-                          "min": 94,
-                          "minutes": 46,
-                          "name": "Fat Burn"
-                      },
-                      {
-                          "caloriesOut": 0,
-                          "max": 160,
-                          "min": 132,
-                          "minutes": 0,
-                          "name": "Cardio"
-                      },
-                      {
-                          "caloriesOut": 0,
-                          "max": 220,
-                          "min": 160,
-                          "minutes": 0,
-                          "name": "Peak"
-                      }
-                  ],
-                  "restingHeartRate": 68
-              }
-          },
-          {
-              "dateTime": "2015-08-05",
-              "value": {
-                  "customHeartRateZones": [],
-                  "heartRateZones": [
-                      {
-                          "caloriesOut": 740.15264,
-                          "max": 94,
-                          "min": 30,
-                          "minutes": 150,
-                          "name": "Out of Range"
-                      },
-                      {
-                          "caloriesOut": 249.66204,
-                          "max": 132,
-                          "min": 94,
-                          "minutes": 20,
-                          "name": "Fat Burn"
-                      },
-                      {
-                          "caloriesOut": 0,
-                          "max": 160,
-                          "min": 132,
-                          "minutes": 0,
-                          "name": "Cardio"
-                      },
-                      {
-                          "caloriesOut": 0,
-                          "max": 220,
-                          "min": 160,
-                          "minutes": 30,
-                          "name": "Peak"
-                      }
-                  ],
-                  "restingHeartRate": 70
-              }
-          },
-          {
-              "dateTime": "2015-08-06",
-              "value": {
-                  "customHeartRateZones": [],
-                  "heartRateZones": [
-                      {
-                          "caloriesOut": 740.15264,
-                          "max": 94,
-                          "min": 30,
-                          "minutes": 30,
-                          "name": "Out of Range"
-                      },
-                      {
-                          "caloriesOut": 249.66204,
-                          "max": 132,
-                          "min": 94,
-                          "minutes": 200,
-                          "name": "Fat Burn"
-                      },
-                      {
-                          "caloriesOut": 0,
-                          "max": 160,
-                          "min": 132,
-                          "minutes": 250,
-                          "name": "Cardio"
-                      },
-                      {
-                          "caloriesOut": 0,
-                          "max": 220,
-                          "min": 160,
-                          "minutes": 100,
-                          "name": "Peak"
-                      }
-                  ],
-                  "restingHeartRate": 51
-              }
-          },
-          {
-              "dateTime": "2015-08-07",
-              "value": {
-                  "customHeartRateZones": [],
-                  "heartRateZones": [
-                      {
-                          "caloriesOut": 740.15264,
-                          "max": 94,
-                          "min": 30,
-                          "minutes": 700,
-                          "name": "Out of Range"
-                      },
-                      {
-                          "caloriesOut": 249.66204,
-                          "max": 132,
-                          "min": 94,
-                          "minutes": 20,
-                          "name": "Fat Burn"
-                      },
-                      {
-                          "caloriesOut": 0,
-                          "max": 160,
-                          "min": 132,
-                          "minutes": 10,
-                          "name": "Cardio"
-                      },
-                      {
-                          "caloriesOut": 0,
-                          "max": 220,
-                          "min": 160,
-                          "minutes": 25,
-                          "name": "Peak"
-                      }
-                  ],
-                  "restingHeartRate": 80
-              }
-          },
-          {
-              "dateTime": "2015-08-08",
-              "value": {
-                  "customHeartRateZones": [],
-                  "heartRateZones": [
-                      {
-                          "caloriesOut": 740.15264,
-                          "max": 94,
-                          "min": 30,
-                          "minutes": 0,
-                          "name": "Out of Range"
-                      },
-                      {
-                          "caloriesOut": 249.66204,
-                          "max": 132,
-                          "min": 94,
-                          "minutes": 11,
-                          "name": "Fat Burn"
-                      },
-                      {
-                          "caloriesOut": 0,
-                          "max": 160,
-                          "min": 132,
-                          "minutes": 15,
-                          "name": "Cardio"
-                      },
-                      {
-                          "caloriesOut": 0,
-                          "max": 220,
-                          "min": 160,
-                          "minutes": 120,
-                          "name": "Peak"
-                      }
-                  ],
-                  "restingHeartRate": 55
-              }
-          }
-      ])
-      }, 8000);
+      // setTimeout(function(){
+      //   setHeartRateData([
+      //     {
+      //         "dateTime": "2015-08-04",
+      //         "value": {
+      //             "customHeartRateZones": [],
+      //             "heartRateZones": [
+      //                 {
+      //                     "caloriesOut": 740.15264,
+      //                     "max": 94,
+      //                     "min": 30,
+      //                     "minutes": 593,
+      //                     "name": "Out of Range"
+      //                 },
+      //                 {
+      //                     "caloriesOut": 249.66204,
+      //                     "max": 132,
+      //                     "min": 94,
+      //                     "minutes": 46,
+      //                     "name": "Fat Burn"
+      //                 },
+      //                 {
+      //                     "caloriesOut": 0,
+      //                     "max": 160,
+      //                     "min": 132,
+      //                     "minutes": 0,
+      //                     "name": "Cardio"
+      //                 },
+      //                 {
+      //                     "caloriesOut": 0,
+      //                     "max": 220,
+      //                     "min": 160,
+      //                     "minutes": 0,
+      //                     "name": "Peak"
+      //                 }
+      //             ],
+      //             "restingHeartRate": 68
+      //         }
+      //     },
+      //     {
+      //         "dateTime": "2015-08-05",
+      //         "value": {
+      //             "customHeartRateZones": [],
+      //             "heartRateZones": [
+      //                 {
+      //                     "caloriesOut": 740.15264,
+      //                     "max": 94,
+      //                     "min": 30,
+      //                     "minutes": 150,
+      //                     "name": "Out of Range"
+      //                 },
+      //                 {
+      //                     "caloriesOut": 249.66204,
+      //                     "max": 132,
+      //                     "min": 94,
+      //                     "minutes": 20,
+      //                     "name": "Fat Burn"
+      //                 },
+      //                 {
+      //                     "caloriesOut": 0,
+      //                     "max": 160,
+      //                     "min": 132,
+      //                     "minutes": 0,
+      //                     "name": "Cardio"
+      //                 },
+      //                 {
+      //                     "caloriesOut": 0,
+      //                     "max": 220,
+      //                     "min": 160,
+      //                     "minutes": 30,
+      //                     "name": "Peak"
+      //                 }
+      //             ],
+      //             "restingHeartRate": 70
+      //         }
+      //     },
+      //     {
+      //         "dateTime": "2015-08-06",
+      //         "value": {
+      //             "customHeartRateZones": [],
+      //             "heartRateZones": [
+      //                 {
+      //                     "caloriesOut": 740.15264,
+      //                     "max": 94,
+      //                     "min": 30,
+      //                     "minutes": 30,
+      //                     "name": "Out of Range"
+      //                 },
+      //                 {
+      //                     "caloriesOut": 249.66204,
+      //                     "max": 132,
+      //                     "min": 94,
+      //                     "minutes": 200,
+      //                     "name": "Fat Burn"
+      //                 },
+      //                 {
+      //                     "caloriesOut": 0,
+      //                     "max": 160,
+      //                     "min": 132,
+      //                     "minutes": 250,
+      //                     "name": "Cardio"
+      //                 },
+      //                 {
+      //                     "caloriesOut": 0,
+      //                     "max": 220,
+      //                     "min": 160,
+      //                     "minutes": 100,
+      //                     "name": "Peak"
+      //                 }
+      //             ],
+      //             "restingHeartRate": 51
+      //         }
+      //     },
+      //     {
+      //         "dateTime": "2015-08-07",
+      //         "value": {
+      //             "customHeartRateZones": [],
+      //             "heartRateZones": [
+      //                 {
+      //                     "caloriesOut": 740.15264,
+      //                     "max": 94,
+      //                     "min": 30,
+      //                     "minutes": 700,
+      //                     "name": "Out of Range"
+      //                 },
+      //                 {
+      //                     "caloriesOut": 249.66204,
+      //                     "max": 132,
+      //                     "min": 94,
+      //                     "minutes": 20,
+      //                     "name": "Fat Burn"
+      //                 },
+      //                 {
+      //                     "caloriesOut": 0,
+      //                     "max": 160,
+      //                     "min": 132,
+      //                     "minutes": 10,
+      //                     "name": "Cardio"
+      //                 },
+      //                 {
+      //                     "caloriesOut": 0,
+      //                     "max": 220,
+      //                     "min": 160,
+      //                     "minutes": 25,
+      //                     "name": "Peak"
+      //                 }
+      //             ],
+      //             "restingHeartRate": 80
+      //         }
+      //     },
+      //     {
+      //         "dateTime": "2015-08-08",
+      //         "value": {
+      //             "customHeartRateZones": [],
+      //             "heartRateZones": [
+      //                 {
+      //                     "caloriesOut": 740.15264,
+      //                     "max": 94,
+      //                     "min": 30,
+      //                     "minutes": 0,
+      //                     "name": "Out of Range"
+      //                 },
+      //                 {
+      //                     "caloriesOut": 249.66204,
+      //                     "max": 132,
+      //                     "min": 94,
+      //                     "minutes": 11,
+      //                     "name": "Fat Burn"
+      //                 },
+      //                 {
+      //                     "caloriesOut": 0,
+      //                     "max": 160,
+      //                     "min": 132,
+      //                     "minutes": 15,
+      //                     "name": "Cardio"
+      //                 },
+      //                 {
+      //                     "caloriesOut": 0,
+      //                     "max": 220,
+      //                     "min": 160,
+      //                     "minutes": 120,
+      //                     "name": "Peak"
+      //                 }
+      //             ],
+      //             "restingHeartRate": 55
+      //         }
+      //     }
+      // ])
+      // }, 8000);
 
       setTimeout(function(){
         setWeightData([
@@ -499,8 +535,8 @@ export default function DashboardContent() {
             {/* Heart Rate */}
             <Grid item xs={12} md={6} lg={6}>
               <Paper className={fixedHeightPaper}>
-                <Title>Heart Rate</Title>
-                {/* <HeartRateZones heartRateData={heartRateData} /> */}
+                {/* <Title>Heart R/ate</Title> */}
+                <HeartRateZones heartRateData={heartRateData} />
               </Paper>
             </Grid>
             {/* Resting Heart Rate */}
