@@ -14,6 +14,7 @@ import Calories from './Calories';
 import CaloriesGoal from './CaloriesGoal';
 import HeartRateZones from './HeartRateZones';
 import RestingHeartRate from './RestingHeartRate';
+import Weight from './Weight';
 import ConnectDialog from './ConnectDialog';
 
 const useStyles = makeStyles(theme => ({
@@ -195,10 +196,23 @@ export default function DashboardContent() {
       }
     }
 
+    async function getWeightData() {
+      try {
+        const res = await axios.get('/user/getweightdata', {headers});
+        if (res.data.status === 'success') {
+          const weightData = res.data.data;
+          setWeightData(weightData['body-weight']);
+        }
+      } catch (err) {
+        console.log(err.response);
+      }
+    }
+
     async function getAllData() {
       getActivitySummary();
       getCaloriesBurnedData();
       getHeartRateData();
+      getWeightData();
     }
     
     useEffect(() => {
@@ -465,17 +479,17 @@ export default function DashboardContent() {
       // ])
       // }, 8000);
 
-      setTimeout(function(){
-        setWeightData([
-          {"dateTime":"2011-04-27","value":175},
-          {"dateTime":"2011-04-28","value":174},
-          {"dateTime":"2011-04-29","value":173},
-          {"dateTime":"2011-04-30","value":175},
-          {"dateTime":"2011-05-01","value":180},
-          {"dateTime":"2011-05-02","value":174},
-          {"dateTime":"2011-05-03","value":173},
-        ]);
-      }, 3000);
+      // setTimeout(function(){
+      //   setWeightData([
+      //     {"dateTime":"2011-04-27","value":175},
+      //     {"dateTime":"2011-04-28","value":174},
+      //     {"dateTime":"2011-04-29","value":173},
+      //     {"dateTime":"2011-04-30","value":175},
+      //     {"dateTime":"2011-05-01","value":180},
+      //     {"dateTime":"2011-05-02","value":174},
+      //     {"dateTime":"2011-05-03","value":173},
+      //   ]);
+      // }, 3000);
 
       setTimeout(() => {
         setWeight({
@@ -549,8 +563,8 @@ export default function DashboardContent() {
             {/* Weight */}
             <Grid item xs={12} md={6} lg={6}>
               <Paper className={fixedHeightPaper}>
-                <Title>Weight</Title>
-                {/* <Weight weightData={weightData} /> */}
+                {/* <Title>Weight</Title> */}
+                <Weight weightData={weightData} />
               </Paper>
             </Grid>
             {/* Weight goal */}

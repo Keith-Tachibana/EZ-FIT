@@ -21,5 +21,6 @@ router.post('/revokeToken', authController.revokeToken);
 router.get('/getcaloriesburned', fitbitApiController.getCaloriesBurned);
 router.get('/getactivitysummary', fitbitApiController.getActivitySummary);
 router.get('/getheartrate', fitbitApiController.getHeartRate);
+router.get('/getweightdata', fitbitApiController.getWeightData);
 
 module.exports = router;
