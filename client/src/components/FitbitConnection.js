@@ -55,11 +55,9 @@ export default function FitbitConnection() {
 
     useEffect(() => {
         checkTokenStatus();
-        // Add the checkTokenStatus
     }, []);
 
     const checkTokenStatus = async () => {
-        console.log('Did I enter here');
         try {
             const response = await axios.get(
                 '/user/checkOAuthTokenStatus',
@@ -67,8 +65,6 @@ export default function FitbitConnection() {
                     headers,
                 }
             );
-            console.log('Whats the reponse', response);
-            console.log('Entering success');
             if (response.data.status === 'success')
                 setConnectionStatus(true);
             else {
@@ -80,7 +76,6 @@ export default function FitbitConnection() {
     };
     const syncConnection = async code => {
         handleConnection(code);
-        console.log(code);
     };
     const handleConnection = async code => {
         // TODO: Add fitbit connection oauth flow
@@ -92,7 +87,6 @@ export default function FitbitConnection() {
                 { code: oauthCode },
                 { headers }
             );
-            console.log('Resultstokens', resultToken);
             if (resultToken.data.status === 'success')
                 setConnectionStatus(true);
             else setConnectionStatus(false);
@@ -104,15 +98,12 @@ export default function FitbitConnection() {
     const handleDisconnection = async () => {
         // TODO: Add fitbit disconnection flow
         try {
-            console.log('Disconnecting...');
             const res = await axios.post(
                 '/user/revokeToken',
                 {},
                 { headers }
             );
-            console.log(res, 'Before response');
             if (res.data.status === 'success') setConnectionStatus(false);
-            console.log('Disconnected!');
         } catch (err) {
             console.log(err.message);
         }

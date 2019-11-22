@@ -14,6 +14,6 @@ router.get('/checkOAuthTokenStatus', authController.checkOAuthTokenStatus);
 router.post('/obtainToken', authController.obtainToken);
 router.post('/revokeToken', authController.revokeToken);
 
-router.get('/getCaloriesforToday');
+router.get('/getUserSummary', fitbitApiController.getUserSummary);
 
 module.exports = router;

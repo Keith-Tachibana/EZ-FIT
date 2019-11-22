@@ -70,11 +70,11 @@ async function revokeToken(req, res, next) {
                             message: 'Revoked token successfully',
                         });
                     } else {
-                        next(err);
                         console.log(
                             err.response.data.errors,
                             'Logging error message'
                         );
+                        next(err);
                     }
                 }
             }
@@ -85,6 +85,7 @@ async function revokeToken(req, res, next) {
 }
 async function refreshToken(req, userInfo) {
     try {
+        console.log(userInfo.authToken);
         const refreshResult = await axios.post(
             'https://api.fitbit.com/oauth2/token',
             qs.stringify({
@@ -187,10 +188,36 @@ function checkTokenValidity(userToken) {
         userToken.access_token === null ||
         userToken.authToken === null ||
         userToken.refresh_token === null ||
-        userToken.user_id === null
+        userToken.user_id === null ||
+        userToken.access_token === '' ||
+        userToken.authToken === '' ||
+        userToken.refresh_token === '' ||
+        userToken.user_id === ''
     )
         return false;
     return true;
+}
+async function checkTokenExpiry(tokenExpiry, req, userInfo, res) {
+    const refreshRequired = Date.now() > tokenExpiry ? true : false;
+    if (refreshRequired) {
+        refreshResult = await refreshToken(req, userInfo);
+        if (refreshResult.status === 200) {
+            res.json({
+                status: 'success',
+                message: 'Successfully refreshed auth token',
+            });
+        } else {
+            res.json({
+                status: 'fail',
+                message: "Token couldn't be refreshed",
+            });
+        }
+    } else {
+        res.json({
+            status: 'success',
+            message: 'Valid token present',
+        });
+    }
 }
 async function checkOAuthTokenStatus(req, res, next) {
     const userId = req.body.userId;
@@ -205,29 +232,14 @@ async function checkOAuthTokenStatus(req, res, next) {
                     });
                 }
                 const tokenExpiry = userInfo.authToken.expires_in;
-                if (tokenExpiry !== '') {
-                    const refreshRequired =
-                        Date.now() > tokenExpiry ? true : false;
-                    if (refreshRequired) {
-                        refreshResult = await refreshToken(req, userInfo);
-                        if (refreshResult.status === 200) {
-                            res.json({
-                                status: 'success',
-                                message:
-                                    'Successfully refreshed auth token',
-                            });
-                        } else {
-                            res.json({
-                                status: 'fail',
-                                message: "Token couldn't be refreshed",
-                            });
-                        }
-                    } else {
-                        res.json({
-                            status: 'success',
-                            message: 'Valid token present',
-                        });
-                    }
+                if (tokenExpiry !== 0) {
+                    await checkTokenExpiry(
+                        tokenExpiry,
+                        req,
+                        userInfo,
+                        res
+                    );
+                    return res;
                 } else {
                     res.json({
                         status: 'fail',
@@ -238,8 +250,16 @@ async function checkOAuthTokenStatus(req, res, next) {
                 throw new Error('User not found');
             }
         } catch (err) {
+            console.log(err.message);
             next(err);
         }
     }
 }
-module.exports = { checkOAuthTokenStatus, obtainToken, revokeToken };
+
+module.exports = {
+    checkOAuthTokenStatus,
+    obtainToken,
+    revokeToken,
+    checkTokenExpiry,
+    checkTokenValidity,
+};
