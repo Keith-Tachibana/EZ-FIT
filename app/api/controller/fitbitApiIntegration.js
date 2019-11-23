@@ -196,11 +196,18 @@ async function getWeightData(req, res, next) {
                     },
                 }
             );
-            const weightData = resp.data;
+            // console.log(resp.data);
+            // const weightData = resp.data;
+            const weightData = resp.data['body-weight'].map(obj => {
+                let rObj = {};
+                rObj.dateTime = obj.dateTime;
+                rObj.value = parseFloat(obj.value);
+                return rObj;
+            });
             res.json({
                 status: 'success',
                 message: 'Successfully retrieved weight data',
-                data: weightData,
+                data: {"body-weight": weightData},
             });
         } catch (err) {
             if (err.response) {
