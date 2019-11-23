@@ -104,11 +104,7 @@ export default function DashboardContent() {
     const [weightData, setWeightData] = useState([
       {"dateTime":"","value":135},
     ]);
-    const [weight, setWeight] = useState({
-      start: 130,
-      current: 130,
-      goal: 135,
-    });
+    const [weight, setWeight] = useState({});
 
     const headers = {
       'x-access-token': sessionStorage.getItem("access-token"),
@@ -209,11 +205,29 @@ export default function DashboardContent() {
       }
     }
 
+    async function getWeightGoal() {
+      try {
+        const res = await axios.get('/user/getweightgoal', {headers});
+        if (res.data.status === 'success') {
+          const weightGoal = res.data.data;
+          setWeight({
+            goalType: weightGoal.goal['goalType'],
+            start: weightGoal.goal['startWeight'],
+            current: weightGoal.goal['current'],
+            goal: weightGoal.goal['weight'],
+          });
+        }
+      } catch (err) {
+        console.log(err.response);
+      }
+    }
+
     async function getAllData() {
       getActivitySummary();
       getCaloriesBurnedData();
       getHeartRateData();
       getWeightData();
+      getWeightGoal();
     }
 
     useEffect(() => {
@@ -295,7 +309,7 @@ export default function DashboardContent() {
             {/* Weight goal */}
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <WeightGoal start={weight.start} current={weight.current} goal={weight.goal} />
+                <WeightGoal goalType={weight.goalType} start={weight.start} current={weight.current} goal={weight.goal} />
               </Paper>
             </Grid>
             {/* BMI */}
