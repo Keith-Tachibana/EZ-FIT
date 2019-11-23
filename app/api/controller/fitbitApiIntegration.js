@@ -196,8 +196,6 @@ async function getWeightData(req, res, next) {
                     },
                 }
             );
-            // console.log(resp.data);
-            // const weightData = resp.data;
             const weightData = resp.data['body-weight'].map(obj => {
                 let rObj = {};
                 rObj.dateTime = obj.dateTime;
@@ -259,12 +257,26 @@ async function getWeightGoal(req, res, next) {
                     },
                 }
             );
+            const currentWeightResp = await axios.get(
+                `https://api.fitbit.com/1/user/${userId}/body/weight/date/today/1d.json`,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                        'Accept-Language': 'en_US',
+                    },
+                }
+            );
 
-            const weightGoalData = resp.data;
+            const weightGoalData = resp.data['goal'];
+            const currentWeightData = currentWeightResp.data['body-weight'][0];
+            const currentWeight = parseFloat(currentWeightData['value']);
             res.json({
                 status: 'success',
                 message: 'Successfully retrieved weight goal',
-                data: weightGoalData
+                data: {goal: {
+                    ...weightGoalData,
+                    current: currentWeight,
+                }},
             });
         } catch (err) {
             if (err.response) {
