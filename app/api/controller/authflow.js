@@ -26,27 +26,25 @@ async function revokeToken(req, res, next) {
                             },
                         }
                     );
-                    if (revokeResult.status === 200) {
-                        await userModel.updateOne(
-                            { _id: req.body.userId },
-                            {
-                                $set: {
-                                    authToken: {
-                                        access_token: '',
-                                        expires_in: '',
-                                        refresh_token: '',
-                                        scope: '',
-                                        token_type: '',
-                                        user_id: '',
-                                    },
+                    await userModel.updateOne(
+                        { _id: req.body.userId },
+                        {
+                            $set: {
+                                authToken: {
+                                    access_token: '',
+                                    expires_in: '',
+                                    refresh_token: '',
+                                    scope: '',
+                                    token_type: '',
+                                    user_id: '',
                                 },
-                            }
-                        );
-                        res.json({
-                            status: 'success',
-                            message: 'Revoked token successfully',
-                        });
-                    }
+                            },
+                        }
+                    );
+                    res.json({
+                        status: 'success',
+                        message: 'Revoked token successfully',
+                    });
                 } catch (err) {
                     if (err.response.status === 401) {
                         await userModel.updateOne(
@@ -84,7 +82,7 @@ async function revokeToken(req, res, next) {
 }
 async function refreshToken(userInfo) {
     try {
-        console.log(userInfo.authToken);
+        // console.log(userInfo.authToken);
         const refreshResult = await axios.post(
             'https://api.fitbit.com/oauth2/token',
             qs.stringify({
@@ -98,26 +96,23 @@ async function refreshToken(userInfo) {
                 },
             }
         );
-        if (refreshResult.status === 200) {
-            await storeToken(userInfo._id, refreshResult);
-            return {
-                status: 200,
-            };
-        } else {
-            refreshResult.data.access_token = '';
-            refreshResult.data.expires_in = 0;
-            refreshResult.data.refresh_token = '';
-            refreshResult.data.scope = '';
-            refreshResult.data.token_type = '';
-            refreshResult.data.userId = '';
-            await storeToken(userInfo._id, refreshResult);
-            return {
-                status: refreshResult.status,
-            };
-        }
+        await storeToken(userInfo._id, refreshResult);
+        return {
+            status: 200,
+        };
     } catch (err) {
         if (err.response.status === 400 || err.respponse.status === 401) {
-            return err.response.status;
+            console.log(err.response.data.errors);
+            err.response.data.access_token = '';
+            err.response.data.expires_in = 0;
+            err.response.data.refresh_token = '';
+            err.response.data.scope = '';
+            err.response.data.token_type = '';
+            err.response.data.userId = '';
+            await storeToken(userInfo._id, err.response);
+            return {
+                status: err.response.status,
+            };
         }
         throw err;
     }
@@ -263,6 +258,7 @@ module.exports = {
     checkOAuthTokenStatus,
     obtainToken,
     revokeToken,
+    refreshToken,
     checkTokenExpiry,
     checkTokenValidity,
 };
