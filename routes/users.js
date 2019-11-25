@@ -23,5 +23,6 @@ router.get('/getactivitysummary', fitbitApiController.getActivitySummary);
 router.get('/getheartrate', fitbitApiController.getHeartRate);
 router.get('/getweightdata', fitbitApiController.getWeightData);
 router.get('/getweightgoal', fitbitApiController.getWeightGoal);
+router.get('/getbmidata', fitbitApiController.getBMIData)
 
 module.exports = router;
