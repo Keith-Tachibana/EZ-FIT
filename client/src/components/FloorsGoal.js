@@ -27,7 +27,7 @@ export default function FloorsGoal(props) {
         ]);
     }, [props.current, props.goal]);
 
-    if (!props.current || !props.goal) {
+    if (!props.current === undefined || !props.goal) {
         return <Title>Floor Tracking Unsupported</Title>
     } else {
         return (
