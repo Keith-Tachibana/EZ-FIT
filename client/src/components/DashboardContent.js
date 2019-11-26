@@ -17,6 +17,7 @@ import RestingHeartRate from './RestingHeartRate';
 import Weight from './Weight';
 import WeightGoal from './WeightGoal';
 import ConnectDialog from './ConnectDialog';
+import BMI from './BMI';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -105,6 +106,7 @@ export default function DashboardContent() {
       {"dateTime":"","value":135},
     ]);
     const [weight, setWeight] = useState({});
+    const [currentBMI, setCurrentBMI] = useState(0);
 
     const headers = {
       'x-access-token': sessionStorage.getItem("access-token"),
@@ -297,17 +299,45 @@ export default function DashboardContent() {
       }
     }
 
+    async function getBMIData() {
+      try {
+        const res = await axios.get('/user/getbmidata', {headers});
+        console.log(res);
+        if (res.data.status === 'success') {
+          const bmiData = res.data.data;
+          setCurrentBMI(bmiData['body-bmi'][0].value);
+        }
+      } catch (err) {
+        if (err.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        } else if (err.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(err.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', err.message);
+        }
+        console.log(err.config);
+      }
+    }
+
     async function getAllData() {
       getActivitySummary();
       getCaloriesBurnedData();
       getHeartRateData();
       getWeightData();
       getWeightGoal();
+      getBMIData();
+      // setTimeout(function(){
+      //   setCurrentBMI(15);
+      // }, 3000);
     }
-
-    useEffect(() => {
-      console.log(weight);
-    }, [weight])
     
     useEffect(() => {
       async function initialLoad() {
@@ -390,7 +420,8 @@ export default function DashboardContent() {
             {/* BMI */}
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <Title>BMI</Title>
+                {/* <Title>BMI</Title> */}
+                <BMI current={currentBMI} />
               </Paper>
             </Grid>
           </Grid>
