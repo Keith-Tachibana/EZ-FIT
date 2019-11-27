@@ -47,18 +47,20 @@ function sendResetEmail(email, resetLink) {
 
 async function resendVerificationEmail(req, res, next) {
     try {
-        const userInfo = await userModel.findById(req.body.userId);
+        const userInfo = await userModel.findOne({
+            email: validator.normalizeEmail(req.body.email),
+        });
         if (!userInfo) {
             return res.json({
-                status: 'success',
-                message: 'Verification email sent.',
+                status: 'error',
+                message: 'Error sending verification email',
                 data: null,
             });
         }
         if (userInfo.isVerified) {
             return res.json({
-                status: 'success',
-                message: 'User already verificed.',
+                status: 'error',
+                message: 'User already verified',
                 data: null,
             });
         }
@@ -83,7 +85,7 @@ async function resendVerificationEmail(req, res, next) {
         sendVerificationEmail(userInfo.email, verificationLink);
         res.json({
             status: 'success',
-            message: 'Verification email sent.',
+            message: 'Verification email sent',
             data: null,
         });
     } catch (err) {
@@ -164,6 +166,13 @@ async function signin(req, res, next) {
                 data: null,
             });
         } else {
+            if (!userInfo.isVerified) {
+                return res.json({
+                    status:'error',
+                    message: 'User not verified',
+                    data: null,
+                });
+            }
             const expireTime = req.body.remember ? 86400 : 3600; // 24 hour if remember else 1 hour
             try {
                 const match = await bcrypt.compare(
@@ -434,4 +443,5 @@ module.exports = {
     forgetPassword,
     resetPassword,
     verify,
+    resendVerificationEmail,
 };

@@ -1,7 +1,7 @@
 {
-  "name": "ezphr",
+  "name": "ezfit",
   "version": "1.0.0",
-  "description": "An easy to use PHR.",
+  "description": "Empower your Fitbit data free of charge!",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/harrynp/ezphr.git"
+    "url": "git+https://github.com/harrynp/ezfit.git"
   },
   "keywords": [
     "PHR"
@@ -19,9 +19,9 @@
   "author": "Harry Pham, Ashwin Balachandran, Keith Tachibana",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/harrynp/ezphr/issues"
+    "url": "https://github.com/harrynp/ezfit/issues"
   },
-  "homepage": "https://github.com/harrynp/ezphr#readme",
+  "homepage": "https://github.com/harrynp/ezfit#readme",
   "dependencies": {
     "@material-ui/core": "^4.5.1",
     "@material-ui/icons": "^4.5.1",

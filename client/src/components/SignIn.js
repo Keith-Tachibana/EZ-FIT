@@ -17,6 +17,7 @@ import ErrorIcon from '@material-ui/icons/Error';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import axios from 'axios';
+import VerificationDialog from "./VerificationDialog";
 
 const Link1 = React.forwardRef((props, ref) => (
     <RouterLink innerRef={ref} {...props} />
@@ -76,8 +77,14 @@ export default function SignIn() {
     });
 
     const [status, setStatus] = useState(0);
+
+    const [showVerificationDialog, setShowVerificationDialog] = useState(false);
  
     const classes = useStyles();
+
+    const handleCloseVerificationDialog = () => {
+      setShowVerificationDialog(false);
+    }
   
     const handleChange = (e) => {
       setValues({
@@ -112,6 +119,9 @@ export default function SignIn() {
       })
       .then(res => {
         if (res.data.status === "error"){
+          if (res.data.message === 'User not verified'){
+            setShowVerificationDialog(true);
+          }
           setStatus(res.data.message);
         } else if (res.data.status === "success") {
           setStatus(null);
@@ -148,6 +158,10 @@ export default function SignIn() {
 
     return (
     <div className={classes.paper}>
+        <VerificationDialog 
+          showVerificationDialog={showVerificationDialog} 
+          email={values.email} 
+          onCloseVerificationDialog={handleCloseVerificationDialog} />
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>

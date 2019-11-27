@@ -60,4 +60,7 @@ router.post('/resetpassword', [
     userController.resetPassword(req, res, next);
 });
 
+router.post('/resendverificationemail', userController.resendVerificationEmail);
+
+
 module.exports = router;
