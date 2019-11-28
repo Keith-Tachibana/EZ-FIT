@@ -18,6 +18,7 @@ function sendVerificationEmail(email, verificationLink) {
         to: email,
         subject: '[EZ-FIT] Activate your account',
         template: 'confirm_email',
+        't:text': 'yes',
         'v:verification_link': verificationLink,
     };
     mg.messages().send(data, function(error, body) {
@@ -35,6 +36,7 @@ function sendResetEmail(email, resetLink) {
         to: email,
         subject: '[EZ-FIT] Password reset',
         template: 'reset_email',
+        't:text': 'yes',
         'v:reset_link': resetLink,
     };
     mg.messages().send(data, function(error, body) {
@@ -107,7 +109,8 @@ async function register(req, res, next) {
             },
             email: validator.normalizeEmail(req.body.email),
             password: req.body.password,
-            fitbitToken: {},
+            authToken: {},
+            bodyStatus: {},
         });
         if (userInfo) {
             const createdDate = new Date(userInfo.createdDate);

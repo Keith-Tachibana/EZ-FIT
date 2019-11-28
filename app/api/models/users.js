@@ -55,6 +55,24 @@ var contactSchema = new Schema({
     },
 });
 
+var bodyStatusSchema = new Schema({
+    head: {
+        type: String,
+        trim: true,
+        default: 'normal',
+    },
+    arms: {
+        type: String,
+        trim: true,
+        default: 'normal',
+    },
+    legs: {
+        type: String,
+        trim: true,
+        default: 'normal',
+    },
+});
+
 var userSchema = new Schema({
     email: {
         type: String,
@@ -116,6 +134,9 @@ var userSchema = new Schema({
             trim: true,
             default: '',
         },
+    },
+    bodyStatus: {
+        type: bodyStatusSchema,
     },
     weight: {
         type: [Number],

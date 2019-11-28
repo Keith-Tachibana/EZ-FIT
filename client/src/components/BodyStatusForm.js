@@ -10,21 +10,14 @@ import {
   Divider,
   Container,
   Grid,
-  IconButton,
 } from "@material-ui/core";
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import ErrorIcon from "@material-ui/icons/Error";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import Link from "@material-ui/core/Link";
-import { Link as RouterLink } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
-
-const Link1 = React.forwardRef((props, ref) => (
-  <RouterLink innerRef={ref} {...props} />
-));
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -40,18 +33,157 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function BodyStatusForm(props){
-   const classes = useStyles();
+  const classes = useStyles();
+  const history = useHistory();
 
   const [values, setValues] = useState({
     head: '',
     arms: '',
     legs: '',
   });
+  
+  const [errors, setErrors] = useState({
+    head: {
+      status: false,
+      message: null,
+    },
+    arms: {
+      status: false,
+      message: null,
+    },
+    legs: {
+      status: false,
+      message: null,
+    },
+  });
 
+  const [status, setStatus] = useState(0);
+  
+  const headers = {
+    'x-access-token': sessionStorage.getItem("access-token"),
+  };
+
+  async function getBodyStatus() {
+    try {
+        const res = await axios.get('/user/getbodystatus', {headers});
+        console.log(res);
+        if (res.data.status === "error"){
+            setStatus(0);
+            if (res.data.message === "jwt expired"){
+                //pass
+            }
+        sessionStorage.removeItem("access-token");
+        history.push("/");
+        } else {
+          let bodyStatus = res.data.data;
+          let currentBodyStatus = {
+              ...values,
+          };
+          Object.assign(currentBodyStatus, bodyStatus);
+          setValues(currentBodyStatus);
+        }
+    } catch (err) {
+      if (err.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else if (err.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(err.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', err.message);
+      }
+      console.log(err.config);
+    }
+  }
+  
+  async function updateBodyStatus() {
+    try {
+        const res = await axios.post('/user/updatebodystatus', values, {headers});
+        console.log(res);
+        if (res.data.status === "error"){
+            setStatus(0);
+            if (res.data.message === "jwt expired"){
+                //pass
+            }
+        sessionStorage.removeItem("access-token");
+        history.push("/");
+        } else {
+            setStatus(res.data.message);
+            setErrors({
+              head: {
+                status: false,
+                message: null,
+              },
+              arms: {
+                status: false,
+                message: null,
+              },
+              legs: {
+                status: false,
+                message: null,
+              },
+            });
+        }
+    } catch (err) {
+      setStatus(0);
+      if (err.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        const errs = err.response.data.errors;
+        let currentErrors = {
+          head: {
+            status: false,
+            message: null,
+          },
+          arms: {
+            status: false,
+            message: null,
+          },
+          legs: {
+            status: false,
+            message: null,
+          },
+        };
+        let error;
+        for (error of errs){
+          Object.assign(currentErrors, {
+            [error.param]: {
+              status: true,
+              message: error.msg,
+            },
+          });
+        }
+        setErrors(currentErrors);
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else if (err.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(err.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', err.message);
+      }
+      console.log(err.config);
+    }
+  }
+  
   useEffect(() => {
     //TODO get body status
-
+    getBodyStatus();
   }, []);
+
+  // useEffect(() => {
+  //   console.log(errors);
+  // }, [errors]);
 
   const handleChange = name => event => {
     setValues({
@@ -60,11 +192,10 @@ export default function BodyStatusForm(props){
     });
   };
 
-
   const submitHandler = e => {
     e.preventDefault();
     //TODO update body status
-
+    updateBodyStatus();
   };
 
   return (
@@ -83,14 +214,14 @@ export default function BodyStatusForm(props){
           <Grid container spacing = {2}>
             <Grid item xs={6}>
               <Grid item xs={12}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="name-native-error">Head</InputLabel>
+                <FormControl className={classes.formControl} error={errors.head.status}>
+                  <InputLabel htmlFor="head-native-error">Head</InputLabel>
                   <NativeSelect
                     value={values.head}
                     onChange={handleChange('head')}
                     name="head"
                     inputProps={{
-                      id: 'name-native-error',
+                      id: 'head-native-error',
                     }}
                   >
                     <option value="" />
@@ -98,17 +229,18 @@ export default function BodyStatusForm(props){
                     <option value="light">Light</option>
                     <option value="severe">Severe</option>
                   </NativeSelect>
+                  <FormHelperText>{errors.head.message}</FormHelperText>
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="name-native-error">Arms</InputLabel>
+                <FormControl className={classes.formControl} error={errors.arms.status}>
+                  <InputLabel htmlFor="arms-native-error">Arms</InputLabel>
                   <NativeSelect
                     value={values.arms}
                     onChange={handleChange('arms')}
                     name="arms"
                     inputProps={{
-                      id: 'name-native-error',
+                      id: 'arms-native-error',
                     }}
                   >
                     <option value="" />
@@ -116,17 +248,18 @@ export default function BodyStatusForm(props){
                     <option value="light">Light</option>
                     <option value="severe">Severe</option>
                   </NativeSelect>
+                  <FormHelperText>{errors.arms.message}</FormHelperText>
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="name-native-error">Legs</InputLabel>
+                <FormControl className={classes.formControl} error={errors.legs.status}>
+                  <InputLabel htmlFor="legs-native-error">Legs</InputLabel>
                   <NativeSelect
                     value={values.legs}
                     onChange={handleChange('legs')}
                     name="legs"
                     inputProps={{
-                      id: 'name-native-error',
+                      id: 'legs-native-error',
                     }}
                   >
                     <option value="" />
@@ -134,6 +267,7 @@ export default function BodyStatusForm(props){
                     <option value="light">Light</option>
                     <option value="severe">Severe</option>
                   </NativeSelect>
+                  <FormHelperText>{errors.legs.message}</FormHelperText>
                 </FormControl>
               </Grid>
             </Grid>
@@ -148,6 +282,18 @@ export default function BodyStatusForm(props){
               <br/>
               Severe: Broken Bones, Unusable.
           </Typography>
+          <span id="status" style={{display: status ? 'inline' : 'none' }}>
+              <Grid container direction="row" alignItems="center">
+                  <Grid item>
+                      <CheckCircleIcon color="primary"/>
+                  </Grid>
+                  <Grid item>
+                      <Typography id="statusMessage" variant="subtitle1" display="inline">
+                          {status}
+                      </Typography>
+                  </Grid>
+              </Grid>
+          </span>
           </CardContent>
           <Divider />
           <CardActions>

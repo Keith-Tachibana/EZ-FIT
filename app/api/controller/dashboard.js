@@ -85,109 +85,48 @@ async function updatePersonalInfo(req, res, next){
     });
 };
 
-async function getActivitySummary(req, res, next) {
+async function getBodyStatus(req, res, next) {
     try {
         const userInfo = await userModel.findById(req.body.userId);
-        const accessToken = userInfo.authToken.access_token;
-        const userId = userInfo.authToken.user_id;
-        try {
-            const resp = await axios.get(
-                `https://api.fitbit.com/1/user/${userId}/activities/date/today.json`,
-                {
-                    headers: {
-                        'content-type': 'application/x-www-form-urlencoded',
-                        'Accept-Language': 'en_US',
-                        Authorization: 'Bearer ' + accessToken,
-                    },
-                }
-            );
-            // console.log(resp.data);
+        if (userInfo) {
             res.json({
-                status: "success",
-                message: "Successfully retrieved activity summary",
-                data: resp.data,
+                status: 'success',
+                message: 'Body status found',
+                data: {
+                    head: userInfo.bodyStatus.head,
+                    arms: userInfo.bodyStatus.arms,
+                    legs: userInfo.bodyStatus.legs,
+                }
             });
-        } catch (err) {
-            if (err.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log(err.response.data);
-                console.log(err.response.status);
-                console.log(err.response.headers);
-              } else if (err.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-                console.log(err.request);
-              } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', err.message);
-              }
-              console.log(err.config);
-              res.json({
-                status: "error",
-                message: "Error retrieving activity summary",
+        } else {
+            res.json({
+                status: 'error',
+                message: 'User not found',
                 data: null,
-            })
+            });
         }
     } catch (err) {
         next(err);
     }
 }
 
-async function getCalories(req, res, next) {
+async function updateBodyStatus(req, res, next) {
     try {
-        const userInfo = await userModel.findById(req.body.userId);
-        const accessToken = userInfo.authToken.access_token;
-        const userId = userInfo.authToken.user_id;
-        try {
-            const resp = await axios.get(
-                `https://api.fitbit.com/1/user/${userId}/activities/calories/date/today/30d.json`,
-                {
-                    headers: {
-                        'content-type': 'application/x-www-form-urlencoded',
-                        Authorization: 'Bearer ' + accessToken,
-                    },
-                }
-            );
-            console.log(resp.data);
-            const caloriesBurnedData = resp.data['activities-calories'].map(obj => {
-                let rObj = {};
-                rObj.dateTime = obj.dateTime;
-                rObj.value = parseInt(obj.value);
-                return rObj;
-            });
-            res.json({
-                status: "success",
-                message: "Successfully retrieved calories",
-                data: {"activities-calories": caloriesBurnedData},
-            });
-        } catch (err) {
-            if (err.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log(err.response.data);
-                console.log(err.response.status);
-                console.log(err.response.headers);
-              } else if (err.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-                console.log(err.request);
-              } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', err.message);
-              }
-              console.log(err.config);
-              res.json({
-                status: "error",
-                message: "Error getting calories data",
-                data: null,
-              });
-        }
+        const doc = await userModel.updateOne({
+            '_id': req.body.userId,
+        }, {$set: {
+            'bodyStatus.head': req.body.head,
+            'bodyStatus.arms': req.body.arms,
+            'bodyStatus.legs': req.body.legs,
+        }});
+        res.json({
+            status: 'success',
+            message: 'Successfully updated body status',
+            data: null,
+        })
     } catch (err) {
         next(err);
     }
 }
 
-module.exports = {getNameById, getPersonalInfo, updatePersonalInfo, getActivitySummary, getCalories};
+module.exports = {getNameById, getPersonalInfo, updatePersonalInfo, getBodyStatus, updateBodyStatus};
