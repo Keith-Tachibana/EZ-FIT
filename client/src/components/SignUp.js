@@ -97,10 +97,6 @@ export default function SignUp() {
     event.preventDefault();
   };
 
-  // React.useEffect(() => {
-  //   console.log(errors);
-  // }, [errors])
-
   const submitHandler = (e) => {
     e.preventDefault();
     axios.post('/register', {
@@ -115,6 +111,24 @@ export default function SignUp() {
         setError(res.data.message);
       } else if (res.data.status === "success") {
         setStatus(res.data.message);
+        setErrors({
+          firstName: {
+            status: false,
+            message: null,
+          },
+          lastName: {
+            status: false,
+            message: null,
+          },
+          email: {
+            status: false,
+            message: null,
+          },
+          password: {
+            status: false,
+            message: null,
+          },
+        });
       }
     })
     .catch(err => {
