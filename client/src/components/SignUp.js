@@ -132,36 +132,52 @@ export default function SignUp() {
       }
     })
     .catch(err => {
-      const errs = err.response.data.errors;
-      let currentErrors = {
-        firstName: {
-          status: false,
-          message: null,
-        },
-        lastName: {
-          status: false,
-          message: null,
-        },
-        email: {
-          status: false,
-          message: null,
-        },
-        password: {
-          status: false,
-          message: null,
-        },
-      };
-      let error;
-      for (error of errs){
-        Object.assign(currentErrors, {
-          [error.param]: {
-            status: true,
-            message: error.msg,
+      setStatus(0);
+      if (err.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        const errs = err.response.data.errors;
+        let currentErrors = {
+          firstName: {
+            status: false,
+            message: null,
           },
-        });
+          lastName: {
+            status: false,
+            message: null,
+          },
+          email: {
+            status: false,
+            message: null,
+          },
+          password: {
+            status: false,
+            message: null,
+          },
+        };
+        let error;
+        for (error of errs){
+          Object.assign(currentErrors, {
+            [error.param]: {
+              status: true,
+              message: error.msg,
+            },
+          });
+        }
+        setErrors(currentErrors);
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else if (err.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(err.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', err.message);
       }
-      setErrors(currentErrors);
-      // console.log(err.response);
+      console.log(err.config);
     })
   };
 

@@ -80,10 +80,6 @@ export default function ForgetPasswordForm() {
     history.push('/signin');
   };
 
-  // React.useEffect(() => {
-  //   console.log(errors);
-  // }, [errors])
-
   const submitHandler = (e) => {
     e.preventDefault();
     axios.post('/forgetpassword', {
@@ -95,23 +91,39 @@ export default function ForgetPasswordForm() {
     })
     .catch(err => {
       setStatus(0);
-      const errs = err.response.data.errors;
-      let currentErrors = {
-        email: {
-          status: false,
-          message: null,
-        },
-      };
-      let error;
-      for (error of errs){
-        Object.assign(currentErrors, {
-          [error.param]: {
-            status: true,
-            message: error.msg,
+      if (err.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        const errs = err.response.data.errors;
+        let currentErrors = {
+          email: {
+            status: false,
+            message: null,
           },
-        });
+        };
+        let error;
+        for (error of errs){
+          Object.assign(currentErrors, {
+            [error.param]: {
+              status: true,
+              message: error.msg,
+            },
+          });
+        }
+        setErrors(currentErrors);
+        console.log(err.response.data);
+        console.log(err.response.status);
+        console.log(err.response.headers);
+      } else if (err.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(err.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', err.message);
       }
-      setErrors(currentErrors);
+      console.log(err.config);
     })
   };
 
