@@ -50,8 +50,8 @@ export default function PersonalInfoForm(){
 
     useEffect(() => {
         async function fetchPersonalInfo(){
-            const res = await axios.get('/user/getpersonalinfo', {headers});
             try{
+                const res = await axios.get('/user/getpersonalinfo', {headers});
                 // console.log(res.data);
                 if (res.data.status === "error"){
                     if (res.data.message === "jwt expired"){
@@ -60,9 +60,9 @@ export default function PersonalInfoForm(){
                 sessionStorage.removeItem("access-token");
                 history.push("/");
                 } else {
-                    let info = res.data.data
+                    let info = res.data.data;
                     let currentInfo = {
-                        ...values
+                        ...values,
                     };
                     Object.assign(currentInfo, info);
                     setValues(currentInfo);
@@ -79,8 +79,8 @@ export default function PersonalInfoForm(){
     const submitHandler = (e) => {
         e.preventDefault();
         async function updatePersonalInfo(){
-            const res = await axios.post('/user/updatepersonalinfo', values, {headers});
             try {
+                const res = await axios.post('/user/updatepersonalinfo', values, {headers});
                 // console.log(res.data);
                 if (res.data.status === "error"){
                     setStatus(0);
