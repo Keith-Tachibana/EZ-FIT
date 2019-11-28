@@ -108,8 +108,10 @@ export default function SignUp() {
     .then(res => {
       console.log(res);
       if (res.data.status === "error"){
+        setStatus(0);
         setError(res.data.message);
       } else if (res.data.status === "success") {
+        setError(0);
         setStatus(res.data.message);
         setErrors({
           firstName: {
