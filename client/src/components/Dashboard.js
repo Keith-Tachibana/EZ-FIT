@@ -16,7 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Tooltip from '@material-ui/core/Tooltip';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { mainListItems, secondaryListItems } from './listItems';
+import { mainListItems } from './listItems';
 import axios from 'axios';
 import DashboardContent from './DashboardContent';
 import PasswordForm from './PasswordForm';
@@ -138,10 +138,13 @@ export default function Dashboard() {
     };
 
     useEffect(() => {
+        if (!sessionStorage.getItem('access-token')) {
+            history.push('/');
+        }
         async function fetchName() {
             try {
                 const res = await axios.get('/user/getname', { headers });
-                // console.log(res);
+                console.log(res);
                 if (res.data.status === 'error') {
                     if (res.data.message === 'jwt expired') {
                         //pass
@@ -224,7 +227,6 @@ export default function Dashboard() {
                 <Divider />
                 <List>{mainListItems}</List>
                 <Divider />
-                <List>{secondaryListItems}</List>
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />

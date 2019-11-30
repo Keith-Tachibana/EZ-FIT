@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { PieChart, Pie, Label, ResponsiveContainer, Tooltip } from 'recharts';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Title from "./Title";
 
 function CustomLabel({viewBox, value1, value2, value3}){
@@ -16,10 +17,15 @@ function CustomLabel({viewBox, value1, value2, value3}){
 export default function WeightGoal(props) {
     const remainingWeight = props.goal - props.current;
 
+    const [loading, setLoading] = useState(props.loading);
     const [data, setData] = useState([
         {name: "Weight", value: props.current, fill: '#8884d8'},
         {name: "Remaining Weight", value: Math.abs(remainingWeight), fill: '#eee'},
     ]);
+
+    useEffect(() => {
+        setLoading(props.loading);
+    }, [props.loading]);
 
     useEffect(() => {
         let current = props.current - props.start;
@@ -34,7 +40,9 @@ export default function WeightGoal(props) {
         ]);
     }, [props.goalType, props.start, props.current, props.goal]);
 
-    if (!props.goalType || !props.start || !props.current || !props.goal){
+    if (loading) {
+        return (<CircularProgress style={{alignSelf: 'center'}} />);
+    } else if (!props.goalType || !props.start || !props.current || !props.goal){
         return <Title>No Weight Goal Set</Title>
     } else {
         return (

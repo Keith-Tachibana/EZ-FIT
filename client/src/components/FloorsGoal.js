@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { PieChart, Pie, Label, ResponsiveContainer, Tooltip } from 'recharts';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Title from "./Title";
 
 function CustomLabel({viewBox, value1, value2}){
@@ -15,10 +16,15 @@ function CustomLabel({viewBox, value1, value2}){
 export default function FloorsGoal(props) {
     const reaminingFloors = (props.goal - props.current) < 0 ? 0 : (props.goal - props.current);
 
+    const [loading, setLoading] = useState(props.loading);
     const [data, setData] = useState([
         {name: "Floors", value: props.current, fill: '#8884d8'},
         {name: "Remaining Floors", value: reaminingFloors, fill: '#eee'},
     ]);
+
+    useEffect(() => {
+        setLoading(props.loading);
+    }, [props.loading]);
 
     useEffect(() => {
         setData([
@@ -27,7 +33,9 @@ export default function FloorsGoal(props) {
         ]);
     }, [props.current, props.goal]);
 
-    if (!props.current === undefined || !props.goal) {
+    if (loading) {
+        return (<CircularProgress style={{alignSelf: 'center'}} />);
+    } else if (!props.current === undefined || !props.goal) {
         return <Title>Floor Tracking Unsupported</Title>
     } else {
         return (

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { PieChart, Pie, Label, ResponsiveContainer, Tooltip } from 'recharts';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function CustomLabel({viewBox, value1, value2}){
     const {cx, cy} = viewBox;
@@ -47,10 +48,15 @@ export default function BMI(props) {
         }
     }
 
+    const [loading, setLoading] = useState(props.loading);
     const [data, setData] = useState([
         {name: "Percentage", value: calculateGaugePercent(props.current), fill: '#eee'},
         {name: "Remaining Percent", value: 100 - calculateGaugePercent(props.current), fill: '#eee'},
     ]);
+
+    useEffect(() => {
+        setLoading(props.loading);
+    }, [props.loading]);
 
     useEffect(() => {
         const gaugePercent = calculateGaugePercent(props.current);
@@ -72,20 +78,23 @@ export default function BMI(props) {
         ]);
     }, [props.current]);
 
-
-    return (
-    <React.Fragment>
-        <ResponsiveContainer>
-            <PieChart>
-                <Pie data={data} dataKey="value" nameKey="name"
-                    innerRadius='60%' outerRadius='90%'
-                    startAngle={180} endAngle={0}>
-                    <Label width={30} position="center"
-                    content={<CustomLabel value1={props.current.toFixed(1)} value2={getBMICategory(props.current)} />} />
-                </Pie>
-
-            </PieChart>
-        </ResponsiveContainer>
-    </React.Fragment>
-    );
+    if (loading) {
+        return (<CircularProgress style={{alignSelf: 'center'}} />);
+    } else {
+        return (
+            <React.Fragment>
+                <ResponsiveContainer>
+                    <PieChart>
+                        <Pie data={data} dataKey="value" nameKey="name"
+                            innerRadius='60%' outerRadius='90%'
+                            startAngle={180} endAngle={0}>
+                            <Label width={30} position="center"
+                            content={<CustomLabel value1={props.current.toFixed(1)} value2={getBMICategory(props.current)} />} />
+                        </Pie>
+        
+                    </PieChart>
+                </ResponsiveContainer>
+            </React.Fragment>
+        );
+    }
 }

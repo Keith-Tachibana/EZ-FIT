@@ -5,7 +5,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
-import Title from './Title';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import StepsGoal from './StepsGoal';
 import DistanceGoal from './DistanceGoal';
 import FloorsGoal from './FloorsGoal';
@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         overflow: 'auto',
         flexDirection: 'column',
+        justifyContent: 'center'
     },
     fixedHeight: {
         height: 240,
@@ -40,6 +41,19 @@ export default function DashboardContent() {
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     const [connectionStatus, setConnectionStatus] = useState(true);
+    const [completed, setCompleted] = useState(0);
+    const [loading, setLoading] = useState({
+      steps: true,
+      distance: true,
+      floors: true,
+      activeMinutes: true,
+      caloriesBurnedData: true,
+      calories: true,
+      heartRateData: true,
+      weightData: true,
+      weight: true,
+      currentBMI: true,
+    })
 
     const [steps, setSteps] = useState({
       current: 0,
@@ -111,14 +125,23 @@ export default function DashboardContent() {
     const headers = {
       'x-access-token': sessionStorage.getItem("access-token"),
     };
+
+    function incrementCompleted() {
+      setCompleted((completed) => {
+        console.log(`load status: ${completed} -> ${completed + (100 / 6)}`);
+        return completed + (100 / 6);
+      });
+    }
     
     async function checkTokenStatus() {
       try {
           const res = await axios.get('/user/checkOAuthTokenStatus',{ headers });
-          if (res.data.status === 'success')
+          if (res.data.status === 'success') {
               setConnectionStatus(true);
-          else {
+              return true;
+          } else {
               setConnectionStatus(false);
+              return false;
           }
       } catch (err) {
         if (err.response) {
@@ -138,7 +161,7 @@ export default function DashboardContent() {
         }
         console.log(err.config);
       }
-  };
+    };
 
     async function getCaloriesBurnedData() {
       try {
@@ -146,6 +169,12 @@ export default function DashboardContent() {
         if (res.data.status === 'success') {
           const caloriesBurnedData = res.data.data;
           setCaloriesBurnedData(caloriesBurnedData['activities-calories']);
+          setLoading(loading => {
+            return {
+              ...loading,
+              caloriesBurnedData: false,
+            }
+          });
         }
       } catch (err) {
         if (err.response) {
@@ -165,6 +194,7 @@ export default function DashboardContent() {
         }
         console.log(err.config);
       }
+      incrementCompleted();
     };
 
     async function getActivitySummary() {
@@ -192,91 +222,15 @@ export default function DashboardContent() {
             current: activitySummary.summary.fairlyActiveMinutes + activitySummary.summary.veryActiveMinutes,
             goal: activitySummary.goals.activeMinutes,
           });
-        }
-      } catch (err) {
-        if (err.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(err.response.data);
-          console.log(err.response.status);
-          console.log(err.response.headers);
-        } else if (err.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(err.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', err.message);
-        }
-        console.log(err.config);
-      }
-    };
-
-    async function getHeartRateData() {
-      try {
-        const res = await axios.get('/user/getheartrate', {headers});
-        if (res.data.status === 'success') {
-          const heartRateData = res.data.data;
-          setHeartRateData(heartRateData['activities-heart']);
-        }
-      } catch (err) {
-        if (err.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(err.response.data);
-          console.log(err.response.status);
-          console.log(err.response.headers);
-        } else if (err.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(err.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', err.message);
-        }
-        console.log(err.config);
-      }
-    }
-
-    async function getWeightData() {
-      try {
-        const res = await axios.get('/user/getweightdata', {headers});
-        if (res.data.status === 'success') {
-          const weightData = res.data.data;
-          setWeightData(weightData['body-weight']);
-        }
-      } catch (err) {
-        if (err.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(err.response.data);
-          console.log(err.response.status);
-          console.log(err.response.headers);
-        } else if (err.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(err.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', err.message);
-        }
-        console.log(err.config);
-      }
-    }
-
-    async function getWeightGoal() {
-      try {
-        const res = await axios.get('/user/getweightgoal', {headers});
-        if (res.data.status === 'success') {
-          const weightGoal = res.data.data;
-          setWeight({
-            goalType: weightGoal.goal['goalType'],
-            start: weightGoal.goal['startWeight'],
-            current: weightGoal.goal['current'],
-            goal: weightGoal.goal['weight'],
+          setLoading(loading => {
+            return {
+              ...loading,
+              calories: false,
+              steps: false,
+              distance: false,
+              floors: false,
+              activeMinutes: false,
+            }
           });
         }
       } catch (err) {
@@ -297,15 +251,21 @@ export default function DashboardContent() {
         }
         console.log(err.config);
       }
-    }
+      incrementCompleted();
+    };
 
-    async function getBMIData() {
+    async function getHeartRateData() {
       try {
-        const res = await axios.get('/user/getbmidata', {headers});
-        console.log(res);
+        const res = await axios.get('/user/getheartrate', {headers});
         if (res.data.status === 'success') {
-          const bmiData = res.data.data;
-          setCurrentBMI(bmiData['body-bmi'][0].value);
+          const heartRateData = res.data.data;
+          setHeartRateData(heartRateData['activities-heart']);
+          setLoading(loading => {
+            return {
+              ...loading,
+              heartRateData: false,
+            }
+          });
         }
       } catch (err) {
         if (err.response) {
@@ -325,66 +285,182 @@ export default function DashboardContent() {
         }
         console.log(err.config);
       }
+      incrementCompleted();
+    }
+
+    async function getWeightData() {
+      try {
+        const res = await axios.get('/user/getweightdata', {headers});
+        if (res.data.status === 'success') {
+          const weightData = res.data.data;
+          setWeightData(weightData['body-weight']);
+          setLoading(loading => {
+            return {
+              ...loading,
+              weightData: false,
+            }
+          });
+        }
+      } catch (err) {
+        if (err.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        } else if (err.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(err.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', err.message);
+        }
+        console.log(err.config);
+      }
+      incrementCompleted();
+    }
+
+    async function getWeightGoal() {
+      try {
+        const res = await axios.get('/user/getweightgoal', {headers});
+        if (res.data.status === 'success') {
+          const weightGoal = res.data.data;
+          setWeight({
+            goalType: weightGoal.goal['goalType'],
+            start: weightGoal.goal['startWeight'],
+            current: weightGoal.goal['current'],
+            goal: weightGoal.goal['weight'],
+          });
+          setLoading(loading => {
+            return {
+              ...loading,
+              weight: false,
+            }
+          });
+        }
+      } catch (err) {
+        if (err.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        } else if (err.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(err.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', err.message);
+        }
+        console.log(err.config);
+      }
+      incrementCompleted();
+    }
+
+    async function getBMIData() {
+      try {
+        const res = await axios.get('/user/getbmidata', {headers});
+        console.log(res);
+        if (res.data.status === 'success') {
+          const bmiData = res.data.data;
+          setCurrentBMI(bmiData['body-bmi'][0].value);
+          setLoading(loading => {
+            return {
+              ...loading,
+              currentBMI: false,
+            }
+          });
+        }
+      } catch (err) {
+        if (err.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+        } else if (err.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(err.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', err.message);
+        }
+        console.log(err.config);
+      }
+      incrementCompleted();
     }
 
     async function getAllData() {
+      setCompleted(0);
       getActivitySummary();
       getCaloriesBurnedData();
       getHeartRateData();
       getWeightData();
       getWeightGoal();
       getBMIData();
-      // setTimeout(function(){
-      //   setCurrentBMI(15);
-      // }, 3000);
     }
+
+    // useEffect(() => {
+    //   console.log(loading);
+    // }, [loading])
     
     useEffect(() => {
       async function initialLoad() {
-        await checkTokenStatus();
-        getAllData();
+        const status = await checkTokenStatus();
+        if (status) {
+          getAllData();
+        } else {
+          setCompleted(100);
+        }
       }
       initialLoad();
     }, []);
 
     return (
         <Container maxWidth="lg" className={classes.container}>
+          <LinearProgress variant="determinate" value={completed} style={{display: (completed <= 100) ? '' : 'none' }}/>
           <ConnectDialog connection={connectionStatus} />
           <Grid container spacing={2}>
             {/* Steps Goal */}
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <StepsGoal current={steps.current} goal={steps.goal} />
+                <StepsGoal loading={loading.steps} current={steps.current} goal={steps.goal} />
               </Paper>
             </Grid>
             {/* Distance Goal */}
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <DistanceGoal current={distance.current} goal={distance.goal} />
+                <DistanceGoal loading={loading.distance} current={distance.current} goal={distance.goal} />
               </Paper>
             </Grid>
             {/* Floors Goal */}
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={fixedHeightPaper}>
-                  <FloorsGoal current={floors.current} goal={floors.goal} />
+                  <FloorsGoal loading={loading.floors} current={floors.current} goal={floors.goal} />
               </Paper>
             </Grid>
             {/* Active Minutes Goal */}
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <ActiveMinutesGoal current={activeMinutes.current} goal={activeMinutes.goal} />
+                <ActiveMinutesGoal loading={loading.activeMinutes} current={activeMinutes.current} goal={activeMinutes.goal} />
               </Paper>
             </Grid>
             {/* Calories */}
             <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
-                <Calories caloriesBurnedData={caloriesBurnedData} />
+                <Calories loading={loading.caloriesBurnedData} caloriesBurnedData={caloriesBurnedData} />
               </Paper>
             </Grid>
             {/* Calories Goal */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <CaloriesGoal current={calories.current} goal={calories.goal} />
+                <CaloriesGoal loading={loading.calories} current={calories.current} goal={calories.goal} />
               </Paper>
             </Grid>
             {/* Exercise */}
@@ -396,32 +472,31 @@ export default function DashboardContent() {
             {/* Heart Rate */}
             <Grid item xs={12} md={6} lg={6}>
               <Paper className={fixedHeightPaper}>
-                <HeartRateZones heartRateData={heartRateData} />
+                <HeartRateZones loading={loading.heartRateData} heartRateData={heartRateData} />
               </Paper>
             </Grid>
             {/* Resting Heart Rate */}
             <Grid item xs={12} md={6} lg={6}>
               <Paper className={fixedHeightPaper}>
-                <RestingHeartRate heartRateData={heartRateData} />
+                <RestingHeartRate loading={loading.heartRateData} heartRateData={heartRateData} />
               </Paper>
             </Grid>
             {/* Weight */}
             <Grid item xs={12} md={6} lg={6}>
               <Paper className={fixedHeightPaper}>
-                <Weight weightData={weightData} />
+                <Weight loading={loading.weightData} weightData={weightData} />
               </Paper>
             </Grid>
             {/* Weight goal */}
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <WeightGoal goalType={weight.goalType} start={weight.start} current={weight.current} goal={weight.goal} />
+                <WeightGoal loading={loading.weight} goalType={weight.goalType} start={weight.start} current={weight.current} goal={weight.goal} />
               </Paper>
             </Grid>
             {/* BMI */}
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={fixedHeightPaper}>
-                {/* <Title>BMI</Title> */}
-                <BMI current={currentBMI} />
+                <BMI loading={loading.currentBMI} current={currentBMI} />
               </Paper>
             </Grid>
           </Grid>
