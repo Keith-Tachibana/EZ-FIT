@@ -10,7 +10,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import { green, red } from "@material-ui/core/colors";
 import ErrorIcon from '@material-ui/icons/Error';
-import CircularProgress from "@material-ui/core/CircularProgress";
 import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({

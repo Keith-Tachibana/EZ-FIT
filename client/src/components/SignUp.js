@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Link from '@material-ui/core/Link';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -160,14 +160,16 @@ export default function SignUp() {
             message: null,
           },
         };
-        let error;
-        for (error of errs){
-          Object.assign(currentErrors, {
-            [error.param]: {
-              status: true,
-              message: error.msg,
-            },
-          });
+        if (errs instanceof Array){
+          let error;
+          for (error of errs){
+            Object.assign(currentErrors, {
+              [error.param]: {
+                status: true,
+                message: error.msg,
+              },
+            });
+          }
         }
         setErrors(currentErrors);
       } else if (err.request) {

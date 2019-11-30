@@ -29,7 +29,8 @@ export default function CaloriesGoal(props) {
         setData([
             {name: "Calories", value: props.current, fill: props.color},
             {name: "Remaining Calories", value: remainingCalories, fill: '#eee'},  
-        ])
+        ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.current, props.goal]);
 
     if (loading) {

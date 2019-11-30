@@ -22,7 +22,7 @@ export default function HeartRateZones(props) {
         return (
             <React.Fragment>
                 <Title>Heart Rate Zones</Title>
-                <ResponsiveContainer height={160}>
+                <ResponsiveContainer height={165}>
                     <AreaChart
                         data={data}
                         margin={{

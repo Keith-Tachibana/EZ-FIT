@@ -31,6 +31,7 @@ export default function FloorsGoal(props) {
             {name: "Floors", value: props.current, fill: props.color},
             {name: "Remaining Floors", value: reaminingFloors, fill: '#eee'},
         ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.current, props.goal]);
 
     if (loading) {

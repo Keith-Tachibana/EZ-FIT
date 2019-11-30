@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Link from "@material-ui/core/Link";
-import { Link as RouterLink, useHistory } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -37,7 +37,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Verify(props) {
-    const history = useHistory();
     
     const [loading, setLoading] = useState(true);
     const [status, setStatus] = useState(null);
@@ -77,6 +76,7 @@ export default function Verify(props) {
             }
             getVerification();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

@@ -104,14 +104,16 @@ export default function ForgetPasswordForm() {
             message: null,
           },
         };
-        let error;
-        for (error of errs){
-          Object.assign(currentErrors, {
-            [error.param]: {
-              status: true,
-              message: error.msg,
-            },
-          });
+        if (errs instanceof Array){
+          let error;
+          for (error of errs){
+            Object.assign(currentErrors, {
+              [error.param]: {
+                status: true,
+                message: error.msg,
+              },
+            });
+          }
         }
         setErrors(currentErrors);
       } else if (err.request) {

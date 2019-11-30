@@ -76,6 +76,7 @@ export default function BMI(props) {
             {name: "Percentage", value: gaugePercent, fill: gaugeColor},
             {name: "Remaining Percent", value: 100 - gaugePercent, fill: '#eee'},
         ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.current]);
 
     if (loading) {

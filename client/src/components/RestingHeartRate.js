@@ -22,7 +22,7 @@ export default function RestingHeartRate(props) {
         return (
             <React.Fragment>
                 <Title>Resting Heart Rate</Title>
-                <ResponsiveContainer height={160}>
+                <ResponsiveContainer height={165}>
                     <LineChart
                         data={data}
                         margin={{

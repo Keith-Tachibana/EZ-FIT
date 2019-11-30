@@ -38,6 +38,7 @@ export default function WeightGoal(props) {
             {name: "Weight", value: current, fill: props.color},  
             {name: "Remaining Weight", value: Math.abs(remainingWeight), fill: '#eee'},
         ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.goalType, props.start, props.current, props.goal]);
 
     if (loading) {

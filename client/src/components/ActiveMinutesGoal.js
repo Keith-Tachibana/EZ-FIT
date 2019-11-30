@@ -30,6 +30,7 @@ export default function ActiveMinutesGoal(props) {
             {name: "Active Minutes", value: props.current, fill: props.color},
             {name: "Remaining Active Minutes", value: remainingSteps, fill: '#eee'},
         ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.current, props.goal]);
 
     if (loading) {
