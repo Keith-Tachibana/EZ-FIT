@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,6 +15,7 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Tooltip from '@material-ui/core/Tooltip';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { mainListItems } from './listItems';
 import axios from 'axios';
@@ -106,17 +107,19 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function Dashboard() {
+export default function Dashboard(props) {
     const history = useHistory();
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+
+    const [name, setName] = useState(0);
+    
     const handleDrawerOpen = () => {
         setOpen(true);
     };
     const handleDrawerClose = () => {
         setOpen(false);
     };
-    const [name, setName] = React.useState(0);
 
     const signout = () => {
         async function getSignout() {
@@ -144,7 +147,7 @@ export default function Dashboard() {
         async function fetchName() {
             try {
                 const res = await axios.get('/user/getname', { headers });
-                console.log(res);
+                // console.log(res);
                 if (res.data.status === 'error') {
                     if (res.data.message === 'jwt expired') {
                         //pass
@@ -152,11 +155,8 @@ export default function Dashboard() {
                     sessionStorage.removeItem('access-token');
                     history.push('/');
                 } else if (res.data.status === 'success') {
-                    setName(
-                        res.data.data.firstName +
-                            ' ' +
-                            res.data.data.lastName
-                    );
+                    const name = res.data.data;
+                    setName(name.firstName);
                 }
             } catch (err) {
                 console.log(err.response);
@@ -198,6 +198,15 @@ export default function Dashboard() {
                     >
                         {(name ? name + "'s " : '') + 'Dashboard'}
                     </Typography>
+                    <Tooltip title="Dark mode">
+                        <IconButton
+                            color="inherit"
+                            aria-label="Dark mode"
+                            // onClick={signout}
+                        >
+                            <Brightness4Icon />
+                        </IconButton>
+                    </Tooltip>
                     <Tooltip title="Signout">
                         <IconButton
                             color="inherit"

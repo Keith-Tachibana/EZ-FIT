@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route, Redirect, useRouteMatch } from 'react-router-dom'
 import Dashboard from './Dashboard'
 
-const User = () => {
+export default function User(props) {
     let match = useRouteMatch();
     return (
         <main>
@@ -10,10 +10,10 @@ const User = () => {
                 <Route exact path={`${match.path}`}>
                     <Redirect to={`${match.path}/dashboard`} />
                 </Route>
-                <Route path={`${match.path}`} component={Dashboard}/>
+                <Route path={`${match.path}`}>
+                    <Dashboard />
+                </Route>
             </Switch>
         </main>
     );
 };
-
-export default User
