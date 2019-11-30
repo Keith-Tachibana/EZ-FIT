@@ -18,7 +18,7 @@ export default function FloorsGoal(props) {
 
     const [loading, setLoading] = useState(props.loading);
     const [data, setData] = useState([
-        {name: "Floors", value: props.current, fill: '#8884d8'},
+        {name: "Floors", value: props.current, fill: props.color},
         {name: "Remaining Floors", value: reaminingFloors, fill: '#eee'},
     ]);
 
@@ -28,7 +28,7 @@ export default function FloorsGoal(props) {
 
     useEffect(() => {
         setData([
-            {name: "Floors", value: props.current, fill: '#8884d8'},
+            {name: "Floors", value: props.current, fill: props.color},
             {name: "Remaining Floors", value: reaminingFloors, fill: '#eee'},
         ]);
     }, [props.current, props.goal]);

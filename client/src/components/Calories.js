@@ -48,7 +48,7 @@ export default function Calories(props) {
                                 `${value} calories`,
                             ]}
                         />
-                        <Bar dataKey="value" fill="#8884d8" />
+                        <Bar dataKey="value" fill={props.color} />
                     </BarChart>
                 </ResponsiveContainer>
             </React.Fragment>

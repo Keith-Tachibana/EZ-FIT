@@ -17,7 +17,7 @@ export default function CaloriesGoal(props) {
 
     const [loading, setLoading] = useState(props.loading);
     const [data, setData] = useState([
-        {name: "Calories", value: props.current, fill: '#8884d8'},
+        {name: "Calories", value: props.current, fill: props.color},
         {name: "Remaining Calories", value: remainingCalories, fill: '#eee'},
     ]);
 
@@ -27,7 +27,7 @@ export default function CaloriesGoal(props) {
 
     useEffect(() => {
         setData([
-            {name: "Calories", value: props.current, fill: '#8884d8'},
+            {name: "Calories", value: props.current, fill: props.color},
             {name: "Remaining Calories", value: remainingCalories, fill: '#eee'},  
         ])
     }, [props.current, props.goal]);

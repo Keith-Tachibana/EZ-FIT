@@ -33,9 +33,9 @@ export default function Weight(props) {
                         }}
                     >
                         <XAxis dataKey="dateTime" />
-                        <YAxis domain={['dataMin - 2', 'dataMax + 2']}/>
+                        <YAxis domain={['dataMin - 2', 'dataMax + 2']} label={{ value: 'Pounds', angle: -90, position: 'insideLeft' }}/>
                         <Tooltip formatter={(value, name, props) => ( [`${value} lb`] )} />
-                        <Area dataKey='value' fill='#8884d8' />
+                        <Area dataKey='value' fill={props.color} />
                     </AreaChart>
                 </ResponsiveContainer>
             </React.Fragment>

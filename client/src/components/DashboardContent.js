@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
 export default function DashboardContent() {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    const dataColor = '#BB86FC';
 
     const [connectionStatus, setConnectionStatus] = useState(true);
     const [completed, setCompleted] = useState(0);
@@ -430,37 +431,37 @@ export default function DashboardContent() {
             {/* Steps Goal */}
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <StepsGoal loading={loading.steps} current={steps.current} goal={steps.goal} />
+                <StepsGoal loading={loading.steps} current={steps.current} goal={steps.goal} color={dataColor} />
               </Paper>
             </Grid>
             {/* Distance Goal */}
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <DistanceGoal loading={loading.distance} current={distance.current} goal={distance.goal} />
+                <DistanceGoal loading={loading.distance} current={distance.current} goal={distance.goal} color={dataColor} />
               </Paper>
             </Grid>
             {/* Floors Goal */}
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={fixedHeightPaper}>
-                  <FloorsGoal loading={loading.floors} current={floors.current} goal={floors.goal} />
+                  <FloorsGoal loading={loading.floors} current={floors.current} goal={floors.goal} color={dataColor} />
               </Paper>
             </Grid>
             {/* Active Minutes Goal */}
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <ActiveMinutesGoal loading={loading.activeMinutes} current={activeMinutes.current} goal={activeMinutes.goal} />
+                <ActiveMinutesGoal loading={loading.activeMinutes} current={activeMinutes.current} goal={activeMinutes.goal} color={dataColor} />
               </Paper>
             </Grid>
             {/* Calories */}
             <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
-                <Calories loading={loading.caloriesBurnedData} caloriesBurnedData={caloriesBurnedData} />
+                <Calories loading={loading.caloriesBurnedData} caloriesBurnedData={caloriesBurnedData} color={dataColor} />
               </Paper>
             </Grid>
             {/* Calories Goal */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <CaloriesGoal loading={loading.calories} current={calories.current} goal={calories.goal} />
+                <CaloriesGoal loading={loading.calories} current={calories.current} goal={calories.goal} color={dataColor} />
               </Paper>
             </Grid>
             {/* Exercise */}
@@ -484,13 +485,13 @@ export default function DashboardContent() {
             {/* Weight */}
             <Grid item xs={12} md={6} lg={6}>
               <Paper className={fixedHeightPaper}>
-                <Weight loading={loading.weightData} weightData={weightData} />
+                <Weight loading={loading.weightData} weightData={weightData} color={dataColor} />
               </Paper>
             </Grid>
             {/* Weight goal */}
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <WeightGoal loading={loading.weight} goalType={weight.goalType} start={weight.start} current={weight.current} goal={weight.goal} />
+                <WeightGoal loading={loading.weight} goalType={weight.goalType} start={weight.start} current={weight.current} goal={weight.goal} color={dataColor} />
               </Paper>
             </Grid>
             {/* BMI */}

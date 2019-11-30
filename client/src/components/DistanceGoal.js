@@ -13,12 +13,12 @@ function CustomLabel({viewBox, value1, value2}){
   }
 
 export default function DistanceGoal(props) {
-    const remainingSteps = (props.goal - props.current) < 0 ? 0 : (props.goal - props.current);
+    const remainingDistance = (props.goal - props.current) < 0 ? 0 : (props.goal - props.current);
 
     const [loading, setLoading] = useState(props.loading);
     const [data, setData] = useState([
-        {name: "Distance", value: props.current, fill: '#8884d8'},
-        {name: "Remaining Distance", value: remainingSteps, fill: '#eee'},
+        {name: "Distance", value: props.current, fill: props.color},
+        {name: "Remaining Distance", value: remainingDistance, fill: '#eee'},
     ]);
 
     useEffect(() => {
@@ -27,8 +27,8 @@ export default function DistanceGoal(props) {
 
     useEffect(() => {
         setData([
-            {name: "Distance", value: props.current, fill: '#8884d8'},
-            {name: "Remaining Distance", value: remainingSteps, fill: '#eee'},
+            {name: "Distance", value: props.current, fill: props.color},
+            {name: "Remaining Distance", value: remainingDistance, fill: '#eee'},
         ]);
     }, [props.current, props.goal]);
 
@@ -48,7 +48,7 @@ export default function DistanceGoal(props) {
                                 {`${props.current} miles`}
                             </Label>
                         </Pie>
-                        <Tooltip position={{ x: 0, y: 0 }} formatter={(value, name, props) => ( [`${value} miles`, name] )} />
+                        <Tooltip position={{ x: 0, y: 0 }} formatter={(value, name, props) => ( [`${value.toPrecision(2)} miles`, name] )} />
         
                     </PieChart>
                 </ResponsiveContainer>

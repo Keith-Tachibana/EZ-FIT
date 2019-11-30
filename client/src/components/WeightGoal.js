@@ -19,8 +19,8 @@ export default function WeightGoal(props) {
 
     const [loading, setLoading] = useState(props.loading);
     const [data, setData] = useState([
-        {name: "Weight", value: props.current, fill: '#8884d8'},
-        {name: "Remaining Weight", value: Math.abs(remainingWeight), fill: '#eee'},
+        {name: "Weight", value: props.current, fill: props.color},
+        {name: "Remaining Weight", value: Math.abs(remainingWeight).toPrecision(2), fill: '#eee'},
     ]);
 
     useEffect(() => {
@@ -35,7 +35,7 @@ export default function WeightGoal(props) {
             current = current > 0 ? 0 : Math.abs(current);
         }
         setData([
-            {name: "Weight", value: current, fill: '#8884d8'},  
+            {name: "Weight", value: current, fill: props.color},  
             {name: "Remaining Weight", value: Math.abs(remainingWeight), fill: '#eee'},
         ]);
     }, [props.goalType, props.start, props.current, props.goal]);

@@ -17,7 +17,7 @@ export default function StepsGoal(props) {
 
     const [loading, setLoading] = useState(props.loading);
     const [data, setData] = useState([
-        {name: "Steps", value: props.current, fill: '#8884d8'},
+        {name: "Steps", value: props.current, fill: props.color},
         {name: "Remaining Steps", value: remainingSteps, fill: '#eee'},
     ]);
 
@@ -27,7 +27,7 @@ export default function StepsGoal(props) {
 
     useEffect(() => {
         setData([
-            {name: "Steps", value: props.current, fill: '#8884d8'},
+            {name: "Steps", value: props.current, fill: props.color},
             {name: "Remaining Steps", value: remainingSteps, fill: '#eee'},
         ]);
     }, [props.current, props.goal]);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip } from 'recharts';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Title from './Title'
 
@@ -36,6 +36,7 @@ export default function HeartRateZones(props) {
                         <XAxis dataKey="dateTime" />
                         <YAxis label={{ value: 'Minutes', angle: -90, position: 'insideLeft' }}/>
                         <Tooltip position={{ y: 10 }} formatter={(value, name, props) => ( [`${value} min`, name] )} />
+                        <Legend />
                         <Area connectNulls={true} dataKey='value.heartRateZones[0].minutes' name='Out of Range' stackId='1' stroke='#fecc5c' fill='#fecc5c' />
                         <Area connectNulls={true} dataKey='value.heartRateZones[1].minutes' name='Fat Burn' stackId='1' stroke='#fd8d3c' fill='#fd8d3c' />
                         <Area connectNulls={true} dataKey='value.heartRateZones[2].minutes' name='Cardio' stackId='1' stroke='#f03b20' fill='#f03b20' />
