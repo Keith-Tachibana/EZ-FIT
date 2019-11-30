@@ -3,8 +3,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const validator = require('validator');
 const axios = require('axios');
-const qs = require('querystring');
-var ObjectID = require('mongodb').ObjectID;
 const appConfig = require('../../../config/appConfig');
 const mailgun = require('mailgun-js');
 
@@ -234,7 +232,6 @@ function updatePassword(req, res, next) {
                 'New password must not be the same as the current password',
             data: null,
         });
-        next(err);
     }
     var userId = req.body.userId;
     if (userId !== null) {
@@ -248,28 +245,21 @@ function updatePassword(req, res, next) {
                         userInfo.password
                     );
                     if (match) {
-                        const hashedPassword = await bcrypt.hash(
-                            req.body.password,
-                            appConfig.saltRounds
-                        );
-                        userModel.updateOne(
-                            {
-                                _id: ObjectID(userId),
-                            },
-                            {
-                                $set: {
-                                    password: hashedPassword,
-                                },
-                            },
-                            async err => {
-                                res.json({
-                                    status: 'success',
-                                    message:
-                                        'Successfully updated password',
-                                    data: null,
-                                });
-                            }
-                        );
+                        userInfo.password = req.body.password;
+                        try {
+                            await userInfo.save();
+                            res.json({
+                                status: 'success',
+                                message: 'Successfully updated password',
+                                data: null,
+                            });
+                        } catch (err) {
+                            res.json({
+                                status: 'error',
+                                message: 'Error updating password',
+                                data: null,
+                            });
+                        }
                     } else {
                         res.json({
                             status: 'error',
@@ -353,8 +343,8 @@ async function resetPassword(req, res, next) {
                         });
                     } else {
                         userInfo.password = req.body.password;
-                        await userInfo.save();
                         try {
+                            await userInfo.save();
                             res.json({
                                 status: 'success',
                                 message: 'Successfully reset password',
@@ -366,7 +356,6 @@ async function resetPassword(req, res, next) {
                                 message: 'Invalid reset token',
                                 data: null,
                             });
-                            next(err);
                         }
                     }
                 }
@@ -377,7 +366,6 @@ async function resetPassword(req, res, next) {
                 message: 'Invalid reset token',
                 data: null,
             });
-            next(err);
         }
     }
 }

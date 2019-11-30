@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { PieChart, Pie, Label, ResponsiveContainer, Tooltip } from 'recharts';
+import { PieChart, Pie, Label, ResponsiveContainer } from 'recharts';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 function CustomLabel({viewBox, value1, value2}){

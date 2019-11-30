@@ -1,8 +1,6 @@
 const userModel = require('../models/users');
 const axios = require('axios');
-const qs = require('querystring');
 const authFlow = require('../controller/authflow');
-const moment = require('moment');
 
 async function checkTokenExpiry(tokenExpiry, userInfo) {
     try {
