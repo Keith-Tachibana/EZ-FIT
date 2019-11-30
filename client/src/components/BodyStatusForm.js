@@ -10,6 +10,8 @@ import {
   Divider,
   Container,
   Grid,
+  LinearProgress,
+  CircularProgress,
 } from "@material-ui/core";
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -20,7 +22,14 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
   root: {},
+  wrapper: {
+    position: 'relative',
+  },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
@@ -29,7 +38,15 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1),
     minWidth: 120,
   },
-  submit: {}
+  submit: {},
+  buttonProgress: {
+    color: 'primary',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
 }));
 
 export default function BodyStatusForm(props){
@@ -41,6 +58,9 @@ export default function BodyStatusForm(props){
     arms: '',
     legs: '',
   });
+
+  const [loading, setLoading] = useState(true);
+  const [buttonLoading, setButtonLoading] = useState(false);
   
   const [errors, setErrors] = useState({
     head: {
@@ -64,6 +84,7 @@ export default function BodyStatusForm(props){
   };
 
   async function getBodyStatus() {
+    setLoading(true);
     try {
         const res = await axios.get('/user/getbodystatus', {headers});
         console.log(res);
@@ -82,6 +103,7 @@ export default function BodyStatusForm(props){
           Object.assign(currentBodyStatus, bodyStatus);
           setValues(currentBodyStatus);
         }
+        setLoading(false);
     } catch (err) {
       if (err.response) {
         // The request was made and the server responded with a status code
@@ -99,10 +121,12 @@ export default function BodyStatusForm(props){
         console.log('Error', err.message);
       }
       console.log(err.config);
+      setLoading(false);
     }
   }
   
   async function updateBodyStatus() {
+    setButtonLoading(true);
     try {
         const res = await axios.post('/user/updatebodystatus', values, {headers});
         console.log(res);
@@ -130,8 +154,10 @@ export default function BodyStatusForm(props){
               },
             });
         }
+        setButtonLoading(false);
     } catch (err) {
       setStatus(0);
+      setButtonLoading(false);
       if (err.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
@@ -150,14 +176,16 @@ export default function BodyStatusForm(props){
             message: null,
           },
         };
-        let error;
-        for (error of errs){
-          Object.assign(currentErrors, {
-            [error.param]: {
-              status: true,
-              message: error.msg,
-            },
-          });
+        if (errs instanceof Array){
+          let error;
+          for (error of errs){
+            Object.assign(currentErrors, {
+              [error.param]: {
+                status: true,
+                message: error.msg,
+              },
+            });
+          }
         }
         setErrors(currentErrors);
         console.log(err.response.data);
@@ -177,13 +205,9 @@ export default function BodyStatusForm(props){
   }
   
   useEffect(() => {
-    //TODO get body status
     getBodyStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // useEffect(() => {
-  //   console.log(errors);
-  // }, [errors]);
 
   const handleChange = name => event => {
     setValues({
@@ -194,13 +218,13 @@ export default function BodyStatusForm(props){
 
   const submitHandler = e => {
     e.preventDefault();
-    //TODO update body status
     updateBodyStatus();
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" className={classes.container}>
       <Card className={classes.root}>
+        <LinearProgress style={{display: loading ? '' : 'none'}} />
         <form
           className={classes.form}
           onSubmit={submitHandler}
@@ -297,14 +321,18 @@ export default function BodyStatusForm(props){
           </CardContent>
           <Divider />
           <CardActions>
-            <Button
-              type="submit"
-              color="primary"
-              variant="contained"
-              className={classes.submit}
-            >
-              Update
-            </Button>
+            <div className={classes.wrapper}>
+              <Button
+                type="submit"
+                color="primary"
+                variant="contained"
+                disabled={buttonLoading}
+                className={classes.submit}
+              >
+                Update
+              </Button>
+              {buttonLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
+            </div>
           </CardActions>
         </form>
       </Card>
