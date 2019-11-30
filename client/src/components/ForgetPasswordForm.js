@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import axios from 'axios';
+import { CircularProgress } from '@material-ui/core';
 
 function Copyright() {
   return (
@@ -33,6 +34,9 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.common.white,
     },
   },
+  wrapper: {
+    position: 'relative',
+  },
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -50,6 +54,14 @@ const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(3, 0, 2),
   },
+  buttonProgress: {
+    color: 'primary',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
 }));
 
 export default function ForgetPasswordForm() {
@@ -64,6 +76,8 @@ export default function ForgetPasswordForm() {
       message: null,
     },
   });
+
+  const [buttonLoading, setButtonLoading] = useState(false);
 
   const [status, setStatus] = useState(0);
   const classes = useStyles();
@@ -82,15 +96,18 @@ export default function ForgetPasswordForm() {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    setButtonLoading(true);
     axios.post('/forgetpassword', {
       email: values.email,
     })
     .then(res => {
       console.log(res);
       setStatus(res.data.message);
+      setButtonLoading(false);
     })
     .catch(err => {
       setStatus(0);
+      setButtonLoading(false);
       if (err.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
@@ -176,15 +193,19 @@ export default function ForgetPasswordForm() {
           </Grid>
           <Grid container spacing={2}>
             <Grid item xs={6}>
+              <div className={classes.wrapper}>
                 <Button
                     type="submit"
                     fullWidth
                     variant="contained"
                     color="primary"
+                    disabled={buttonLoading}
                     className={classes.button}
                 >
                     Search
                 </Button>
+                {buttonLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
+              </div>
             </Grid>
             <Grid item xs={6}>
                 <Button

@@ -12,6 +12,7 @@ import {
   Grid,
   IconButton,
   InputAdornment,
+  CircularProgress,
 } from "@material-ui/core";
 import ErrorIcon from "@material-ui/icons/Error";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -21,16 +22,28 @@ import axios from "axios";
 
 const useStyles = makeStyles(theme => ({
   root: {},
+  wrapper: {
+    position: 'relative',
+  },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-  submit: {}
+  submit: {},
+  buttonProgress: {
+    color: 'primary',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
 }));
 
 export default function PasswordForm(){
    const classes = useStyles();
 
+   const [buttonLoading, setButtonLoading] = useState(false);
    const [password, setPassword] = useState({
         password: '',
         confirmPassword: '',
@@ -89,18 +102,22 @@ export default function PasswordForm(){
 
   const submitHandler = e => {
     e.preventDefault();
-    const oldPasswordValue  = e.target.oldPassword.value;
+    setButtonLoading(true);
 
+    const oldPasswordValue  = e.target.oldPassword.value;
     const passwordValue = e.target.password.value;
     const confirmPasswordValue = e.target.confirmPassword.value;
+
     if (passwordValue !== confirmPasswordValue) {
       setStatus(0);
       setError("Passwords do not match");
+      setButtonLoading(false);
       return;
     }
     if(passwordValue === oldPasswordValue){
       setStatus(0);
-      setError("New password cannot be the same as the current password");
+      setError("New password can't match current password");
+      setButtonLoading(false);
       return;
     }
 
@@ -119,8 +136,10 @@ export default function PasswordForm(){
         setError(0);
         setStatus(res.data.message);
       }
+      setButtonLoading(false);
     }).catch(err =>{
       setStatus(0);
+      setButtonLoading(false);
       if (err.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
@@ -270,14 +289,18 @@ export default function PasswordForm(){
         </CardContent>
         <Divider />
         <CardActions>
-          <Button
-            type="submit"
-            color="primary"
-            variant="contained"
-            className={classes.submit}
-          >
-            Update
-          </Button>
+          <div className={classes.wrapper}>
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              disabled={buttonLoading}
+              className={classes.submit}
+            >
+              Update
+            </Button>
+            {buttonLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
+          </div>
         </CardActions>
       </form>
     </Card>

@@ -13,6 +13,7 @@ import {
   Grid,
   IconButton,
   InputAdornment,
+  CircularProgress,
 } from "@material-ui/core";
 import ErrorIcon from "@material-ui/icons/Error";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -28,16 +29,28 @@ const Link1 = React.forwardRef((props, ref) => (
 
 const useStyles = makeStyles(theme => ({
   root: {},
+  wrapper: {
+    position: 'relative',
+  },
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-  submit: {}
+  submit: {},
+  buttonProgress: {
+    color: 'primary',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
 }));
 
 export default function PasswordResetForm(props){
    const classes = useStyles();
 
+   const [buttonLoading, setButtonLoading] = useState(false);
    const [password, setPassword] = useState({
         password: '',
         confirmPassword: '',
@@ -86,11 +99,13 @@ export default function PasswordResetForm(props){
   };
 
   const submitHandler = e => {
+    setButtonLoading(true);
     e.preventDefault();
     let passwordValue = password.password;
     if (passwordValue !== password.confirmPassword) {
       setStatus(0);
       setError("Passwords do not match");
+      setButtonLoading(false);
       return;
     }
 
@@ -107,8 +122,10 @@ export default function PasswordResetForm(props){
         setError(0);
         setStatus(res.data.message);
       }
+      setButtonLoading(false);
     }).catch(err =>{
       setStatus(0);
+      setButtonLoading(false);
       if (err.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
@@ -237,14 +254,18 @@ export default function PasswordResetForm(props){
           </CardContent>
           <Divider />
           <CardActions>
-            <Button
-              type="submit"
-              color="primary"
-              variant="contained"
-              className={classes.submit}
-            >
-              Reset
-            </Button>
+            <div className={classes.wrapper}>
+              <Button
+                type="submit"
+                color="primary"
+                variant="contained"
+                disabled={buttonLoading}
+                className={classes.submit}
+              >
+                Reset
+              </Button>
+              {buttonLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
+            </div>
           </CardActions>
         </form>
       </Card>

@@ -4,18 +4,29 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { Button, CardHeader, Divider, TextField, Grid } from '@material-ui/core';
+import { Button, CardHeader, Divider, TextField, Grid, LinearProgress, CircularProgress } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
     root: {},
+    wrapper: {
+        position: 'relative',
+    },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1),
       },
     submit: {},
+    buttonProgress: {
+        color: 'primary',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
+    },
 }));
 
 export default function PersonalInfoForm(){
@@ -35,6 +46,8 @@ export default function PersonalInfoForm(){
         additionalInfo: '',
     });
 
+    const [loading, setLoading] = useState(true);
+    const [buttonLoading, setButtonLoading] = useState(false);
     const [status, setStatus] = useState(0);
 
     const handleChange = (e) => {
@@ -48,90 +61,99 @@ export default function PersonalInfoForm(){
         'x-access-token': sessionStorage.getItem("access-token"),
     };
 
-    useEffect(() => {
-        async function fetchPersonalInfo(){
-            try{
-                const res = await axios.get('/user/getpersonalinfo', {headers});
-                // console.log(res.data);
-                if (res.data.status === "error"){
-                    if (res.data.message === "jwt expired"){
-                        //pass
-                    }
-                sessionStorage.removeItem("access-token");
-                history.push("/");
-                } else {
-                    let info = res.data.data;
-                    let currentInfo = {
-                        ...values,
-                    };
-                    Object.assign(currentInfo, info);
-                    setValues(currentInfo);
+    async function fetchPersonalInfo(){
+        setLoading(true);
+        try{
+            const res = await axios.get('/user/getpersonalinfo', {headers});
+            // console.log(res.data);
+            if (res.data.status === "error"){
+                if (res.data.message === "jwt expired"){
+                    //pass
                 }
+            sessionStorage.removeItem("access-token");
+            history.push("/");
+            } else {
+                let info = res.data.data;
+                let currentInfo = {
+                    ...values,
+                };
+                Object.assign(currentInfo, info);
+                setValues(currentInfo);
             }
-            catch (err) {
-                if (err.response) {
-                    // The request was made and the server responded with a status code
-                    // that falls out of the range of 2xx
-                    console.log(err.response.data);
-                    console.log(err.response.status);
-                    console.log(err.response.headers);
-                  } else if (err.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                    // http.ClientRequest in node.js
-                    console.log(err.request);
-                  } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', err.message);
-                  }
-                  console.log(err.config);
-            }
-        };
+            setLoading(false);
+        }
+        catch (err) {
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(err.response.data);
+                console.log(err.response.status);
+                console.log(err.response.headers);
+              } else if (err.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(err.request);
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', err.message);
+              }
+              console.log(err.config);
+              setLoading(false);
+        }
+    };
+
+    useEffect(() => {
         fetchPersonalInfo();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    async function updatePersonalInfo(){
+        setButtonLoading(true)
+        try {
+            const res = await axios.post('/user/updatepersonalinfo', values, {headers});
+            // console.log(res.data);
+            if (res.data.status === "error"){
+                setStatus(0);
+                if (res.data.message === "jwt expired"){
+                    //pass
+                }
+            sessionStorage.removeItem("access-token");
+            history.push("/");
+            } else {
+                setStatus(res.data.message);
+            }
+            setButtonLoading(false);
+        }
+        catch (err) {
+            setButtonLoading(false);
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(err.response.data);
+                console.log(err.response.status);
+                console.log(err.response.headers);
+              } else if (err.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(err.request);
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', err.message);
+              }
+              console.log(err.config);
+        }
+    }
+
     const submitHandler = (e) => {
         e.preventDefault();
-        async function updatePersonalInfo(){
-            try {
-                const res = await axios.post('/user/updatepersonalinfo', values, {headers});
-                // console.log(res.data);
-                if (res.data.status === "error"){
-                    setStatus(0);
-                    if (res.data.message === "jwt expired"){
-                        //pass
-                    }
-                sessionStorage.removeItem("access-token");
-                history.push("/");
-                } else {
-                    setStatus(res.data.message);
-                }
-            }
-            catch (err) {
-                if (err.response) {
-                    // The request was made and the server responded with a status code
-                    // that falls out of the range of 2xx
-                    console.log(err.response.data);
-                    console.log(err.response.status);
-                    console.log(err.response.headers);
-                  } else if (err.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                    // http.ClientRequest in node.js
-                    console.log(err.request);
-                  } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', err.message);
-                  }
-                  console.log(err.config);
-            }
-        }
         updatePersonalInfo();
     };
 
     return (
         <Card className={classes.root}>
+            <LinearProgress style={{display: loading ? '' : 'none'}} />
             <form
                 className={classes.form}
                 onSubmit={submitHandler}
@@ -314,13 +336,17 @@ export default function PersonalInfoForm(){
                 </CardContent>
                 <Divider />
                 <CardActions>
-                    <Button 
-                        type="submit"
-                        color="primary"
-                        variant="contained"
-                        className={classes.submit}>
-                        Update
-                    </Button>
+                    <div className={classes.wrapper}>
+                        <Button 
+                            type="submit"
+                            color="primary"
+                            variant="contained"
+                            disabled={buttonLoading}
+                            className={classes.submit}>
+                            Update
+                        </Button>
+                        {buttonLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                    </div>
                 </CardActions>
             </form>
         </Card>
