@@ -4,8 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import axios from 'axios';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import axios from 'axios';
 import StepsGoal from './StepsGoal';
 import DistanceGoal from './DistanceGoal';
 import FloorsGoal from './FloorsGoal';
@@ -18,6 +18,17 @@ import Weight from './Weight';
 import WeightGoal from './WeightGoal';
 import ConnectDialog from './ConnectDialog';
 import BMI from './BMI';
+import { Typography, Hidden } from '@material-ui/core';
+import SyncButton from './SyncButton';
+
+function toLocaleStringSupportsLocales() {
+  try {
+    new Date().toLocaleString('i');
+  } catch (e) {
+    return e instanceof RangeError;
+  }
+  return false;
+}
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -31,8 +42,18 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         justifyContent: 'center'
     },
+    syncPaper: {
+      padding: '0 8px 0 16px',
+      display: 'flex',
+      overflow: 'auto',
+      alignItems: 'center',
+      justifyContent: 'flex-end'
+  },
     fixedHeight: {
         height: 240,
+    },
+    title: {
+      flexGrow: 1,
     },
 }));
 
@@ -43,6 +64,8 @@ export default function DashboardContent() {
 
     const [connectionStatus, setConnectionStatus] = useState(true);
     const [completed, setCompleted] = useState(0);
+    const [syncError, setSyncError] = useState(false);
+    const [syncMessage, setSyncMessage] = useState('Retrieving data');
     const [loading, setLoading] = useState({
       steps: true,
       distance: true,
@@ -129,7 +152,7 @@ export default function DashboardContent() {
 
     function incrementCompleted() {
       setCompleted((completed) => {
-        console.log(`load status: ${completed} -> ${completed + (100 / 6)}`);
+        // console.log(`load status: ${completed} -> ${completed + (100 / 6)}`);
         return completed + (100 / 6);
       });
     }
@@ -142,6 +165,7 @@ export default function DashboardContent() {
               return true;
           } else {
               setConnectionStatus(false);
+              setSyncMessage('Not connected');
               return false;
           }
       } catch (err) {
@@ -161,6 +185,7 @@ export default function DashboardContent() {
           console.log('Error', err.message);
         }
         console.log(err.config);
+        setSyncError(true);
       }
     };
 
@@ -176,6 +201,8 @@ export default function DashboardContent() {
               caloriesBurnedData: false,
             }
           });
+        } else {
+          setSyncError(true);
         }
       } catch (err) {
         if (err.response) {
@@ -194,6 +221,7 @@ export default function DashboardContent() {
           console.log('Error', err.message);
         }
         console.log(err.config);
+        setSyncError(true);
       }
       incrementCompleted();
     };
@@ -233,6 +261,8 @@ export default function DashboardContent() {
               activeMinutes: false,
             }
           });
+        } else {
+          setSyncError(true);
         }
       } catch (err) {
         if (err.response) {
@@ -251,6 +281,7 @@ export default function DashboardContent() {
           console.log('Error', err.message);
         }
         console.log(err.config);
+        setSyncError(true);
       }
       incrementCompleted();
     };
@@ -267,6 +298,8 @@ export default function DashboardContent() {
               heartRateData: false,
             }
           });
+        } else {
+          setSyncError(true);
         }
       } catch (err) {
         if (err.response) {
@@ -285,6 +318,7 @@ export default function DashboardContent() {
           console.log('Error', err.message);
         }
         console.log(err.config);
+        setSyncError(true);
       }
       incrementCompleted();
     }
@@ -301,6 +335,8 @@ export default function DashboardContent() {
               weightData: false,
             }
           });
+        } else {
+          setSyncError(true);
         }
       } catch (err) {
         if (err.response) {
@@ -319,6 +355,7 @@ export default function DashboardContent() {
           console.log('Error', err.message);
         }
         console.log(err.config);
+        setSyncError(true);
       }
       incrementCompleted();
     }
@@ -340,6 +377,8 @@ export default function DashboardContent() {
               weight: false,
             }
           });
+        } else {
+          setSyncError(true);
         }
       } catch (err) {
         if (err.response) {
@@ -358,6 +397,7 @@ export default function DashboardContent() {
           console.log('Error', err.message);
         }
         console.log(err.config);
+        setSyncError(true);
       }
       incrementCompleted();
     }
@@ -375,6 +415,8 @@ export default function DashboardContent() {
               currentBMI: false,
             }
           });
+        } else {
+          setSyncError(true);
         }
       } catch (err) {
         if (err.response) {
@@ -393,12 +435,14 @@ export default function DashboardContent() {
           console.log('Error', err.message);
         }
         console.log(err.config);
+        setSyncError(true);
       }
       incrementCompleted();
     }
 
     async function getAllData() {
       setCompleted(0);
+      setSyncError(false);
       getActivitySummary();
       getCaloriesBurnedData();
       getHeartRateData();
@@ -407,10 +451,10 @@ export default function DashboardContent() {
       getBMIData();
     }
 
-    // useEffect(() => {
-    //   console.log(loading);
-    // }, [loading])
-    
+    const handleSync = () => {
+      getAllData();
+    }
+
     useEffect(() => {
       async function initialLoad() {
         const status = await checkTokenStatus();
@@ -421,13 +465,67 @@ export default function DashboardContent() {
         }
       }
       initialLoad();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+      if (syncError) {
+        setSyncMessage('Error retrieving data');
+      }
+      else if (completed < 100) {
+        setSyncMessage('Retrieving data');
+      }
+      else if (completed >= 100) {
+        let ts = new Date();
+        if (toLocaleStringSupportsLocales()) {
+          const options = {
+            dateStyle: 'medium',
+            timeStyle: 'short',
+          }
+          setSyncMessage(ts.toLocaleString('en-US', options));
+        } else {
+          setSyncMessage(ts.toLocaleString());
+        }
+      }
+    }, [completed, syncError])
 
     return (
         <Container maxWidth="lg" className={classes.container}>
-          <LinearProgress variant="determinate" value={completed} style={{display: (completed <= 100) ? '' : 'none' }}/>
           <ConnectDialog connection={connectionStatus} />
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Paper className={classes.syncPaper} >
+                <Hidden smDown>
+                  <Typography
+                    component="h1"
+                    variant="h6"
+                    color="inherit"
+                    noWrap
+                    className={classes.title}
+                  >
+                    Fitbit Data
+                  </Typography>
+                </Hidden>
+                <Typography
+                  component="h1"
+                  variant="subtitle2"
+                  color="inherit"
+                >
+                  {`LAST FITBIT SYNC: ${syncMessage}`}
+                </Typography>
+                <SyncButton connectionStatus={connectionStatus} syncError={syncError} completed={completed} onSyncButtonPress={handleSync} />
+                {/* <Tooltip title="Sync">
+                    <IconButton
+                        color="inherit"
+                        aria-label="sync"
+                        onClick={handleSync}
+                    >
+                        <SyncIcon />
+                    </IconButton>
+                </Tooltip> */}
+              </Paper>
+              <LinearProgress variant="determinate" value={completed} style={{display: (completed <= 100) ? '' : 'none'}}/>
+            </Grid>
             {/* Steps Goal */}
             <Grid item xs={12} md={3} lg={3}>
               <Paper className={fixedHeightPaper}>
