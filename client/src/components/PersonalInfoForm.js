@@ -58,7 +58,7 @@ export default function PersonalInfoForm(){
     }
 
     const headers = {
-        'x-access-token': sessionStorage.getItem("access-token"),
+        'x-access-token': localStorage.getItem("access-token"),
     };
 
     async function fetchPersonalInfo(){
@@ -70,7 +70,7 @@ export default function PersonalInfoForm(){
                 if (res.data.message === "jwt expired"){
                     //pass
                 }
-            sessionStorage.removeItem("access-token");
+            localStorage.removeItem("access-token");
             history.push("/");
             } else {
                 let info = res.data.data;
@@ -118,7 +118,7 @@ export default function PersonalInfoForm(){
                 if (res.data.message === "jwt expired"){
                     //pass
                 }
-            sessionStorage.removeItem("access-token");
+            localStorage.removeItem("access-token");
             history.push("/");
             } else {
                 setStatus(res.data.message);

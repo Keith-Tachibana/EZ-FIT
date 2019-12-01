@@ -126,7 +126,7 @@ export default function Dashboard(props) {
             try {
                 const res = await axios.get('/user/signout', { headers });
                 if (res.data.status === 'success') {
-                    sessionStorage.removeItem('access-token');
+                    localStorage.removeItem('access-token');
                     history.push('/');
                 }
             } catch (err) {
@@ -137,11 +137,11 @@ export default function Dashboard(props) {
     };
 
     const headers = {
-        'x-access-token': sessionStorage.getItem('access-token'),
+        'x-access-token': localStorage.getItem('access-token'),
     };
 
     useEffect(() => {
-        if (!sessionStorage.getItem('access-token')) {
+        if (!localStorage.getItem('access-token')) {
             history.push('/');
         }
         async function fetchName() {
@@ -152,7 +152,7 @@ export default function Dashboard(props) {
                     if (res.data.message === 'jwt expired') {
                         //pass
                     }
-                    sessionStorage.removeItem('access-token');
+                    localStorage.removeItem('access-token');
                     history.push('/');
                 } else if (res.data.status === 'success') {
                     const name = res.data.data;

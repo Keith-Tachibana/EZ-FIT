@@ -57,7 +57,7 @@ export default function PasswordForm(){
   });
 
   const headers = {
-    'x-access-token': sessionStorage.getItem("access-token"),
+    'x-access-token': localStorage.getItem("access-token"),
   };
   useEffect(() => {
     if (password.password === password.confirmPassword) {

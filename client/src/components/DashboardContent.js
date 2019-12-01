@@ -147,7 +147,7 @@ export default function DashboardContent() {
     const [currentBMI, setCurrentBMI] = useState(0);
 
     const headers = {
-      'x-access-token': sessionStorage.getItem("access-token"),
+      'x-access-token': localStorage.getItem("access-token"),
     };
 
     function incrementCompleted() {

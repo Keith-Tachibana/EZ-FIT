@@ -80,7 +80,7 @@ export default function BodyStatusForm(props){
   const [status, setStatus] = useState(0);
   
   const headers = {
-    'x-access-token': sessionStorage.getItem("access-token"),
+    'x-access-token': localStorage.getItem("access-token"),
   };
 
   async function getBodyStatus() {
@@ -93,7 +93,7 @@ export default function BodyStatusForm(props){
             if (res.data.message === "jwt expired"){
                 //pass
             }
-        sessionStorage.removeItem("access-token");
+        localStorage.removeItem("access-token");
         history.push("/");
         } else {
           let bodyStatus = res.data.data;
@@ -135,7 +135,7 @@ export default function BodyStatusForm(props){
             if (res.data.message === "jwt expired"){
                 //pass
             }
-        sessionStorage.removeItem("access-token");
+        localStorage.removeItem("access-token");
         history.push("/");
         } else {
             setStatus(res.data.message);

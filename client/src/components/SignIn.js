@@ -113,7 +113,7 @@ export default function SignIn() {
           setStatus(res.data.message);
         } else if (res.data.status === "success") {
           setStatus(null);
-          sessionStorage.setItem("access-token", res.data.data.token);
+          localStorage.setItem("access-token", res.data.data.token);
           history.push('/user');
         }
       })
@@ -156,7 +156,7 @@ export default function SignIn() {
       })
     };
   
-    if (sessionStorage.getItem("access-token") !== null){
+    if (localStorage.getItem("access-token") !== null){
       history.push('/user');
     }
   

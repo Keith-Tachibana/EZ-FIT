@@ -60,7 +60,7 @@ function Description(props) {
 
 export default function FitbitConnection() {
     const headers = {
-        'x-access-token': sessionStorage.getItem('access-token'),
+        'x-access-token': localStorage.getItem('access-token'),
     };
     const classes = useStyles();
     const [loading, setLoading] = useState(true);
