@@ -8,6 +8,8 @@ const home = require('./routes/home');
 const users = require('./routes/users');
 const mongoose = require('./config/database'); //database configuration
 const appConfig = require('./config/appConfig');
+const enforce = require('express-sslify');
+const nakedRedirect = require('express-naked-redirect');
 const SECRET_KEY = appConfig.secretKey;
 const port = appConfig.port;
 const app = express();
@@ -25,6 +27,11 @@ mongoose.connection.on(
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+if(process.env.NODE_ENV === "production") {
+    app.use(nakedRedirect())
+    app.use(enforce.HTTPS({ trustProtoHeader: true }))
+}
 
 //Static files
 app.use(express.static('client/public'));
