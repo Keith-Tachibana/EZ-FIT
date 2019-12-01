@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "cd client && npm run build && cd ../ && npm run start",
     "start": "node app.js",
+    "heroku-postbuild": "cd client && npm install && npm run build",
     "compile": "cd client && npm run build"
   },
   "repository": {
