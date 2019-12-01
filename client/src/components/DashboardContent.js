@@ -165,7 +165,6 @@ export default function DashboardContent() {
               return true;
           } else {
               setConnectionStatus(false);
-              setSyncMessage('Not connected');
               return false;
           }
       } catch (err) {
@@ -469,7 +468,10 @@ export default function DashboardContent() {
     }, []);
 
     useEffect(() => {
-      if (syncError) {
+      if (!connectionStatus){
+        setSyncMessage('Not connected');
+      }
+      else if (syncError) {
         setSyncMessage('Error retrieving data');
       }
       else if (completed < 100) {
@@ -487,7 +489,7 @@ export default function DashboardContent() {
           setSyncMessage(ts.toLocaleString());
         }
       }
-    }, [completed, syncError])
+    }, [connectionStatus, completed, syncError])
 
     return (
         <Container maxWidth="lg" className={classes.container}>
