@@ -17,7 +17,6 @@ app.set('secretKey', SECRET_KEY);
 
 app.use(favicon(path.join(__dirname, 'client/public', '/favicon.ico')));
 //Add file name as last arg to change initial file to be loaded
-app.use(express.static(path.join(__dirname, 'client/build')));
 
 //Connect to mongodb
 mongoose.connection.on(
@@ -25,6 +24,7 @@ mongoose.connection.on(
     console.error.bind(console, 'MongoDB connection error:')
 );
 app.use(logger('dev'));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -32,10 +32,11 @@ app.use(bodyParser.json());
 //     app.use(nakedRedirect());
 //     app.use(enforce.HTTPS({ trustProtoHeader: true }));
 // }
-app.use(nakedRedirect());
+// app.use(nakedRedirect());
 app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 //Static files
+app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(express.static('client/public'));
 
 //Public route
