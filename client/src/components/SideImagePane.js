@@ -8,6 +8,8 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import ForgetPasswordForm from "./ForgetPasswordForm";
 import Verify from "./Verify";
+import TOS from "./TOS"
+import Policy from "./Policy"
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -51,6 +53,8 @@ export default function SideImagePane() {
           <Route path='/register' component={SignUp}/>
           <Route path='/verify' component={Verify}/>
           <Route path='/forgetpassword' component={ForgetPasswordForm}/>
+          <Route path='/tos' component={TOS}/>
+          <Route path='/policy' component={Policy}/>
         </Switch>
       </Grid>
     </Grid>
