@@ -30,6 +30,7 @@
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "create-react-app": "^3.2.0",
+    "csv": "^5.3.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-naked-redirect": "^0.1.4",
@@ -44,7 +45,8 @@
     "react-dom": "^16.10.2",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.2.0",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "skmeans": "^0.11.2"
   },
   "engines": {
     "node": "12.x"

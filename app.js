@@ -32,8 +32,8 @@ app.use(bodyParser.json());
 //     app.use(nakedRedirect());
 //     app.use(enforce.HTTPS({ trustProtoHeader: true }));
 // }
-app.use(nakedRedirect());
-app.use(enforce.HTTPS({ trustProtoHeader: true }));
+// app.use(nakedRedirect());
+// app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 //Static files
 app.use(express.static('client/public'));

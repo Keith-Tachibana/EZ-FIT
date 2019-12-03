@@ -113,7 +113,7 @@ export default function Dashboard(props) {
     const [open, setOpen] = useState(false);
 
     const [name, setName] = useState(0);
-    
+
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -171,10 +171,7 @@ export default function Dashboard(props) {
             <CssBaseline />
             <AppBar
                 position="absolute"
-                className={clsx(
-                    classes.appBar,
-                    open && classes.appBarShift
-                )}
+                className={clsx(classes.appBar, open && classes.appBarShift)}
             >
                 <Toolbar className={classes.toolbar}>
                     <IconButton
@@ -265,10 +262,7 @@ export default function Dashboard(props) {
                         </Container>
                     </Route>
                     <Route path="/user/connecttracker">
-                        <Container
-                            maxWidth="lg"
-                            className={classes.container}
-                        >
+                        <Container maxWidth="lg" className={classes.container}>
                             <Grid container>
                                 <Grid item xs={12} sm={6}>
                                     <FitbitConnection />
