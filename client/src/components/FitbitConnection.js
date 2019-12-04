@@ -76,7 +76,7 @@ export default function FitbitConnection() {
         setLoading(true);
         try {
             const response = await axios.get(
-                '/user/checkOAuthTokenStatus',
+                '/api/checkOAuthTokenStatus',
                 {
                     headers,
                 }
@@ -100,7 +100,7 @@ export default function FitbitConnection() {
         const oauthCode = code;
         try {
             const resultToken = await axios.post(
-                '/user/obtainToken',
+                '/api/obtainToken',
                 { code: oauthCode },
                 { headers }
             );
@@ -118,7 +118,7 @@ export default function FitbitConnection() {
         setButtonLoading(true);
         try {
             const res = await axios.post(
-                '/user/revokeToken',
+                '/api/revokeToken',
                 {},
                 { headers }
             );

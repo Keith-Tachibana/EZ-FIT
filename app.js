@@ -5,7 +5,7 @@ const favicon = require('serve-favicon');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const home = require('./routes/home');
-const users = require('./routes/users');
+const api = require('./routes/api');
 const mongoose = require('./config/database'); //database configuration
 const appConfig = require('./config/appConfig');
 const enforce = require('express-sslify');
@@ -28,22 +28,24 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// if(process.env.NODE_ENV === "production") {
-//     app.use(nakedRedirect());
-//     app.use(enforce.HTTPS({ trustProtoHeader: true }));
-// }
-app.use(nakedRedirect());
-app.use(enforce.HTTPS({ trustProtoHeader: true }));
+if(process.env.NODE_ENV === "production") {
+    app.use(nakedRedirect());
+    app.use(enforce.HTTPS({ trustProtoHeader: true }));
+}
+// app.use(nakedRedirect());
+// app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 //Static files
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(express.static('client/public'));
 
+//Api private route
+app.use('/api', validateUser, api);
+
 //Public route
 app.use('/', home);
 
-//Api private route
-app.use('/user', validateUser, users);
+app.get("*", (req, res) => res.sendFile(path.join(__dirname, '/client/build', 'index.html')));
 
 //handle 404 error
 app.use((req, res, next) => {
