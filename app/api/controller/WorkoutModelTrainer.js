@@ -5,7 +5,7 @@ const workoutModelKM = require('../models/workoutmodel');
 
 var trainingData;
 var trainedModel;
-var modelTest;
+function modelTest() {}
 async function trainModel() {
     try {
         const data = fs.readFileSync('data.csv', function(err, data) {
@@ -29,22 +29,37 @@ function parseData(data) {
     getModel(trainingData);
 }
 function getModel(trainingData) {
-    trainedModel = kmeans(trainingData, 4);
-    modelTest = trainedModel.test;
-    const saveModel = async () => {
-        await workoutModelKM.create({
-            model: {
-                it: trainedModel.it,
-                k: trainedModel.k,
-                centroids: trainedModel.centroids,
-                idxs: trainedModel.idxs,
-            },
-        });
-    };
-    // console.log(trainedModel);
-    // const saveModel = async docmodel => {
-    //     await docmodel.save();
-    // };
+    try {
+        trainedModel = kmeans(trainingData, 4, [
+            [6.1, 22, 23.332],
+            [22.1, 35, 27.325],
+            [24.2, 40, 29.016],
+            [32.6, 50, 31.79],
+        ]);
+        modelTest = trainedModel.test;
+        const saveModel = async () => {
+            await workoutModelKM.create({
+                model: {
+                    it: trainedModel.it,
+                    k: trainedModel.k,
+                    centroids: trainedModel.centroids,
+                    idxs: trainedModel.idxs,
+                },
+            });
+        };
+        saveModel();
+        var counts = {};
+        for (var i = 0; i < trainedModel.idxs.length; i++) {
+            var num = trainedModel.idxs[i];
+            counts[num] = counts[num] ? counts[num] + 1 : 1;
+        }
+        console.log(counts);
+        // const saveModel = async docmodel => {
+        //     await docmodel.save();
+        // };
+    } catch (err) {
+        console.log('Failed', err);
+    }
 }
 function getPrediction(model) {
     console.log(model);

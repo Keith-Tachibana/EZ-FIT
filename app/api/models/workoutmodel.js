@@ -37,7 +37,6 @@ var modelSchema = new Schema({
         },
         idxs: {
             type: [Number],
-            trim: true,
         },
     },
 });

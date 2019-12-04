@@ -23,9 +23,7 @@ async function checkTokenExpiry(tokenExpiry, userInfo) {
 async function checkTokenStatus(userInfo) {
     try {
         if (userInfo) {
-            if (
-                authFlow.checkTokenValidity(userInfo.authToken) === false
-            ) {
+            if (authFlow.checkTokenValidity(userInfo.authToken) === false) {
                 return false;
             }
             const tokenExpiry = userInfo.authToken.expires_in;
@@ -105,14 +103,14 @@ async function getCaloriesBurned(req, res, next) {
                 }
             );
             // console.log(resp.data);
-            const caloriesBurnedData = resp.data[
-                'activities-calories'
-            ].map(obj => {
-                let rObj = {};
-                rObj.dateTime = obj.dateTime;
-                rObj.value = parseInt(obj.value);
-                return rObj;
-            });
+            const caloriesBurnedData = resp.data['activities-calories'].map(
+                obj => {
+                    let rObj = {};
+                    rObj.dateTime = obj.dateTime;
+                    rObj.value = parseInt(obj.value);
+                    return rObj;
+                }
+            );
             res.json({
                 status: 'success',
                 message: 'Successfully retrieved calories',
@@ -203,7 +201,7 @@ async function getWeightData(req, res, next) {
             res.json({
                 status: 'success',
                 message: 'Successfully retrieved weight data',
-                data: {"body-weight": weightData},
+                data: { 'body-weight': weightData },
             });
         } catch (err) {
             if (err.response) {
@@ -212,17 +210,17 @@ async function getWeightData(req, res, next) {
                 console.log(err.response.data);
                 console.log(err.response.status);
                 console.log(err.response.headers);
-              } else if (err.request) {
+            } else if (err.request) {
                 // The request was made but no response was received
                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                 // http.ClientRequest in node.js
                 console.log(err.request);
-              } else {
+            } else {
                 // Something happened in setting up the request that triggered an Error
                 console.log('Error', err.message);
-              }
-              console.log(err.config);
-              res.json({
+            }
+            console.log(err.config);
+            res.json({
                 status: 'error',
                 message: 'Error getting weight data',
                 data: null,
@@ -271,10 +269,12 @@ async function getWeightGoal(req, res, next) {
             res.json({
                 status: 'success',
                 message: 'Successfully retrieved weight goal',
-                data: {goal: {
-                    ...weightGoalData,
-                    current: currentWeight,
-                }},
+                data: {
+                    goal: {
+                        ...weightGoalData,
+                        current: currentWeight,
+                    },
+                },
             });
         } catch (err) {
             if (err.response) {
@@ -283,16 +283,16 @@ async function getWeightGoal(req, res, next) {
                 console.log(err.response.data);
                 console.log(err.response.status);
                 console.log(err.response.headers);
-              } else if (err.request) {
+            } else if (err.request) {
                 // The request was made but no response was received
                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                 // http.ClientRequest in node.js
                 console.log(err.request);
-              } else {
+            } else {
                 // Something happened in setting up the request that triggered an Error
                 console.log('Error', err.message);
-              }
-              console.log(err.config);
+            }
+            console.log(err.config);
             res.json({
                 status: 'error',
                 message: 'Error getting weight goal',
@@ -337,7 +337,7 @@ async function getBMIData(req, res, next) {
             res.json({
                 status: 'success',
                 message: 'Successfully retrieved weight data',
-                data: {"body-bmi": bmiData},
+                data: { 'body-bmi': bmiData },
             });
         } catch (err) {
             if (err.response) {
@@ -346,17 +346,17 @@ async function getBMIData(req, res, next) {
                 console.log(err.response.data);
                 console.log(err.response.status);
                 console.log(err.response.headers);
-              } else if (err.request) {
+            } else if (err.request) {
                 // The request was made but no response was received
                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                 // http.ClientRequest in node.js
                 console.log(err.request);
-              } else {
+            } else {
                 // Something happened in setting up the request that triggered an Error
                 console.log('Error', err.message);
-              }
-              console.log(err.config);
-              res.json({
+            }
+            console.log(err.config);
+            res.json({
                 status: 'error',
                 message: 'Error getting BMI data',
                 data: null,
@@ -367,4 +367,11 @@ async function getBMIData(req, res, next) {
     }
 }
 
-module.exports = { getActivitySummary, getCaloriesBurned, getHeartRate, getWeightData, getWeightGoal, getBMIData };
+module.exports = {
+    getActivitySummary,
+    getCaloriesBurned,
+    getHeartRate,
+    getWeightData,
+    getWeightGoal,
+    getBMIData,
+};

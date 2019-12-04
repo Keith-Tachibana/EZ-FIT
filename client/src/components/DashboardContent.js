@@ -455,10 +455,10 @@ export default function DashboardContent() {
     }
     async function getWorkoutRoutine() {
         try {
-            const res = await axios.get('/user/getWorkoutPrediction', {
+            await axios.get('/user/getWorkoutPrediction', {
                 headers,
             });
-            if (res) console.log('Phase 1 compelte');
+            console.log('Phase 1 compelte');
         } catch (err) {
             console.log(err);
         }
