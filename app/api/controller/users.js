@@ -75,8 +75,7 @@ async function resendVerificationEmail(req, res, next) {
             { expiresIn: 86400 } // 24 hour expiration
         );
         const verificationLink =
-            req.protocol +
-            '://' +
+            'https://' +
             req.hostname +
             '/verify?id=' +
             userInfo._id +
@@ -122,8 +121,7 @@ async function register(req, res, next) {
                 { expiresIn: 86400 } // 24 hour expiration
             );
             const verificationLink =
-                req.protocol +
-                '://' +
+                'https://' +
                 req.hostname +
                 '/verify?id=' +
                 userInfo._id +
@@ -300,8 +298,7 @@ async function forgetPassword(req, res, next) {
             { expiresIn: 86400 } // 24 hour expiration
         );
         const resetLink =
-            req.protocol +
-            '://' +
+            'https://' +
             req.hostname +
             '/resetpassword?id=' +
             userInfo._id +

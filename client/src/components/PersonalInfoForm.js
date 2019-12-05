@@ -64,7 +64,7 @@ export default function PersonalInfoForm(){
     async function fetchPersonalInfo(){
         setLoading(true);
         try{
-            const res = await axios.get('/user/getpersonalinfo', {headers});
+            const res = await axios.get('/api/getpersonalinfo', {headers});
             // console.log(res.data);
             if (res.data.status === "error"){
                 if (res.data.message === "jwt expired"){
@@ -111,7 +111,7 @@ export default function PersonalInfoForm(){
     async function updatePersonalInfo(){
         setButtonLoading(true)
         try {
-            const res = await axios.post('/user/updatepersonalinfo', values, {headers});
+            const res = await axios.post('/api/updatepersonalinfo', values, {headers});
             // console.log(res.data);
             if (res.data.status === "error"){
                 setStatus(0);

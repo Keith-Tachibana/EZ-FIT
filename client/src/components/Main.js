@@ -31,6 +31,8 @@ export default function Main() {
             <Route path='/register' component={SideImagePane}/>
             <Route path='/verify' component={SideImagePane}/>
             <Route path='/forgetpassword' component={SideImagePane}/>
+            <Route path='/tos' component={SideImagePane}/>
+            <Route path='/policy' component={SideImagePane}/>
             <Route path='/resetpassword' component={PasswordResetForm}/>
             <Route path='/user'>
               <User prefersDarkMode={prefersDarkMode} />
