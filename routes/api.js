@@ -56,6 +56,6 @@ router.get('/getweightgoal', fitbitApiController.getWeightGoal);
 router.get('/getbmidata', fitbitApiController.getBMIData);
 
 /* Model routes */
-router.get('/getWorkoutPrediction', workoutPredictor.trainModel);
+// router.get('/getWorkoutPrediction', workoutPredictor.trainModel);
 
 module.exports = router;
