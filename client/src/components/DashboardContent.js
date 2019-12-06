@@ -164,43 +164,54 @@ export default function DashboardContent() {
     }
 
     async function checkTokenStatus() {
-      try {
-          const res = await axios.get('/api/checkOAuthTokenStatus',{ headers });
-          if (res.data.status === 'success') {
-              setConnectionStatus(true);
-              return true;
-          } else {
-              setConnectionStatus(false);
-              return false;
-          }
-      } catch (err) {
-        if (err.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(err.response.data);
-          console.log(err.response.status);
-          console.log(err.response.headers);
-        } else if (err.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(err.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', err.message);
+        try {
+            const res = await axios.get('/user/checkOAuthTokenStatus', {
+                headers,
+            });
+            if (res.data.status === 'success') {
+                setConnectionStatus(true);
+                return true;
+            } else {
+                setConnectionStatus(false);
+                return false;
+            }
+        } catch (err) {
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(err.response.data);
+                console.log(err.response.status);
+                console.log(err.response.headers);
+            } else if (err.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(err.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', err.message);
+            }
+            console.log(err.config);
+            setSyncError(true);
         }
     }
 
     async function getCaloriesBurnedData() {
-      try {
-        const res = await axios.get('/api/getcaloriesburned', { headers });
-        if (res.data.status === 'success') {
-          const caloriesBurnedData = res.data.data;
-          setCaloriesBurnedData(caloriesBurnedData['activities-calories']);
-          setLoading(loading => {
-            return {
-              ...loading,
-              caloriesBurnedData: false,
+        try {
+            const res = await axios.get('/user/getcaloriesburned', { headers });
+            if (res.data.status === 'success') {
+                const caloriesBurnedData = res.data.data;
+                setCaloriesBurnedData(
+                    caloriesBurnedData['activities-calories']
+                );
+                setLoading(loading => {
+                    return {
+                        ...loading,
+                        caloriesBurnedData: false,
+                    };
+                });
+            } else {
+                setSyncError(true);
             }
         } catch (err) {
             if (err.response) {
@@ -225,38 +236,47 @@ export default function DashboardContent() {
     }
 
     async function getActivitySummary() {
-      try {
-        const res = await axios.get('/api/getactivitysummary', {headers});
-        if (res.data.status === 'success') {
-          const activitySummary = res.data.data;
-          setCalories({
-            current: activitySummary.summary.caloriesOut,
-            goal: activitySummary.goals.caloriesOut,
-          })
-          setSteps({
-            current: activitySummary.summary.steps,
-            goal: activitySummary.goals.steps,
-          });
-          setDistance({
-            current: activitySummary.summary.distances[0].distance,
-            goal: activitySummary.goals.distance,
-          });
-          setFloors({
-            current: activitySummary.summary.floors,
-            goal: activitySummary.goals.floors,
-          });
-          setActiveMinutes({
-            current: activitySummary.summary.fairlyActiveMinutes + activitySummary.summary.veryActiveMinutes,
-            goal: activitySummary.goals.activeMinutes,
-          });
-          setLoading(loading => {
-            return {
-              ...loading,
-              calories: false,
-              steps: false,
-              distance: false,
-              floors: false,
-              activeMinutes: false,
+        try {
+            const res = await axios.get('/user/getactivitysummary', {
+                headers,
+            });
+            if (res.data.status === 'success') {
+                const activitySummary = res.data.data;
+                setCalories({
+                    current: activitySummary.summary.caloriesOut,
+                    goal: activitySummary.goals.caloriesOut,
+                });
+                setSteps({
+                    current: activitySummary.summary.steps,
+                    goal: activitySummary.goals.steps,
+                });
+                setDistance({
+                    current: activitySummary.summary.distances[0].distance,
+                    goal: activitySummary.goals.distance,
+                });
+                setFloors({
+                    current: activitySummary.summary.floors,
+                    goal: activitySummary.goals.floors,
+                });
+                setActiveMinutes({
+                    current:
+                        activitySummary.summary.fairlyActiveMinutes +
+                        activitySummary.summary.veryActiveMinutes,
+                    goal: activitySummary.goals.activeMinutes,
+                });
+                setLoading(loading => {
+                    return {
+                        ...loading,
+                        calories: false,
+                        steps: false,
+                        distance: false,
+                        floors: false,
+                        activeMinutes: false,
+                        workoutRoutine: false,
+                    };
+                });
+            } else {
+                setSyncError(true);
             }
         } catch (err) {
             if (err.response) {
@@ -281,15 +301,19 @@ export default function DashboardContent() {
     }
 
     async function getHeartRateData() {
-      try {
-        const res = await axios.get('/api/getheartrate', {headers});
-        if (res.data.status === 'success') {
-          const heartRateData = res.data.data;
-          setHeartRateData(heartRateData['activities-heart']);
-          setLoading(loading => {
-            return {
-              ...loading,
-              heartRateData: false,
+        try {
+            const res = await axios.get('/user/getheartrate', { headers });
+            if (res.data.status === 'success') {
+                const heartRateData = res.data.data;
+                setHeartRateData(heartRateData['activities-heart']);
+                setLoading(loading => {
+                    return {
+                        ...loading,
+                        heartRateData: false,
+                    };
+                });
+            } else {
+                setSyncError(true);
             }
         } catch (err) {
             if (err.response) {
@@ -314,15 +338,19 @@ export default function DashboardContent() {
     }
 
     async function getWeightData() {
-      try {
-        const res = await axios.get('/api/getweightdata', {headers});
-        if (res.data.status === 'success') {
-          const weightData = res.data.data;
-          setWeightData(weightData['body-weight']);
-          setLoading(loading => {
-            return {
-              ...loading,
-              weightData: false,
+        try {
+            const res = await axios.get('/user/getweightdata', { headers });
+            if (res.data.status === 'success') {
+                const weightData = res.data.data;
+                setWeightData(weightData['body-weight']);
+                setLoading(loading => {
+                    return {
+                        ...loading,
+                        weightData: false,
+                    };
+                });
+            } else {
+                setSyncError(true);
             }
         } catch (err) {
             if (err.response) {
@@ -347,20 +375,24 @@ export default function DashboardContent() {
     }
 
     async function getWeightGoal() {
-      try {
-        const res = await axios.get('/api/getweightgoal', {headers});
-        if (res.data.status === 'success') {
-          const weightGoal = res.data.data;
-          setWeight({
-            goalType: weightGoal.goal['goalType'],
-            start: weightGoal.goal['startWeight'],
-            current: weightGoal.goal['current'],
-            goal: weightGoal.goal['weight'],
-          });
-          setLoading(loading => {
-            return {
-              ...loading,
-              weight: false,
+        try {
+            const res = await axios.get('/user/getweightgoal', { headers });
+            if (res.data.status === 'success') {
+                const weightGoal = res.data.data;
+                setWeight({
+                    goalType: weightGoal.goal['goalType'],
+                    start: weightGoal.goal['startWeight'],
+                    current: weightGoal.goal['current'],
+                    goal: weightGoal.goal['weight'],
+                });
+                setLoading(loading => {
+                    return {
+                        ...loading,
+                        weight: false,
+                    };
+                });
+            } else {
+                setSyncError(true);
             }
         } catch (err) {
             if (err.response) {
@@ -385,16 +417,20 @@ export default function DashboardContent() {
     }
 
     async function getBMIData() {
-      try {
-        const res = await axios.get('/api/getbmidata', {headers});
-        console.log(res);
-        if (res.data.status === 'success') {
-          const bmiData = res.data.data;
-          setCurrentBMI(bmiData['body-bmi'][0].value);
-          setLoading(loading => {
-            return {
-              ...loading,
-              currentBMI: false,
+        try {
+            const res = await axios.get('/user/getbmidata', { headers });
+            console.log(res);
+            if (res.data.status === 'success') {
+                const bmiData = res.data.data;
+                setCurrentBMI(bmiData['body-bmi'][0].value);
+                setLoading(loading => {
+                    return {
+                        ...loading,
+                        currentBMI: false,
+                    };
+                });
+            } else {
+                setSyncError(true);
             }
         } catch (err) {
             if (err.response) {
@@ -480,31 +516,176 @@ export default function DashboardContent() {
 
     return (
         <Container maxWidth="lg" className={classes.container}>
-          <ConnectDialog connection={connectionStatus} />
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Paper className={classes.syncPaper} >
-                <Hidden smDown>
-                  <Typography
-                    component="h1"
-                    variant="h6"
-                    color="inherit"
-                    noWrap
-                    className={classes.title}
-                  >
-                    Fitbit Data
-                  </Typography>
-                </Hidden>
-                <Typography
-                  component="h1"
-                  variant="subtitle2"
-                  color="inherit"
-                >
-                  {`LAST FITBIT SYNC: ${syncMessage}`}
-                </Typography>
-                <SyncButton connectionStatus={connectionStatus} syncError={syncError} completed={completed} onSyncButtonPress={handleSync} />
-              </Paper>
-              <LinearProgress variant="determinate" value={completed} style={{display: (completed <= 100) ? '' : 'none'}}/>
+            <ConnectDialog connection={connectionStatus} />
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Paper className={classes.syncPaper}>
+                        <Hidden smDown>
+                            <Typography
+                                component="h1"
+                                variant="h6"
+                                color="inherit"
+                                noWrap
+                                className={classes.title}
+                            >
+                                Fitbit Data
+                            </Typography>
+                        </Hidden>
+                        <Typography
+                            component="h1"
+                            variant="subtitle2"
+                            color="inherit"
+                        >
+                            {`LAST FITBIT SYNC: ${syncMessage}`}
+                        </Typography>
+                        <SyncButton
+                            connectionStatus={connectionStatus}
+                            syncError={syncError}
+                            completed={completed}
+                            onSyncButtonPress={handleSync}
+                        />
+                        {/* <Tooltip title="Sync">
+                    <IconButton
+                        color="inherit"
+                        aria-label="sync"
+                        onClick={handleSync}
+                    >
+                        <SyncIcon />
+                    </IconButton>
+                </Tooltip> */}
+                    </Paper>
+                    <LinearProgress
+                        variant="determinate"
+                        value={completed}
+                        style={{ display: completed <= 100 ? '' : 'none' }}
+                    />
+                </Grid>
+                {/* Steps Goal */}
+                <Grid item xs={12} md={3} lg={3}>
+                    <Paper className={fixedHeightPaper}>
+                        <StepsGoal
+                            loading={loading.steps}
+                            current={steps.current}
+                            goal={steps.goal}
+                            color={dataColor}
+                        />
+                    </Paper>
+                </Grid>
+                {/* Distance Goal */}
+                <Grid item xs={12} md={3} lg={3}>
+                    <Paper className={fixedHeightPaper}>
+                        <DistanceGoal
+                            loading={loading.distance}
+                            current={distance.current}
+                            goal={distance.goal}
+                            color={dataColor}
+                        />
+                    </Paper>
+                </Grid>
+                {/* Floors Goal */}
+                <Grid item xs={12} md={3} lg={3}>
+                    <Paper className={fixedHeightPaper}>
+                        <FloorsGoal
+                            loading={loading.floors}
+                            current={floors.current}
+                            goal={floors.goal}
+                            color={dataColor}
+                        />
+                    </Paper>
+                </Grid>
+                {/* Active Minutes Goal */}
+                <Grid item xs={12} md={3} lg={3}>
+                    <Paper className={fixedHeightPaper}>
+                        <ActiveMinutesGoal
+                            loading={loading.activeMinutes}
+                            current={activeMinutes.current}
+                            goal={activeMinutes.goal}
+                            color={dataColor}
+                        />
+                    </Paper>
+                </Grid>
+                {/* Calories */}
+                <Grid item xs={12} md={8} lg={9}>
+                    <Paper className={fixedHeightPaper}>
+                        <Calories
+                            loading={loading.caloriesBurnedData}
+                            caloriesBurnedData={caloriesBurnedData}
+                            color={dataColor}
+                        />
+                    </Paper>
+                </Grid>
+                {/* Calories Goal */}
+                <Grid item xs={12} md={4} lg={3}>
+                    <Paper className={fixedHeightPaper}>
+                        <CaloriesGoal
+                            loading={loading.calories}
+                            current={calories.current}
+                            goal={calories.goal}
+                            color={dataColor}
+                        />
+                    </Paper>
+                </Grid>
+                {/* Exercise */}
+                <Grid item xs={12}>
+                    <Paper className={fixedHeightPaper}>
+                        <Workout
+                            loading={loading.workoutRoutine}
+                            workoutRoutine={workoutRoutine}
+                        >
+                            Exercise
+                        </Workout>
+                    </Paper>
+                </Grid>
+                {/* Heart Rate */}
+                <Grid item xs={12} md={6} lg={6}>
+                    <Paper className={fixedHeightPaper}>
+                        <HeartRateZones
+                            loading={loading.heartRateData}
+                            heartRateData={heartRateData}
+                        />
+                    </Paper>
+                </Grid>
+                {/* Resting Heart Rate */}
+                <Grid item xs={12} md={6} lg={6}>
+                    <Paper className={fixedHeightPaper}>
+                        <RestingHeartRate
+                            loading={loading.heartRateData}
+                            heartRateData={heartRateData}
+                        />
+                    </Paper>
+                </Grid>
+                {/* Weight */}
+                <Grid item xs={12} md={6} lg={6}>
+                    <Paper className={fixedHeightPaper}>
+                        <Weight
+                            loading={loading.weightData}
+                            weightData={weightData}
+                            color={dataColor}
+                        />
+                    </Paper>
+                </Grid>
+                {/* Weight goal */}
+                <Grid item xs={12} md={3} lg={3}>
+                    <Paper className={fixedHeightPaper}>
+                        <WeightGoal
+                            loading={loading.weight}
+                            goalType={weight.goalType}
+                            start={weight.start}
+                            current={weight.current}
+                            goal={weight.goal}
+                            color={dataColor}
+                        />
+                    </Paper>
+                </Grid>
+                {/* BMI */}
+                <Grid item xs={12} md={3} lg={3}>
+                    <Paper className={fixedHeightPaper}>
+                        <BMI
+                            loading={loading.currentBMI}
+                            current={currentBMI}
+                        />
+                    </Paper>
+                </Grid>
             </Grid>
         </Container>
     );
