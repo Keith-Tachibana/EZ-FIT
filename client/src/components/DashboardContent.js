@@ -165,7 +165,7 @@ export default function DashboardContent() {
 
     async function checkTokenStatus() {
         try {
-            const res = await axios.get('/user/checkOAuthTokenStatus', {
+            const res = await axios.get('/api/checkOAuthTokenStatus', {
                 headers,
             });
             if (res.data.status === 'success') {
@@ -198,7 +198,7 @@ export default function DashboardContent() {
 
     async function getCaloriesBurnedData() {
         try {
-            const res = await axios.get('/user/getcaloriesburned', { headers });
+            const res = await axios.get('/api/getcaloriesburned', { headers });
             if (res.data.status === 'success') {
                 const caloriesBurnedData = res.data.data;
                 setCaloriesBurnedData(
@@ -237,7 +237,7 @@ export default function DashboardContent() {
 
     async function getActivitySummary() {
         try {
-            const res = await axios.get('/user/getactivitysummary', {
+            const res = await axios.get('/api/getactivitysummary', {
                 headers,
             });
             if (res.data.status === 'success') {
@@ -302,7 +302,7 @@ export default function DashboardContent() {
 
     async function getHeartRateData() {
         try {
-            const res = await axios.get('/user/getheartrate', { headers });
+            const res = await axios.get('/api/getheartrate', { headers });
             if (res.data.status === 'success') {
                 const heartRateData = res.data.data;
                 setHeartRateData(heartRateData['activities-heart']);
@@ -339,7 +339,7 @@ export default function DashboardContent() {
 
     async function getWeightData() {
         try {
-            const res = await axios.get('/user/getweightdata', { headers });
+            const res = await axios.get('/api/getweightdata', { headers });
             if (res.data.status === 'success') {
                 const weightData = res.data.data;
                 setWeightData(weightData['body-weight']);
@@ -376,7 +376,7 @@ export default function DashboardContent() {
 
     async function getWeightGoal() {
         try {
-            const res = await axios.get('/user/getweightgoal', { headers });
+            const res = await axios.get('/api/getweightgoal', { headers });
             if (res.data.status === 'success') {
                 const weightGoal = res.data.data;
                 setWeight({
@@ -418,7 +418,7 @@ export default function DashboardContent() {
 
     async function getBMIData() {
         try {
-            const res = await axios.get('/user/getbmidata', { headers });
+            const res = await axios.get('/api/getbmidata', { headers });
             console.log(res);
             if (res.data.status === 'success') {
                 const bmiData = res.data.data;
@@ -455,7 +455,7 @@ export default function DashboardContent() {
     }
     async function getWorkoutRoutine() {
         try {
-            await axios.get('/user/getWorkoutPrediction', {
+            await axios.get('/api/getWorkoutPrediction', {
                 headers,
             });
             console.log('Phase 1 compelte');
