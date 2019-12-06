@@ -86,7 +86,7 @@ export default function BodyStatusForm(props){
   async function getBodyStatus() {
     setLoading(true);
     try {
-        const res = await axios.get('/user/getbodystatus', {headers});
+        const res = await axios.get('/api/getbodystatus', {headers});
         console.log(res);
         if (res.data.status === "error"){
             setStatus(0);
@@ -128,7 +128,7 @@ export default function BodyStatusForm(props){
   async function updateBodyStatus() {
     setButtonLoading(true);
     try {
-        const res = await axios.post('/user/updatebodystatus', values, {headers});
+        const res = await axios.post('/api/updatebodystatus', values, {headers});
         console.log(res);
         if (res.data.status === "error"){
             setStatus(0);

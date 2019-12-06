@@ -121,7 +121,7 @@ export default function PasswordForm(){
       return;
     }
 
-    axios.post("/user/updatePassword", {
+    axios.post("/api/updatePassword", {
       oldPassword: oldPasswordValue,
       password: passwordValue,
     }, {headers}).then(res => {

@@ -124,7 +124,7 @@ export default function Dashboard(props) {
     const signout = () => {
         async function getSignout() {
             try {
-                const res = await axios.get('/user/signout', { headers });
+                const res = await axios.get('/api/signout', { headers });
                 if (res.data.status === 'success') {
                     localStorage.removeItem('access-token');
                     history.push('/');
@@ -146,7 +146,7 @@ export default function Dashboard(props) {
         }
         async function fetchName() {
             try {
-                const res = await axios.get('/user/getname', { headers });
+                const res = await axios.get('/api/getname', { headers });
                 // console.log(res);
                 if (res.data.status === 'error') {
                     if (res.data.message === 'jwt expired') {
