@@ -11,32 +11,32 @@ import { Tooltip } from '@material-ui/core';
 
 export const mainListItems = (
   <div>
-    <ListItem button component={Link} to="/user/dashboard">
-      <ListItemIcon>
+    <ListItem id='dashboardButton' button component={Link} to="/user/dashboard">
+      <ListItemIcon id='dashboardIcon'>
         <Tooltip title="Dashboard">
           <DashboardIcon />
         </Tooltip>
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
-    <ListItem button component={Link} to="/user/updatebodystatus">
-      <ListItemIcon>
+    <ListItem id='bodyStatusButton' button component={Link} to="/user/updatebodystatus">
+      <ListItemIcon id='bodyStatusIcon'>
         <Tooltip title="Body Status">
           <AccessibilityNewIcon />
         </Tooltip>
       </ListItemIcon>
       <ListItemText primary="Body Status" />
     </ListItem>
-    <ListItem button component={Link} to="/user/updatepersonalinfo">
-      <ListItemIcon>
+    <ListItem id='personalInfoButton' button component={Link} to="/user/updatepersonalinfo">
+      <ListItemIcon id='personalInfoIcon'>
         <Tooltip title="Personal Info">
           <AccountBoxIcon />
         </Tooltip>
       </ListItemIcon>
       <ListItemText primary="Personal Info" />
     </ListItem>
-    <ListItem button component={Link} to="/user/connecttracker">
-      <ListItemIcon>
+    <ListItem id='connectTrackerButton' button component={Link} to="/user/connecttracker">
+      <ListItemIcon id='connectTrackerIcon'>
         <Tooltip title="Connect Tracker">
           <LinkIcon />
         </Tooltip>
