@@ -152,8 +152,7 @@ async function obtainToken(req, res, next) {
             'https://api.fitbit.com/oauth2/token',
             qs.stringify({
                 grant_type: 'authorization_code',
-                redirect_uri:
-                    'http://localhost:3000/user/checkOAuthTokenStatus',
+                redirect_uri: 'http://localhost:3000/api/checkOAuthTokenStatus',
                 code: req.body.code,
             }),
             {

@@ -56,7 +56,7 @@ var contactSchema = new Schema({
 });
 
 var bodyStatusSchema = new Schema({
-    head: {
+    general: {
         type: String,
         trim: true,
         default: 'normal',

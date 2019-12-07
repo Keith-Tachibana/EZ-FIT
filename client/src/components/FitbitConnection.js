@@ -35,8 +35,8 @@ function ConnectDescription() {
     return (
         <Typography variant="body2" color="textSecondary" component="p">
             Connect your Fitbit account and your data will sync with the
-            dashboard automatically on login or you can start a sync
-            manually using the sync button.
+            dashboard automatically on login or you can start a sync manually
+            using the sync button.
         </Typography>
     );
 }
@@ -44,8 +44,8 @@ function ConnectDescription() {
 function DisconnectDescription() {
     return (
         <Typography variant="body2" color="textSecondary" component="p">
-            Disconnect your Fitbit account and your data will not sync with
-            the Dashboard.
+            Disconnect your Fitbit account and your data will not sync with the
+            Dashboard.
         </Typography>
     );
 }
@@ -75,14 +75,10 @@ export default function FitbitConnection() {
     const checkTokenStatus = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(
-                '/api/checkOAuthTokenStatus',
-                {
-                    headers,
-                }
-            );
-            if (response.data.status === 'success')
-                setConnectionStatus(true);
+            const response = await axios.get('/api/checkOAuthTokenStatus', {
+                headers,
+            });
+            if (response.data.status === 'success') setConnectionStatus(true);
             else {
                 setConnectionStatus(false);
             }
@@ -117,11 +113,7 @@ export default function FitbitConnection() {
     const handleDisconnection = async () => {
         setButtonLoading(true);
         try {
-            const res = await axios.post(
-                '/api/revokeToken',
-                {},
-                { headers }
-            );
+            const res = await axios.post('/api/revokeToken', {}, { headers });
             if (res.data.status === 'success') setConnectionStatus(false);
             setButtonLoading(false);
         } catch (err) {
@@ -131,7 +123,9 @@ export default function FitbitConnection() {
     };
     return (
         <Card className={classes.card}>
-            <LinearProgress style={{display: loading ? '' : 'none', marginTop: -10}} />
+            <LinearProgress
+                style={{ display: loading ? '' : 'none', marginTop: -10 }}
+            />
             <CardMedia className={classes.media}>
                 <img
                     src="/Fitbit_logo_RGB.png"
@@ -159,17 +153,23 @@ export default function FitbitConnection() {
             <div className={classes.wrapper}>
                 <span style={{ display: connectionStatus ? 'none' : '' }}>
                     <OauthPopup
-                        url="https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22BC4H&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fuser%2FcheckOAuthTokenStatus&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800"
+                        url="https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22BC4H&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2FcheckOAuthTokenStatus&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800"
                         onCode={syncConnection}
                     >
-                        <Button 
-                            variant="contained" 
-                            color="primary" 
+                        <Button
+                            variant="contained"
+                            color="primary"
                             disabled={loading || buttonLoading}
-                            fullWidth>
+                            fullWidth
+                        >
                             {connectionStatus ? 'Disconnect' : 'Connect'}
                         </Button>
-                        {buttonLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                        {buttonLoading && (
+                            <CircularProgress
+                                size={24}
+                                className={classes.buttonProgress}
+                            />
+                        )}
                     </OauthPopup>
                 </span>
                 <span style={{ display: connectionStatus ? '' : 'none' }}>
@@ -182,7 +182,12 @@ export default function FitbitConnection() {
                     >
                         {connectionStatus ? 'Disconnect' : 'Connect'}
                     </Button>
-                    {buttonLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                    {buttonLoading && (
+                        <CircularProgress
+                            size={24}
+                            className={classes.buttonProgress}
+                        />
+                    )}
                 </span>
             </div>
         </Card>

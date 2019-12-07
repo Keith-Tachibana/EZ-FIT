@@ -82,7 +82,10 @@ export default function Workout() {
                             >
                                 Monday
                             </Typography>
-                            <Typography className={classes.pos} color="error">
+                            <Typography
+                                className={classes.pos}
+                                color="textPrimary"
+                            >
                                 Strength Training (Upper Body)
                             </Typography>
                             <Typography
@@ -91,9 +94,9 @@ export default function Workout() {
                             ></Typography>
                         </CardContent>
                         <CardActions>
-                            {/* <Button onClick={handleClickUpper} size="small">
+                            <Button onClick={handleClickUpper} size="small">
                                 View Workout
-                            </Button> */}
+                            </Button>
                             <Popover
                                 id={idUpper}
                                 open={openUpper}
@@ -179,9 +182,9 @@ export default function Workout() {
                                 <Typography className={classes.typography}>
                                     12reps X 3 sets: Leg raises
                                 </Typography>
-                                {/* <Typography className={classes.typography}>
+                                <Typography className={classes.typography}>
                                     12reps X 3 sets: Deadlifts
-                                </Typography> */}
+                                </Typography>
                                 <Typography className={classes.typography}>
                                     10reps X 2 sets: Back extension
                                 </Typography>
@@ -224,7 +227,10 @@ export default function Workout() {
                             >
                                 Thursday
                             </Typography>
-                            <Typography className={classes.pos} color="error">
+                            <Typography
+                                className={classes.pos}
+                                color="textPrimary"
+                            >
                                 Strength Training(Upper Body)
                             </Typography>
                             <Typography
@@ -233,9 +239,9 @@ export default function Workout() {
                             ></Typography>
                         </CardContent>
                         <CardActions>
-                            {/* <Button onClick={handleClickUpper} size="small">
+                            <Button onClick={handleClickUpper} size="small">
                                 View Workout
-                            </Button> */}
+                            </Button>
                             <Popover
                                 id={idUpper}
                                 open={openUpper}
@@ -321,9 +327,9 @@ export default function Workout() {
                                 <Typography className={classes.typography}>
                                     12reps X 3 sets: Leg raises
                                 </Typography>
-                                {/* <Typography className={classes.typography}>
+                                <Typography className={classes.typography}>
                                     12reps X 3 sets: Deadlifts
-                                </Typography> */}
+                                </Typography>
                                 <Typography className={classes.typography}>
                                     10reps X 2 sets: Back extension
                                 </Typography>

@@ -19,4 +19,5 @@ module.exports = {
     clientSecret,
     mailDomain,
     mailgunApiKey,
+    modelTrained,
 };
