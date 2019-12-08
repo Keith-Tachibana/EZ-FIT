@@ -386,7 +386,7 @@ export default function DashboardContent(props) {
     const [currentBMI, setCurrentBMI] = useState(0);
 
     const handleConnect = () => {
-        history.push('/user/connecttracker')
+        history.push('/user/connecttracker');
     };
 
     const [joyrideSteps] = useState([
@@ -406,8 +406,8 @@ export default function DashboardContent(props) {
             placement: 'auto',
             disableBeacon: true,
             disableOverlayClose: true,
-        }
-    ])
+        },
+    ]);
 
     const headers = {
         'x-access-token': localStorage.getItem('access-token'),
@@ -799,19 +799,17 @@ export default function DashboardContent(props) {
                 steps={joyrideSteps}
                 run={!connectionStatus}
                 disableScrolling={true}
-                styles={
-                    {
-                        buttonClose: {
-                            display: 'none',
-                        },
-                        tooltipFooter: {
-                            display: 'none',
-                        },
-                        overlay: {
-                            'pointer-events': 'none',
-                        },
-                    }
-                }
+                styles={{
+                    buttonClose: {
+                        display: 'none',
+                    },
+                    tooltipFooter: {
+                        display: 'none',
+                    },
+                    overlay: {
+                        'pointer-events': 'none',
+                    },
+                }}
             />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -825,7 +823,7 @@ export default function DashboardContent(props) {
                                 className={classes.title}
                             >
                                 Fitbit Data
-                                </Typography>
+                            </Typography>
                         </Hidden>
                         <Typography
                             component="h1"
@@ -834,7 +832,7 @@ export default function DashboardContent(props) {
                         >
                             {`LAST FITBIT SYNC: ${syncMessage}`}
                         </Typography>
-                        <span id='syncButton'>
+                        <span id="syncButton">
                             <SyncButton
                                 connectionStatus={connectionStatus}
                                 syncError={syncError}
@@ -851,7 +849,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Steps Goal */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper className={clsx(!connectionStatus && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            !connectionStatus && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <StepsGoal
                             loading={loading.steps}
                             current={steps.current}
@@ -863,7 +866,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Distance Goal */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper className={clsx(!connectionStatus && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            !connectionStatus && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <DistanceGoal
                             loading={loading.distance}
                             current={distance.current}
@@ -875,7 +883,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Floors Goal */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper className={clsx(!connectionStatus && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            !connectionStatus && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <FloorsGoal
                             loading={loading.floors}
                             current={floors.current}
@@ -887,7 +900,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Active Minutes Goal */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper className={clsx(!connectionStatus && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            !connectionStatus && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <ActiveMinutesGoal
                             loading={loading.activeMinutes}
                             current={activeMinutes.current}
@@ -899,7 +917,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Calories */}
                 <Grid item xs={12} md={8} lg={9}>
-                    <Paper className={clsx(!connectionStatus && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            !connectionStatus && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <Calories
                             loading={loading.caloriesBurnedData}
                             caloriesBurnedData={caloriesBurnedData}
@@ -910,7 +933,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Calories Goal */}
                 <Grid item xs={12} md={4} lg={3}>
-                    <Paper className={clsx(!connectionStatus && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            !connectionStatus && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <CaloriesGoal
                             loading={loading.calories}
                             current={calories.current}
@@ -932,7 +960,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Heart Rate */}
                 <Grid item xs={12} md={6} lg={6}>
-                    <Paper className={clsx(!connectionStatus && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            !connectionStatus && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <HeartRateZones
                             loading={loading.heartRateData}
                             heartRateData={heartRateData}
@@ -942,7 +975,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Resting Heart Rate */}
                 <Grid item xs={12} md={6} lg={6}>
-                    <Paper className={clsx(!connectionStatus && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            !connectionStatus && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <RestingHeartRate
                             loading={loading.heartRateData}
                             heartRateData={heartRateData}
@@ -952,7 +990,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Weight */}
                 <Grid item xs={12} md={6} lg={6}>
-                    <Paper className={clsx(!connectionStatus && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            !connectionStatus && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <Weight
                             loading={loading.weightData}
                             weightData={weightData}
@@ -963,7 +1006,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Weight goal */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper className={clsx(!connectionStatus && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            !connectionStatus && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <WeightGoal
                             loading={loading.weight}
                             goalType={weight.goalType}
@@ -977,7 +1025,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* BMI */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper className={clsx(!connectionStatus && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            !connectionStatus && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <BMI
                             loading={loading.currentBMI}
                             current={currentBMI}
