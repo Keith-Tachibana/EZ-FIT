@@ -99,7 +99,7 @@
                         "exercise": {
                             "name": "Deadlifts",
                             "duration_normal": "12 x 3 reps",
-                            "duration_light": "6 x 2 reps",
+                            "duration_light": "None",
                             "duration_severe": "None",
                             "category": "legs",
                             "url": "https://en.wikipedia.org/wiki/Deadlift"
@@ -154,7 +154,7 @@
                             "duration_light": "None",
                             "duration_severe": "None",
                             "category": "legs",
-                            "url": "https://en.wikipedia.org/wiki/Deadlift"
+                            "url": "https://en.wikipedia.org/wiki/Running"
                         }
                     }
                 ]
@@ -259,7 +259,7 @@
                         "exercise": {
                             "name": "Deadlifts",
                             "duration_normal": "10 x 3 reps",
-                            "duration_light": "5 x 2 reps",
+                            "duration_light": "None",
                             "duration_severe": "None",
                             "category": "legs",
                             "url": "https://en.wikipedia.org/wiki/Deadlift"
@@ -314,7 +314,7 @@
                             "duration_light": "None",
                             "duration_severe": "None",
                             "category": "legs",
-                            "url": "https://en.wikipedia.org/wiki/Deadlift"
+                            "url": "https://en.wikipedia.org/wiki/Running"
                         }
                     }
                 ]
@@ -419,7 +419,7 @@
                         "exercise": {
                             "name": "Deadlifts",
                             "duration_normal": "8 x 3 reps",
-                            "duration_light": "4 x 2 reps",
+                            "duration_light": "None",
                             "duration_severe": "None",
                             "category": "legs",
                             "url": "https://en.wikipedia.org/wiki/Deadlift"
@@ -474,7 +474,7 @@
                             "duration_light": "None",
                             "duration_severe": "None",
                             "category": "legs",
-                            "url": "https://en.wikipedia.org/wiki/Deadlift"
+                            "url": "https://en.wikipedia.org/wiki/Running"
                         }
                     }
                 ]
@@ -567,16 +567,6 @@
                     },
                     {
                         "exercise": {
-                            "name": "Leg raises",
-                            "duration_normal": "6 x 3 reps",
-                            "duration_light": "3 x 2 reps",
-                            "duration_severe": "None",
-                            "category": "legs",
-                            "url": "https://en.wikipedia.org/wiki/Leg_raise"
-                        }
-                    },
-                    {
-                        "exercise": {
                             "name": "Lunge",
                             "duration_normal": "6 x 3 reps",
                             "duration_light": "3 x 2 reps",
@@ -634,7 +624,7 @@
                             "duration_light": "None",
                             "duration_severe": "None",
                             "category": "legs",
-                            "url": "https://en.wikipedia.org/wiki/Deadlift"
+                            "url": "https://en.wikipedia.org/wiki/Running"
                         }
                     }
                 ]
