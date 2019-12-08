@@ -5,21 +5,16 @@ import Title from './Title'
 
 
 export default function Weight(props) {
-    const [loading, setLoading] = useState(props.loading);
     const [data, setData] = useState(props.weightData);
-
-    useEffect(() => {
-        setLoading(props.loading);
-    }, [props.loading]);
 
     useEffect(() => {
         setData(props.weightData);
     }, [props.weightData]);
 
-        if (loading) {
-            return (<CircularProgress style={{alignSelf: 'center'}} />);
-        } else {
-            return (
+    if (props.loading) {
+        return (<CircularProgress style={{ alignSelf: 'center' }} />);
+    } else {
+        return (
             <React.Fragment>
                 <Title>Weight</Title>
                 <ResponsiveContainer>
@@ -33,13 +28,13 @@ export default function Weight(props) {
                         }}
                     >
                         <XAxis dataKey="dateTime" />
-                        <YAxis domain={['dataMin - 2', 'dataMax + 2']} label={{ value: 'Pounds', angle: -90, position: 'insideLeft' }}/>
-                        <Tooltip formatter={(value, name, props) => ( [`${value} lb`] )} />
+                        <YAxis domain={['dataMin - 2', 'dataMax + 2']} label={{ value: 'Pounds', angle: -90, position: 'insideLeft' }} />
+                        <Tooltip formatter={(value, name, props) => ([`${value} lb`])} />
                         <Area dataKey='value' fill={props.color} />
                     </AreaChart>
                 </ResponsiveContainer>
             </React.Fragment>
-            );
-        }
+        );
+    }
 
 }

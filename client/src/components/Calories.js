@@ -15,15 +15,11 @@ export default function Calories(props) {
     const [data, setData] = useState(props.caloriesBurnedData);
 
     useEffect(() => {
-        setLoading(props.loading);
-    }, [props.loading]);
-
-    useEffect(() => {
         setData(props.caloriesBurnedData);
     }, [props.caloriesBurnedData]);
 
-    if (loading) {
-        return (<CircularProgress style={{alignSelf: 'center'}} />);
+    if (props.loading) {
+        return (<CircularProgress style={{ alignSelf: 'center' }} />);
     } else {
         return (
             <React.Fragment>
