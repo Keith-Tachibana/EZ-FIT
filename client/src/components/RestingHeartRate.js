@@ -5,19 +5,14 @@ import Title from './Title'
 
 
 export default function RestingHeartRate(props) {
-    const [loading, setLoading] = useState(props.loading);
     const [data, setData] = useState(props.heartRateData);
-
-    useEffect(() => {
-        setLoading(props.loading);
-    }, [props.loading]);
 
     useEffect(() => {
         setData(props.heartRateData);
     }, [props.heartRateData]);
 
-    if (loading) {
-        return (<CircularProgress style={{alignSelf: 'center'}} />);
+    if (props.loading) {
+        return (<CircularProgress style={{ alignSelf: 'center' }} />);
     } else {
         return (
             <React.Fragment>
@@ -34,8 +29,8 @@ export default function RestingHeartRate(props) {
                     >
                         <CartesianGrid />
                         <XAxis dataKey="dateTime" />
-                        <YAxis label={{ value: 'BPM', angle: -90, position: 'insideLeft' }}/>
-                        <Tooltip position={{ y: 10 }} formatter={(value, name, props) => ( [`${value} bpm`] )} />
+                        <YAxis label={{ value: 'BPM', angle: -90, position: 'insideLeft' }} />
+                        <Tooltip position={{ y: 10 }} formatter={(value, name, props) => ([`${value} bpm`])} />
                         <Line connectNulls={true} dataKey='value.restingHeartRate' name='Resting Heart Rate' type='monotone' stroke='#f03b20' fill='#f03b20' />
                     </LineChart>
                 </ResponsiveContainer>

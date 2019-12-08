@@ -5,19 +5,14 @@ import Title from './Title'
 
 
 export default function HeartRateZones(props) {
-    const [loading, setLoading] = useState(props.loading);
     const [data, setData] = useState(props.heartRateData);
-
-    useEffect(() => {
-        setLoading(props.loading);
-    }, [props.loading]);
 
     useEffect(() => {
         setData(props.heartRateData);
     }, [props.heartRateData]);
 
-    if (loading) {
-        return (<CircularProgress style={{alignSelf: 'center'}} />);
+    if (props.loading) {
+        return (<CircularProgress style={{ alignSelf: 'center' }} />);
     } else {
         return (
             <React.Fragment>
@@ -34,8 +29,8 @@ export default function HeartRateZones(props) {
                     >
                         <CartesianGrid />
                         <XAxis dataKey="dateTime" />
-                        <YAxis label={{ value: 'Minutes', angle: -90, position: 'insideLeft' }}/>
-                        <Tooltip position={{ y: 10 }} formatter={(value, name, props) => ( [`${value} min`, name] )} />
+                        <YAxis label={{ value: 'Minutes', angle: -90, position: 'insideLeft' }} />
+                        <Tooltip position={{ y: 10 }} formatter={(value, name, props) => ([`${value} min`, name])} />
                         <Legend />
                         <Area connectNulls={true} dataKey='value.heartRateZones[0].minutes' name='Out of Range' stackId='1' stroke='#fecc5c' fill='#fecc5c' />
                         <Area connectNulls={true} dataKey='value.heartRateZones[1].minutes' name='Fat Burn' stackId='1' stroke='#fd8d3c' fill='#fd8d3c' />

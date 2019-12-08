@@ -1,9 +1,9 @@
 const userModel = require('../models/users');
 const axios = require('axios');
 
-async function getNameById(req, res, next){
+async function getNameById(req, res, next) {
     await userModel.findById(req.body.userId, (err, userInfo) => {
-        if (err){
+        if (err) {
             next(err);
         } else {
             res.json({
@@ -18,8 +18,8 @@ async function getNameById(req, res, next){
     });
 };
 
-async function getVerificationStatus(req, res, next){
-    try{
+async function getVerificationStatus(req, res, next) {
+    try {
         const userInfo = await userModel.findById(req.body.userId);
         res.json({
             status: "success",
@@ -28,14 +28,14 @@ async function getVerificationStatus(req, res, next){
                 isVerified: userInfo.isVerified,
             }
         });
-    } catch (err){
+    } catch (err) {
         next(err);
     }
 }
 
-async function getPersonalInfo(req, res, next){
+async function getPersonalInfo(req, res, next) {
     await userModel.findById(req.body.userId, (err, userInfo) => {
-        if (err){
+        if (err) {
             next(err);
         } else {
             res.json({
@@ -58,10 +58,11 @@ async function getPersonalInfo(req, res, next){
     });
 };
 
-async function updatePersonalInfo(req, res, next){
+async function updatePersonalInfo(req, res, next) {
     await userModel.updateOne({
         "_id": req.body.userId,
-      } ,{$set: { 
+    }, {
+        $set: {
             "contact.firstName": req.body.firstName,
             "contact.lastName": req.body.lastName,
             "email": req.body.email,
@@ -71,17 +72,18 @@ async function updatePersonalInfo(req, res, next){
             "contact.address.state": req.body.state,
             "contact.address.postal": req.body.postal,
             "contact.address.country": req.body.country,
-            "contact.additionalInfo": req.body.additionalInfo, 
-        }}, (err) => {
-          if (err){
-              next(err);
-          } else {
+            "contact.additionalInfo": req.body.additionalInfo,
+        }
+    }, (err) => {
+        if (err) {
+            next(err);
+        } else {
             res.json({
                 status: "success",
                 message: "Successfully updated personal information",
                 data: null
-              });
-          }
+            });
+        }
     });
 };
 
@@ -93,7 +95,7 @@ async function getBodyStatus(req, res, next) {
                 status: 'success',
                 message: 'Body status found',
                 data: {
-                    head: userInfo.bodyStatus.head,
+                    general: userInfo.bodyStatus.general,
                     arms: userInfo.bodyStatus.arms,
                     legs: userInfo.bodyStatus.legs,
                 }
@@ -114,11 +116,13 @@ async function updateBodyStatus(req, res, next) {
     try {
         const doc = await userModel.updateOne({
             '_id': req.body.userId,
-        }, {$set: {
-            'bodyStatus.head': req.body.head,
-            'bodyStatus.arms': req.body.arms,
-            'bodyStatus.legs': req.body.legs,
-        }});
+        }, {
+            $set: {
+                'bodyStatus.general': req.body.general,
+                'bodyStatus.arms': req.body.arms,
+                'bodyStatus.legs': req.body.legs,
+            }
+        });
         res.json({
             status: 'success',
             message: 'Successfully updated body status',
@@ -129,4 +133,4 @@ async function updateBodyStatus(req, res, next) {
     }
 }
 
-module.exports = {getNameById, getPersonalInfo, updatePersonalInfo, getBodyStatus, updateBodyStatus};
+module.exports = { getNameById, getPersonalInfo, updatePersonalInfo, getBodyStatus, updateBodyStatus };
