@@ -49,21 +49,21 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function BodyStatusForm(props){
+export default function BodyStatusForm(props) {
   const classes = useStyles();
   const history = useHistory();
 
   const [values, setValues] = useState({
-    head: '',
+    general: '',
     arms: '',
     legs: '',
   });
 
   const [loading, setLoading] = useState(true);
   const [buttonLoading, setButtonLoading] = useState(false);
-  
+
   const [errors, setErrors] = useState({
-    head: {
+    general: {
       status: false,
       message: null,
     },
@@ -78,7 +78,7 @@ export default function BodyStatusForm(props){
   });
 
   const [status, setStatus] = useState(0);
-  
+
   const headers = {
     'x-access-token': localStorage.getItem("access-token"),
   };
@@ -86,24 +86,24 @@ export default function BodyStatusForm(props){
   async function getBodyStatus() {
     setLoading(true);
     try {
-        const res = await axios.get('/api/getbodystatus', {headers});
-        console.log(res);
-        if (res.data.status === "error"){
-            setStatus(0);
-            if (res.data.message === "jwt expired"){
-                //pass
-            }
+      const res = await axios.get('/api/getbodystatus', { headers });
+      console.log(res);
+      if (res.data.status === "error") {
+        setStatus(0);
+        if (res.data.message === "jwt expired") {
+          //pass
+        }
         localStorage.removeItem("access-token");
         history.push("/");
-        } else {
-          let bodyStatus = res.data.data;
-          let currentBodyStatus = {
-              ...values,
-          };
-          Object.assign(currentBodyStatus, bodyStatus);
-          setValues(currentBodyStatus);
-        }
-        setLoading(false);
+      } else {
+        let bodyStatus = res.data.data;
+        let currentBodyStatus = {
+          ...values,
+        };
+        Object.assign(currentBodyStatus, bodyStatus);
+        setValues(currentBodyStatus);
+      }
+      setLoading(false);
     } catch (err) {
       if (err.response) {
         // The request was made and the server responded with a status code
@@ -124,37 +124,37 @@ export default function BodyStatusForm(props){
       setLoading(false);
     }
   }
-  
+
   async function updateBodyStatus() {
     setButtonLoading(true);
     try {
-        const res = await axios.post('/api/updatebodystatus', values, {headers});
-        console.log(res);
-        if (res.data.status === "error"){
-            setStatus(0);
-            if (res.data.message === "jwt expired"){
-                //pass
-            }
+      const res = await axios.post('/api/updatebodystatus', values, { headers });
+      console.log(res);
+      if (res.data.status === "error") {
+        setStatus(0);
+        if (res.data.message === "jwt expired") {
+          //pass
+        }
         localStorage.removeItem("access-token");
         history.push("/");
-        } else {
-            setStatus(res.data.message);
-            setErrors({
-              head: {
-                status: false,
-                message: null,
-              },
-              arms: {
-                status: false,
-                message: null,
-              },
-              legs: {
-                status: false,
-                message: null,
-              },
-            });
-        }
-        setButtonLoading(false);
+      } else {
+        setStatus(res.data.message);
+        setErrors({
+          general: {
+            status: false,
+            message: null,
+          },
+          arms: {
+            status: false,
+            message: null,
+          },
+          legs: {
+            status: false,
+            message: null,
+          },
+        });
+      }
+      setButtonLoading(false);
     } catch (err) {
       setStatus(0);
       setButtonLoading(false);
@@ -163,7 +163,7 @@ export default function BodyStatusForm(props){
         // that falls out of the range of 2xx
         const errs = err.response.data.errors;
         let currentErrors = {
-          head: {
+          general: {
             status: false,
             message: null,
           },
@@ -176,9 +176,9 @@ export default function BodyStatusForm(props){
             message: null,
           },
         };
-        if (errs instanceof Array){
+        if (errs instanceof Array) {
           let error;
-          for (error of errs){
+          for (error of errs) {
             Object.assign(currentErrors, {
               [error.param]: {
                 status: true,
@@ -203,7 +203,7 @@ export default function BodyStatusForm(props){
       console.log(err.config);
     }
   }
-  
+
   useEffect(() => {
     getBodyStatus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -224,7 +224,7 @@ export default function BodyStatusForm(props){
   return (
     <Container maxWidth="sm" className={classes.container}>
       <Card className={classes.root}>
-        <LinearProgress style={{display: loading ? '' : 'none'}} />
+        <LinearProgress style={{ display: loading ? '' : 'none' }} />
         <form
           className={classes.form}
           onSubmit={submitHandler}
@@ -235,89 +235,89 @@ export default function BodyStatusForm(props){
           <CardHeader title="Body Status" subheader="Update body status" />
           <Divider />
           <CardContent>
-          <Grid container spacing = {2}>
-            <Grid item xs={6}>
-              <Grid item xs={12}>
-                <FormControl className={classes.formControl} error={errors.head.status}>
-                  <InputLabel htmlFor="head-native-error">Head</InputLabel>
-                  <NativeSelect
-                    value={values.head}
-                    onChange={handleChange('head')}
-                    name="head"
-                    inputProps={{
-                      id: 'head-native-error',
-                    }}
-                  >
-                    <option value="" />
-                    <option value="normal">Normal</option>
-                    <option value="light">Light</option>
-                    <option value="severe">Severe</option>
-                  </NativeSelect>
-                  <FormHelperText>{errors.head.message}</FormHelperText>
-                </FormControl>
+            <Grid container spacing={2}>
+              <Grid item xs={5}>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl} error={errors.general.status}>
+                    <InputLabel htmlFor="general-native-error">General</InputLabel>
+                    <NativeSelect
+                      value={values.general}
+                      onChange={handleChange('head')}
+                      name="general"
+                      inputProps={{
+                        id: 'general-native-error',
+                      }}
+                    >
+                      <option value="" />
+                      <option value="normal">Normal</option>
+                      <option value="light">Light</option>
+                      <option value="severe">Severe</option>
+                    </NativeSelect>
+                    <FormHelperText>{errors.general.message}</FormHelperText>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl} error={errors.arms.status}>
+                    <InputLabel htmlFor="arms-native-error">Arms</InputLabel>
+                    <NativeSelect
+                      value={values.arms}
+                      onChange={handleChange('arms')}
+                      name="arms"
+                      inputProps={{
+                        id: 'arms-native-error',
+                      }}
+                    >
+                      <option value="" />
+                      <option value="normal">Normal</option>
+                      <option value="light">Light</option>
+                      <option value="severe">Severe</option>
+                    </NativeSelect>
+                    <FormHelperText>{errors.arms.message}</FormHelperText>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
+                  <FormControl className={classes.formControl} error={errors.legs.status}>
+                    <InputLabel htmlFor="legs-native-error">Legs</InputLabel>
+                    <NativeSelect
+                      value={values.legs}
+                      onChange={handleChange('legs')}
+                      name="legs"
+                      inputProps={{
+                        id: 'legs-native-error',
+                      }}
+                    >
+                      <option value="" />
+                      <option value="normal">Normal</option>
+                      <option value="light">Light</option>
+                      <option value="severe">Severe</option>
+                    </NativeSelect>
+                    <FormHelperText>{errors.legs.message}</FormHelperText>
+                  </FormControl>
+                </Grid>
               </Grid>
-              <Grid item xs={12}>
-                <FormControl className={classes.formControl} error={errors.arms.status}>
-                  <InputLabel htmlFor="arms-native-error">Arms</InputLabel>
-                  <NativeSelect
-                    value={values.arms}
-                    onChange={handleChange('arms')}
-                    name="arms"
-                    inputProps={{
-                      id: 'arms-native-error',
-                    }}
-                  >
-                    <option value="" />
-                    <option value="normal">Normal</option>
-                    <option value="light">Light</option>
-                    <option value="severe">Severe</option>
-                  </NativeSelect>
-                  <FormHelperText>{errors.arms.message}</FormHelperText>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl className={classes.formControl} error={errors.legs.status}>
-                  <InputLabel htmlFor="legs-native-error">Legs</InputLabel>
-                  <NativeSelect
-                    value={values.legs}
-                    onChange={handleChange('legs')}
-                    name="legs"
-                    inputProps={{
-                      id: 'legs-native-error',
-                    }}
-                  >
-                    <option value="" />
-                    <option value="normal">Normal</option>
-                    <option value="light">Light</option>
-                    <option value="severe">Severe</option>
-                  </NativeSelect>
-                  <FormHelperText>{errors.legs.message}</FormHelperText>
-                </FormControl>
+              <Grid item xs={7}>
+                <img src='/body_injury.jpeg' alt='body injury' width={'100%'} />
+                <Typography id="Description" variant="subtitle1" display="inline">
+                  Normal: Body part is fine.
+                    <br />
+                  Light: Strains, Sprains, Cramps.
+                    <br />
+                  Severe: Broken Bones, Unusable.
+                </Typography>
               </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <img src='/body_outline.png' alt='body outline' height={240}/>
-            </Grid>
-          </Grid>
-          <Typography id="Description" variant="subtitle1" display="inline">
-              Normal: Body part is fine.
-              <br/>
-              Light: Strains, Sprains, Cramps.
-              <br/>
-              Severe: Broken Bones, Unusable.
-          </Typography>
-          <span id="status" style={{display: status ? 'inline' : 'none' }}>
+            <span id="status" style={{ display: status ? 'inline' : 'none' }}>
               <Grid container direction="row" alignItems="center">
-                  <Grid item>
-                      <CheckCircleIcon color="primary"/>
-                  </Grid>
-                  <Grid item>
-                      <Typography id="statusMessage" variant="subtitle1" display="inline">
-                          {status}
-                      </Typography>
-                  </Grid>
+                <Grid item>
+                  <CheckCircleIcon color="primary" />
+                </Grid>
+                <Grid item>
+                  <Typography id="statusMessage" variant="subtitle1" display="inline">
+                    {status}
+                  </Typography>
+                </Grid>
               </Grid>
-          </span>
+            </span>
           </CardContent>
           <Divider />
           <CardActions>
