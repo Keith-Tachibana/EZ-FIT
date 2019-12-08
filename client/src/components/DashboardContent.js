@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function DashboardContent() {
+export default function DashboardContent(props) {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     const minHeightPaper = clsx(classes.paper, classes.minHeight);
@@ -738,7 +738,7 @@ export default function DashboardContent() {
                 };
             });
             incrementCompleted();
-        }, 3000);
+        }, 0);
     }
 
     const handleSync = () => {
@@ -797,7 +797,7 @@ export default function DashboardContent() {
             {/* <ConnectDialog connection={connectionStatus} /> */}
             <Joyride
                 steps={joyrideSteps}
-                run={!true}
+                run={!connectionStatus}
                 disableScrolling={true}
                 styles={
                     {
@@ -857,6 +857,7 @@ export default function DashboardContent() {
                             current={steps.current}
                             goal={steps.goal}
                             color={dataColor}
+                            prefersDarkMode={props.prefersDarkMode}
                         />
                     </Paper>
                 </Grid>
@@ -868,6 +869,7 @@ export default function DashboardContent() {
                             current={distance.current}
                             goal={distance.goal}
                             color={dataColor}
+                            prefersDarkMode={props.prefersDarkMode}
                         />
                     </Paper>
                 </Grid>
@@ -879,6 +881,7 @@ export default function DashboardContent() {
                             current={floors.current}
                             goal={floors.goal}
                             color={dataColor}
+                            prefersDarkMode={props.prefersDarkMode}
                         />
                     </Paper>
                 </Grid>
@@ -890,6 +893,7 @@ export default function DashboardContent() {
                             current={activeMinutes.current}
                             goal={activeMinutes.goal}
                             color={dataColor}
+                            prefersDarkMode={props.prefersDarkMode}
                         />
                     </Paper>
                 </Grid>
@@ -900,6 +904,7 @@ export default function DashboardContent() {
                             loading={loading.caloriesBurnedData}
                             caloriesBurnedData={caloriesBurnedData}
                             color={dataColor}
+                            prefersDarkMode={props.prefersDarkMode}
                         />
                     </Paper>
                 </Grid>
@@ -911,6 +916,7 @@ export default function DashboardContent() {
                             current={calories.current}
                             goal={calories.goal}
                             color={dataColor}
+                            prefersDarkMode={props.prefersDarkMode}
                         />
                     </Paper>
                 </Grid>
@@ -920,6 +926,7 @@ export default function DashboardContent() {
                         <WorkoutRoutine
                             loading={loading.workoutRoutine}
                             workoutRoutine={workoutRoutine}
+                            prefersDarkMode={props.prefersDarkMode}
                         />
                     </Paper>
                 </Grid>
@@ -929,6 +936,7 @@ export default function DashboardContent() {
                         <HeartRateZones
                             loading={loading.heartRateData}
                             heartRateData={heartRateData}
+                            prefersDarkMode={props.prefersDarkMode}
                         />
                     </Paper>
                 </Grid>
@@ -938,6 +946,7 @@ export default function DashboardContent() {
                         <RestingHeartRate
                             loading={loading.heartRateData}
                             heartRateData={heartRateData}
+                            prefersDarkMode={props.prefersDarkMode}
                         />
                     </Paper>
                 </Grid>
@@ -948,6 +957,7 @@ export default function DashboardContent() {
                             loading={loading.weightData}
                             weightData={weightData}
                             color={dataColor}
+                            prefersDarkMode={props.prefersDarkMode}
                         />
                     </Paper>
                 </Grid>
@@ -961,6 +971,7 @@ export default function DashboardContent() {
                             current={weight.current}
                             goal={weight.goal}
                             color={dataColor}
+                            prefersDarkMode={props.prefersDarkMode}
                         />
                     </Paper>
                 </Grid>
@@ -970,6 +981,7 @@ export default function DashboardContent() {
                         <BMI
                             loading={loading.currentBMI}
                             current={currentBMI}
+                            prefersDarkMode={props.prefersDarkMode}
                         />
                     </Paper>
                 </Grid>

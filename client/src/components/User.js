@@ -11,7 +11,9 @@ export default function User(props) {
                     <Redirect to={`${match.path}/dashboard`} />
                 </Route>
                 <Route path={`${match.path}`}>
-                    <Dashboard />
+                    <Dashboard
+                        setPrefersDarkMode={props.setPrefersDarkMode}
+                    />
                 </Route>
             </Switch>
         </main>

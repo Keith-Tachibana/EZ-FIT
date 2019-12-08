@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,6 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import Tooltip from '@material-ui/core/Tooltip';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { mainListItems } from './listItems';
 import axios from 'axios';
@@ -104,10 +105,62 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+function ThemeButton(props) {
+    if (!props.prefersDarkMode) {
+        return (
+            <Tooltip title="Dark mode">
+                <IconButton
+                    color="inherit"
+                    aria-label="Dark mode"
+                    onClick={props.darkModeHandler}
+                >
+                    <Brightness4Icon />
+                </IconButton>
+            </Tooltip>
+        );
+    } else {
+        return (
+            <Tooltip title="Light mode">
+                <IconButton
+                    color="inherit"
+                    aria-label="Light mode"
+                    onClick={props.lightModeHandler}
+                >
+                    <Brightness7Icon />
+                </IconButton>
+            </Tooltip>
+        );
+    }
+}
+
+const getLocalDarkMode = () => {
+    const prefersDarkMode = localStorage.getItem('prefersDarkMode');
+    if (prefersDarkMode) {
+        return JSON.parse(prefersDarkMode);
+    } else {
+        localStorage.setItem('prefersDarkMode', 'false');
+        return false;
+    }
+};
+
 export default function Dashboard(props) {
     const history = useHistory();
     const classes = useStyles();
     const [open, setOpen] = useState(false);
+    const [prefersDarkMode, setPrefersDarkMode] = useState(getLocalDarkMode());
+
+    const darkModeHandler = () => {
+        setPrefersDarkMode(true);
+    }
+
+    const lightModeHandler = () => {
+        setPrefersDarkMode(false);
+    }
+
+    useMemo(() => {
+        props.setPrefersDarkMode(prefersDarkMode);
+        localStorage.setItem('prefersDarkMode', prefersDarkMode.toString());
+    }, [prefersDarkMode])
 
     const [name, setName] = useState(0);
 
@@ -192,15 +245,7 @@ export default function Dashboard(props) {
                     >
                         {(name ? name + "'s " : '') + 'Dashboard'}
                     </Typography>
-                    <Tooltip title="Dark mode">
-                        <IconButton
-                            color="inherit"
-                            aria-label="Dark mode"
-                        // onClick={signout}
-                        >
-                            <Brightness4Icon />
-                        </IconButton>
-                    </Tooltip>
+                    <ThemeButton prefersDarkMode={prefersDarkMode} darkModeHandler={darkModeHandler} lightModeHandler={lightModeHandler} />
                     <Tooltip title="Signout">
                         <IconButton
                             color="inherit"
@@ -234,10 +279,9 @@ export default function Dashboard(props) {
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
                 <Switch>
-                    <Route
-                        path="/user/dashboard"
-                        component={DashboardContent}
-                    />
+                    <Route path="/user/dashboard">
+                        <DashboardContent prefersDarkMode={prefersDarkMode} />
+                    </Route>
                     <Route
                         path="/user/updatebodystatus"
                         component={BodyStatusForm}

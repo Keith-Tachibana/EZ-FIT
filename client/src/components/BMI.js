@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { PieChart, Pie, Label, ResponsiveContainer } from 'recharts';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-function CustomLabel({ viewBox, value1, value2 }) {
+function CustomLabel({ viewBox, value1, value2, darkMode }) {
     const { cx, cy } = viewBox;
     let textColor = '';
     if (value1 < 18.5) {
@@ -16,7 +16,7 @@ function CustomLabel({ viewBox, value1, value2 }) {
     }
     return (
         <text x={cx} y={cy} fill="#3d405c" className="recharts-text recharts-label" textAnchor="middle" dominantBaseline="central">
-            <tspan alignmentBaseline="middle" fontSize="22" x="50%">{`BMI: ${value1}`}</tspan>
+            <tspan alignmentBaseline="middle" fontSize="22" x="50%" style={{ fill: darkMode ? 'white' : 'black' }}>{`BMI: ${value1}`}</tspan>
             <tspan fontSize="24" x="50%" dy="1.5em" style={{ fill: textColor }}>{value2}</tspan>
         </text>
     )
@@ -85,7 +85,7 @@ export default function BMI(props) {
                             innerRadius='60%' outerRadius='90%'
                             startAngle={180} endAngle={0}>
                             <Label width={30} position="center"
-                                content={<CustomLabel value1={props.current.toFixed(1)} value2={getBMICategory(props.current)} />} />
+                                content={<CustomLabel value1={props.current.toFixed(1)} value2={getBMICategory(props.current)} darkMode={props.prefersDarkMode} />} />
                         </Pie>
 
                     </PieChart>

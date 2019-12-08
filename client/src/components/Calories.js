@@ -11,7 +11,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Title from './Title';
 
 export default function Calories(props) {
-    const [loading, setLoading] = useState(props.loading);
     const [data, setData] = useState(props.caloriesBurnedData);
 
     useEffect(() => {

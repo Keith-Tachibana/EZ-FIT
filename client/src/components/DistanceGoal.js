@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { PieChart, Pie, Label, ResponsiveContainer, Tooltip } from 'recharts';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-function CustomLabel({ viewBox, value1, value2 }) {
+function CustomLabel({ viewBox, value1, value2, darkMode }) {
     const { cx, cy } = viewBox;
     return (
         <text x={cx} y={cy} fill="#3d405c" className="recharts-text recharts-label" textAnchor="middle" dominantBaseline="central">
-            <tspan alignmentBaseline="middle" fontSize="26" x="50%">{value1}</tspan>
-            <tspan fontSize="14" x="50%" dy="1.5em">{value2}</tspan>
+            <tspan alignmentBaseline="middle" fontSize="26" x="50%" style={{ fill: darkMode ? 'white' : 'black' }}>{value1}</tspan>
+            <tspan fontSize="14" x="50%" dy="1.5em" style={{ fill: darkMode ? 'white' : 'black' }}>{value2}</tspan>
         </text>
     )
 }
@@ -39,7 +39,7 @@ export default function DistanceGoal(props) {
                             innerRadius='60%' outerRadius='90%'
                             startAngle={90} endAngle={-270}>
                             <Label width={30} position="center"
-                                content={<CustomLabel value1={props.current} value2='miles' />}>
+                                content={<CustomLabel value1={props.current} value2='miles' darkMode={props.prefersDarkMode} />}>
                                 {`${props.current} miles`}
                             </Label>
                         </Pie>
