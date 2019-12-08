@@ -297,14 +297,16 @@ export default function BodyStatusForm(props) {
               </Grid>
               <Grid item xs={7}>
                 <img src='/body_injury.jpeg' alt='body injury' width={'100%'} />
-                <Typography id="Description" variant="subtitle1" display="inline">
-                  Normal: Body part is fine.
-                    <br />
-                  Light: Strains, Sprains, Cramps.
-                    <br />
-                  Severe: Broken Bones, Unusable.
-                </Typography>
               </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography id="Description" variant="subtitle1" display="inline">
+                Normal: Body part is fine.
+                <br />
+                Light: Strains, Sprains, Cramps.
+                <br />
+                Severe: Broken Bones, Unusable.
+                </Typography>
             </Grid>
             <span id="status" style={{ display: status ? 'inline' : 'none' }}>
               <Grid container direction="row" alignItems="center">
