@@ -11,7 +11,6 @@ import DistanceGoal from './DistanceGoal';
 import FloorsGoal from './FloorsGoal';
 import ActiveMinutesGoal from './ActiveMinutesGoal';
 import Calories from './Calories';
-import Workout from './Workout';
 import CaloriesGoal from './CaloriesGoal';
 import HeartRateZones from './HeartRateZones';
 import RestingHeartRate from './RestingHeartRate';
@@ -23,9 +22,7 @@ import SyncButton from './SyncButton';
 // import ConnectDialog from './ConnectDialog';
 import Joyride from 'react-joyride';
 import { useHistory } from "react-router-dom";
-
-
-
+import WorkoutRoutine from './WorkoutRoutine';
 
 function toLocaleStringSupportsLocales() {
     try {
@@ -64,12 +61,16 @@ const useStyles = makeStyles(theme => ({
     blur: {
         filter: 'blur(5px)',
         'pointer-events': 'none',
-    }
+    },
+    minHeight: {
+        minHeight: 240,
+    },
 }));
 
 export default function DashboardContent() {
     const classes = useStyles();
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+    const minHeightPaper = clsx(classes.paper, classes.minHeight);
     const history = useHistory();
     const dataColor = '#BB86FC';
 
@@ -114,9 +115,231 @@ export default function DashboardContent() {
         current: 0,
         goal: 5000,
     });
-    const [workoutRoutine] = useState({
-        workoutRoutine: `No workout suggestions available`,
-    });
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const [workoutRoutine, setWorkoutRoutine] = useState([
+        {
+            day: days[0],
+            name: `Strength Training (Upper Body)`,
+            exercises: [
+                {
+                    "exercise": {
+                        "name": "Warm Up",
+                        "duration": "10 minutes",
+                        "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Bench Press",
+                        "duration": "12 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Bench_press"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Dips",
+                        "duration": "12 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Dip_(exercise)"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Pulldown",
+                        "duration": "12 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Pulldown_exercise"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Overhead Press",
+                        "duration": "12 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Overhead_press"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Triceps extension",
+                        "duration": "10 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Lying_triceps_extensions"
+                    }
+                }
+            ],
+        },
+        {
+            day: days[1],
+            name: `Strength Training (Lower Body)`,
+            exercises: [
+                {
+                    "exercise": {
+                        "name": "Warm Up",
+                        "duration": "10 minutes",
+                        "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Leg raise",
+                        "duration": "6 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Leg_raise"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Leg raises",
+                        "duration": "6 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Leg_raise"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Lunge",
+                        "duration": "6 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Lunge_(exercise)"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Leg extension",
+                        "duration": "6 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Leg_extension"
+                    }
+                }
+            ],
+        },
+        {
+            day: days[2],
+            name: `Rest`,
+            exercises: null,
+        },
+        {
+            day: days[3],
+            name: `Strength Training (Upper Body)`,
+            exercises: [
+                {
+                    "exercise": {
+                        "name": "Warm Up",
+                        "duration": "10 minutes",
+                        "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Bench Press",
+                        "duration": "12 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Bench_press"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Dips",
+                        "duration": "12 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Dip_(exercise)"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Pulldown",
+                        "duration": "12 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Pulldown_exercise"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Overhead Press",
+                        "duration": "12 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Overhead_press"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Triceps extension",
+                        "duration": "10 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Lying_triceps_extensions"
+                    }
+                }
+            ],
+        },
+        {
+            day: days[4],
+            name: `Strength Training (Lower Body)`,
+            exercises: [
+                {
+                    "exercise": {
+                        "name": "Warm Up",
+                        "duration": "10 minutes",
+                        "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Leg raise",
+                        "duration": "6 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Leg_raise"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Leg raises",
+                        "duration": "6 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Leg_raise"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Lunge",
+                        "duration": "6 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Lunge_(exercise)"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Leg extension",
+                        "duration": "6 x 3 reps",
+                        "url": "https://en.wikipedia.org/wiki/Leg_extension"
+                    }
+                }
+            ],
+        },
+        {
+            day: days[5],
+            name: `Rest`,
+            exercises: null,
+        },
+        {
+            day: days[6],
+            name: `Cardio`,
+            exercises: [
+                {
+                    "exercise": {
+                        "name": "Warm Up",
+                        "duration": "10 minutes",
+                        "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Elliptical",
+                        "duration": "10 minutes",
+                        "url": "https://en.wikipedia.org/wiki/Elliptical_trainer"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Treadmill",
+                        "duration": "10 minutes",
+                        "url": "https://en.wikipedia.org/wiki/Treadmill"
+                    }
+                },
+                {
+                    "exercise": {
+                        "name": "Running",
+                        "duration": "10 minutes",
+                        "url": "https://en.wikipedia.org/wiki/Deadlift"
+                    }
+                }
+            ],
+        },
+    ]);
     const [heartRateData, setHeartRateData] = useState([
         {
             dateTime: '',
@@ -193,7 +416,7 @@ export default function DashboardContent() {
     function incrementCompleted() {
         setCompleted(completed => {
             // console.log(`load status: ${completed} -> ${completed + (100 / 6)}`);
-            return completed + 100 / 6;
+            return completed + 100 / 7;
         });
     }
 
@@ -306,7 +529,6 @@ export default function DashboardContent() {
                         distance: false,
                         floors: false,
                         activeMinutes: false,
-                        workoutRoutine: false,
                     };
                 });
             } else {
@@ -508,6 +730,15 @@ export default function DashboardContent() {
         getWeightGoal();
         getBMIData();
         // getWorkoutRoutine();
+        setTimeout(() => {
+            setLoading(loading => {
+                return {
+                    ...loading,
+                    workoutRoutine: false,
+                };
+            });
+            incrementCompleted();
+        }, 3000);
     }
 
     const handleSync = () => {
@@ -566,7 +797,7 @@ export default function DashboardContent() {
             {/* <ConnectDialog connection={connectionStatus} /> */}
             <Joyride
                 steps={joyrideSteps}
-                run={!connectionStatus}
+                run={!true}
                 disableScrolling={true}
                 styles={
                     {
@@ -685,13 +916,11 @@ export default function DashboardContent() {
                 </Grid>
                 {/* Exercise */}
                 <Grid item xs={12}>
-                    <Paper className={clsx(!connectionStatus && classes.blur, fixedHeightPaper)}>
-                        <Workout
+                    <Paper className={clsx(!connectionStatus && classes.blur, minHeightPaper)}>
+                        <WorkoutRoutine
                             loading={loading.workoutRoutine}
                             workoutRoutine={workoutRoutine}
-                        >
-                            Exercise
-                            </Workout>
+                        />
                     </Paper>
                 </Grid>
                 {/* Heart Rate */}
