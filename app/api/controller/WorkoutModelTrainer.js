@@ -3,6 +3,7 @@ const userModel = require('../models/users');
 const shuffle = require('knuth-shuffle').knuthShuffle;
 const axios = require('axios');
 const fitbitApi = require('./fitbitApiIntegration');
+const moment = require('moment');
 
 /* //Printing a nested object
 function logRecursive(object) {
@@ -233,10 +234,28 @@ function getWorkoutForWeek(upperCheck, lowerCheck, workoutCluster) {
         workoutFile.workouts[workoutCluster].workout[lowerCheck.category];
     const cardioWorkoutList =
         workoutFile.workouts[workoutCluster].workout['cardio'];
-    const upperWorkoutElement = { name: upperCheck.category, exercise: [] };
-    const lowerWorkoutElement = { name: lowerCheck.category, exercise: [] };
-    const cardioWorkoutElement = { name: 'cardio', exercise: [] };
-    const restWorkoutElement = { name: 'rest', exercise: [] };
+    const upperWorkoutElement = {
+        name: `Strength Training (${upperCheck.category})`,
+        type: upperCheck.duration.substring(
+            upperCheck.duration.indexOf('_') + 1
+        ),
+        exercise: [],
+    };
+    const lowerWorkoutElement = {
+        name: `Strength Training (${lowerCheck.category})`,
+        type: lowerCheck.duration.substring(
+            lowerCheck.duration.indexOf('_') + 1
+        ),
+        exercise: [],
+    };
+    const cardioWorkoutElement = {
+        name: `Cardio Training`,
+        type: lowerCheck.duration.substring(
+            lowerCheck.duration.indexOf('_') + 1
+        ),
+        exercise: [],
+    };
+    const restWorkoutElement = { name: 'Rest day', type: null, exercise: [] };
 
     upperWorkoutList.map(exerciseObj => {
         // const { name, category, url, ...durationObj } = exerciseObj;
@@ -319,6 +338,7 @@ async function getWorkout(userInfo, workoutCluster) {
         const lowerCheck = doLegCheck(userInfo);
         workoutPlan = getWorkoutForWeek(upperCheck, lowerCheck, workoutCluster);
     }
+    console.log(workoutPlan);
     return workoutPlan;
 }
 async function getPrediction(req, res, next) {
@@ -328,14 +348,35 @@ async function getPrediction(req, res, next) {
         if (userId !== null) {
             const userInfo = await userModel.findById(userId);
             if (userInfo) {
-                const workoutPlan = await getWorkout(userInfo, workoutCluster);
-                //Use the below function to get the full workout printed out
-                // logRecursive(workoutPlan);
-                res.json({
-                    status: 'success',
-                    message: 'Obtained workout plan for the week',
-                    data: workoutPlan,
-                });
+                const workoutExpiry = userInfo.workoutExpiry < moment();
+                if (!workoutExpiry) {
+                    const workoutPlan = await getWorkout(
+                        userInfo,
+                        workoutCluster
+                    );
+                    //Use the below function to get the full workout printed out
+                    // logRecursive(workoutPlan);
+                    await userModel.updateOne(
+                        { _id: req.body.userId },
+                        {
+                            $set: {
+                                workoutPlan: workoutPlan,
+                                workoutExpiry: moment().endOf('week'),
+                            },
+                        }
+                    );
+                    res.json({
+                        status: 'success',
+                        message: 'Obtained workout plan for the week',
+                        data: workoutPlan,
+                    });
+                } else {
+                    res.json({
+                        status: 'success',
+                        message: 'Obtained workout plan for the week',
+                        data: userInfo.workoutPlan,
+                    });
+                }
             }
         }
     } catch (err) {

@@ -141,6 +141,10 @@ var userSchema = new Schema({
     weight: {
         type: [Number],
     },
+    workoutExpiry: {
+        type: Number,
+    },
+    workoutPlan: {},
 });
 
 userSchema.pre('save', async function(next) {
