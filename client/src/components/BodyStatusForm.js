@@ -242,7 +242,7 @@ export default function BodyStatusForm(props) {
                     <InputLabel htmlFor="general-native-error">General</InputLabel>
                     <NativeSelect
                       value={values.general}
-                      onChange={handleChange('head')}
+                      onChange={handleChange('general')}
                       name="general"
                       inputProps={{
                         id: 'general-native-error',

@@ -19,9 +19,9 @@ router.post(
     '/updatebodystatus',
     [
         // check if head exists
-        check('head')
+        check('general')
             .isLength({ min: 1 })
-            .withMessage("Head can't be blank."),
+            .withMessage("General can't be blank."),
         // check if arms exists
         check('arms')
             .isLength({ min: 1 })
