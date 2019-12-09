@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Title from './Title';
@@ -12,9 +12,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function WorkoutRoutine(props) {
+function WorkoutRoutine(props) {
     const classes = useStyles();
-    const [workoutRoutine] = useState(props.workoutRoutine);
+    console.log(props.workoutRoutine);
 
     if (props.loading) {
         return (<CircularProgress style={{ alignSelf: 'center' }} />);
@@ -26,7 +26,7 @@ export default function WorkoutRoutine(props) {
                     <Title>Your Workout</Title>
                 </span>
                 <Grid container>
-                    {workoutRoutine.map((workout, index) => {
+                    {props.workoutRoutine.map((workout, index) => {
                         return (
                             <Grid item xs={12} md className={classes.workout} key={index}>
                                 <Workout day={workout.day} name={workout.name} type={workout.type} exercises={workout.exercises} />
@@ -39,3 +39,5 @@ export default function WorkoutRoutine(props) {
     }
 
 }
+
+export default React.memo(WorkoutRoutine);

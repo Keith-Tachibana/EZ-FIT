@@ -11,7 +11,7 @@ import Link from "@material-ui/core/Link";
 import { Typography, ListItemText } from '@material-ui/core';
 
 
-export default function WorkoutDialog(props) {
+function WorkoutDialog(props) {
     const handleClose = () => {
         props.handleClose();
     };
@@ -32,7 +32,7 @@ export default function WorkoutDialog(props) {
             <DialogContent dividers>
                 <DialogContentText id="alert-dialog-slide-description" component={'span'}>
                     <List>
-                        {props.exercises.map((exerciseObj, index) => {
+                        {props.exercises.map((exercise, index) => {
                             return (
                                 <ListItem key={index}>
                                     <ListItemText
@@ -42,26 +42,17 @@ export default function WorkoutDialog(props) {
                                                 <Typography component='span' color='textPrimary'>
                                                     {`Exercise: `}
                                                 </Typography>
-                                                <Link href={exerciseObj['exercise'].url} target="_blank" rel="noopener">
-                                                    {exerciseObj['exercise'].name}
+                                                <Link href={exercise.url} target="_blank" rel="noopener">
+                                                    {exercise.name}
                                                 </Link>
                                                 <br />
                                             </span>
                                         }
                                         secondary={
                                             <Typography component='span' color='textSecondary' variant='subtitle2'>
-                                                {`Duration: ${exerciseObj['exercise'].duration}`}
+                                                {`Duration: ${exercise.duration}`}
                                             </Typography>
                                         } />
-                                    {/* <span>{'Exercise: '}
-                                        <Link href={exerciseObj['exercise'].url} target="_blank" rel="noopener" component={'span'}>
-                                            {exerciseObj['exercise'].name}
-                                        </Link>
-                                        <br />
-                                        <Typography component={'span'}>
-                                            Duration: {exerciseObj['exercise'].duration}
-                                        </Typography>
-                                    </span> */}
                                 </ListItem>
                             );
                         })}
@@ -76,3 +67,5 @@ export default function WorkoutDialog(props) {
         </Dialog>
     );
 }
+
+export default React.memo(WorkoutDialog);

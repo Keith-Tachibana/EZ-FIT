@@ -123,46 +123,34 @@ export default function DashboardContent(props) {
             type: `light`,
             exercises: [
                 {
-                    "exercise": {
-                        "name": "Warm Up",
-                        "duration": "10 minutes",
-                        "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
-                    }
+                    "name": "Warm Up",
+                    "duration": "10 minutes",
+                    "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
                 },
                 {
-                    "exercise": {
-                        "name": "Bench Press",
-                        "duration": "12 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Bench_press"
-                    }
+                    "name": "Bench Press",
+                    "duration": "12 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Bench_press"
                 },
                 {
-                    "exercise": {
-                        "name": "Dips",
-                        "duration": "12 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Dip_(exercise)"
-                    }
+                    "name": "Dips",
+                    "duration": "12 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Dip_(exercise)"
                 },
                 {
-                    "exercise": {
-                        "name": "Pulldown",
-                        "duration": "12 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Pulldown_exercise"
-                    }
+                    "name": "Pulldown",
+                    "duration": "12 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Pulldown_exercise"
                 },
                 {
-                    "exercise": {
-                        "name": "Overhead Press",
-                        "duration": "12 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Overhead_press"
-                    }
+                    "name": "Overhead Press",
+                    "duration": "12 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Overhead_press"
                 },
                 {
-                    "exercise": {
-                        "name": "Triceps extension",
-                        "duration": "10 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Lying_triceps_extensions"
-                    }
+                    "name": "Triceps extension",
+                    "duration": "10 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Lying_triceps_extensions"
                 }
             ],
         },
@@ -172,39 +160,29 @@ export default function DashboardContent(props) {
             type: `normal`,
             exercises: [
                 {
-                    "exercise": {
-                        "name": "Warm Up",
-                        "duration": "10 minutes",
-                        "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
-                    }
+                    "name": "Warm Up",
+                    "duration": "10 minutes",
+                    "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
                 },
                 {
-                    "exercise": {
-                        "name": "Leg raise",
-                        "duration": "6 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Leg_raise"
-                    }
+                    "name": "Leg raise",
+                    "duration": "6 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Leg_raise"
                 },
                 {
-                    "exercise": {
-                        "name": "Leg raises",
-                        "duration": "6 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Leg_raise"
-                    }
+                    "name": "Leg raises",
+                    "duration": "6 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Leg_raise"
                 },
                 {
-                    "exercise": {
-                        "name": "Lunge",
-                        "duration": "6 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Lunge_(exercise)"
-                    }
+                    "name": "Lunge",
+                    "duration": "6 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Lunge_(exercise)"
                 },
                 {
-                    "exercise": {
-                        "name": "Leg extension",
-                        "duration": "6 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Leg_extension"
-                    }
+                    "name": "Leg extension",
+                    "duration": "6 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Leg_extension"
                 }
             ],
         },
@@ -220,46 +198,34 @@ export default function DashboardContent(props) {
             type: `light`,
             exercises: [
                 {
-                    "exercise": {
-                        "name": "Warm Up",
-                        "duration": "10 minutes",
-                        "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
-                    }
+                    "name": "Warm Up",
+                    "duration": "10 minutes",
+                    "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
                 },
                 {
-                    "exercise": {
-                        "name": "Bench Press",
-                        "duration": "12 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Bench_press"
-                    }
+                    "name": "Bench Press",
+                    "duration": "12 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Bench_press"
                 },
                 {
-                    "exercise": {
-                        "name": "Dips",
-                        "duration": "12 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Dip_(exercise)"
-                    }
+                    "name": "Dips",
+                    "duration": "12 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Dip_(exercise)"
                 },
                 {
-                    "exercise": {
-                        "name": "Pulldown",
-                        "duration": "12 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Pulldown_exercise"
-                    }
+                    "name": "Pulldown",
+                    "duration": "12 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Pulldown_exercise"
                 },
                 {
-                    "exercise": {
-                        "name": "Overhead Press",
-                        "duration": "12 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Overhead_press"
-                    }
+                    "name": "Overhead Press",
+                    "duration": "12 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Overhead_press"
                 },
                 {
-                    "exercise": {
-                        "name": "Triceps extension",
-                        "duration": "10 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Lying_triceps_extensions"
-                    }
+                    "name": "Triceps extension",
+                    "duration": "10 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Lying_triceps_extensions"
                 }
             ],
         },
@@ -269,39 +235,29 @@ export default function DashboardContent(props) {
             type: `normal`,
             exercises: [
                 {
-                    "exercise": {
-                        "name": "Warm Up",
-                        "duration": "10 minutes",
-                        "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
-                    }
+                    "name": "Warm Up",
+                    "duration": "10 minutes",
+                    "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
                 },
                 {
-                    "exercise": {
-                        "name": "Leg raise",
-                        "duration": "6 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Leg_raise"
-                    }
+                    "name": "Leg raise",
+                    "duration": "6 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Leg_raise"
                 },
                 {
-                    "exercise": {
-                        "name": "Leg raises",
-                        "duration": "6 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Leg_raise"
-                    }
+                    "name": "Leg raises",
+                    "duration": "6 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Leg_raise"
                 },
                 {
-                    "exercise": {
-                        "name": "Lunge",
-                        "duration": "6 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Lunge_(exercise)"
-                    }
+                    "name": "Lunge",
+                    "duration": "6 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Lunge_(exercise)"
                 },
                 {
-                    "exercise": {
-                        "name": "Leg extension",
-                        "duration": "6 x 3 reps",
-                        "url": "https://en.wikipedia.org/wiki/Leg_extension"
-                    }
+                    "name": "Leg extension",
+                    "duration": "6 x 3 reps",
+                    "url": "https://en.wikipedia.org/wiki/Leg_extension"
                 }
             ],
         },
@@ -317,32 +273,24 @@ export default function DashboardContent(props) {
             type: `normal`,
             exercises: [
                 {
-                    "exercise": {
-                        "name": "Warm Up",
-                        "duration": "10 minutes",
-                        "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
-                    }
+                    "name": "Warm Up",
+                    "duration": "10 minutes",
+                    "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
                 },
                 {
-                    "exercise": {
-                        "name": "Elliptical",
-                        "duration": "10 minutes",
-                        "url": "https://en.wikipedia.org/wiki/Elliptical_trainer"
-                    }
+                    "name": "Elliptical",
+                    "duration": "10 minutes",
+                    "url": "https://en.wikipedia.org/wiki/Elliptical_trainer"
                 },
                 {
-                    "exercise": {
-                        "name": "Treadmill",
-                        "duration": "10 minutes",
-                        "url": "https://en.wikipedia.org/wiki/Treadmill"
-                    }
+                    "name": "Treadmill",
+                    "duration": "10 minutes",
+                    "url": "https://en.wikipedia.org/wiki/Treadmill"
                 },
                 {
-                    "exercise": {
-                        "name": "Running",
-                        "duration": "10 minutes",
-                        "url": "https://en.wikipedia.org/wiki/Deadlift"
-                    }
+                    "name": "Running",
+                    "duration": "10 minutes",
+                    "url": "https://en.wikipedia.org/wiki/Deadlift"
                 }
             ],
         },
