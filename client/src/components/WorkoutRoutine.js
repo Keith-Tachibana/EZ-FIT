@@ -14,7 +14,6 @@ const useStyles = makeStyles(theme => ({
 
 function WorkoutRoutine(props) {
     const classes = useStyles();
-    console.log(props.workoutRoutine);
 
     if (props.loading) {
         return (<CircularProgress style={{ alignSelf: 'center' }} />);

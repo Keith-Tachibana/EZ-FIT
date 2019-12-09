@@ -75,14 +75,14 @@ function getWorkoutForWeek(upperCheck, lowerCheck, workoutCluster) {
         workoutFile.workouts[workoutCluster].workout[lowerCheck.category];
     const cardioWorkoutList =
         workoutFile.workouts[workoutCluster].workout['cardio'];
-    const upperWorkoutElement = { name: upperCheck.category, exercise: [] };
-    const lowerWorkoutElement = { name: lowerCheck.category, exercise: [] };
-    const cardioWorkoutElement = { name: 'cardio', exercise: [] };
-    const restWorkoutElement = { name: 'rest', exercise: [] };
+    const upperWorkoutElement = { name: upperCheck.category, exercises: [] };
+    const lowerWorkoutElement = { name: lowerCheck.category, exercises: [] };
+    const cardioWorkoutElement = { name: 'cardio', exercises: [] };
+    const restWorkoutElement = { name: 'rest', exercises: [] };
 
     upperWorkoutList.map(exerciseObj => {
         // const { name, category, url, ...durationObj } = exerciseObj;
-        upperWorkoutElement.exercise.push({
+        upperWorkoutElement.exercises.push({
             name: exerciseObj['exercise']['name'],
             category: exerciseObj['exercise']['category'],
             url: exerciseObj['exercise']['url'],
@@ -91,7 +91,7 @@ function getWorkoutForWeek(upperCheck, lowerCheck, workoutCluster) {
     });
     lowerWorkoutList.map(exerciseObj => {
         // const { name, category, url, ...durationObj } = exerciseObj;
-        lowerWorkoutElement.exercise.push({
+        lowerWorkoutElement.exercises.push({
             name: exerciseObj['exercise']['name'],
             category: exerciseObj['exercise']['category'],
             url: exerciseObj['exercise']['url'],
@@ -100,7 +100,7 @@ function getWorkoutForWeek(upperCheck, lowerCheck, workoutCluster) {
     });
     cardioWorkoutList.map(exerciseObj => {
         // const { name, category, url, ...durationObj } = exerciseObj;
-        cardioWorkoutElement.exercise.push({
+        cardioWorkoutElement.exercises.push({
             name: exerciseObj['exercise']['name'],
             category: exerciseObj['exercise']['category'],
             url: exerciseObj['exercise']['url'],
