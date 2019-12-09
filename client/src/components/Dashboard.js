@@ -160,6 +160,7 @@ export default function Dashboard(props) {
     useMemo(() => {
         props.setPrefersDarkMode(prefersDarkMode);
         localStorage.setItem('prefersDarkMode', prefersDarkMode.toString());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [prefersDarkMode])
 
     const [name, setName] = useState(0);
