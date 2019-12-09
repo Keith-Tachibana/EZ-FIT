@@ -22,12 +22,14 @@ export default function WorkoutRoutine(props) {
     else {
         return (
             <React.Fragment>
-                <Title>Your Workout</Title>
+                <span>
+                    <Title>Your Workout</Title>
+                </span>
                 <Grid container>
                     {workoutRoutine.map((workout, index) => {
                         return (
-                            <Grid item xs={12} md className={classes.workout}>
-                                <Workout day={workout.day} name={workout.name} exercises={workout.exercises} />
+                            <Grid item xs={12} md className={classes.workout} key={index}>
+                                <Workout day={workout.day} name={workout.name} type={workout.type} exercises={workout.exercises} />
                             </Grid>
                         );
                     })}

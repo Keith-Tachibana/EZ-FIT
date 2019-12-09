@@ -120,6 +120,7 @@ export default function DashboardContent(props) {
         {
             day: days[0],
             name: `Strength Training (Upper Body)`,
+            type: `light`,
             exercises: [
                 {
                     "exercise": {
@@ -168,6 +169,7 @@ export default function DashboardContent(props) {
         {
             day: days[1],
             name: `Strength Training (Lower Body)`,
+            type: `normal`,
             exercises: [
                 {
                     "exercise": {
@@ -209,11 +211,13 @@ export default function DashboardContent(props) {
         {
             day: days[2],
             name: `Rest`,
-            exercises: null,
+            type: null,
+            exercises: [],
         },
         {
             day: days[3],
             name: `Strength Training (Upper Body)`,
+            type: `light`,
             exercises: [
                 {
                     "exercise": {
@@ -262,6 +266,7 @@ export default function DashboardContent(props) {
         {
             day: days[4],
             name: `Strength Training (Lower Body)`,
+            type: `normal`,
             exercises: [
                 {
                     "exercise": {
@@ -303,11 +308,13 @@ export default function DashboardContent(props) {
         {
             day: days[5],
             name: `Rest`,
-            exercises: null,
+            type: null,
+            exercises: [],
         },
         {
             day: days[6],
             name: `Cardio`,
+            type: `normal`,
             exercises: [
                 {
                     "exercise": {
@@ -461,15 +468,15 @@ export default function DashboardContent(props) {
                 setCaloriesBurnedData(
                     caloriesBurnedData['activities-calories']
                 );
-                setLoading(loading => {
-                    return {
-                        ...loading,
-                        caloriesBurnedData: false,
-                    };
-                });
             } else {
                 setSyncError(true);
             }
+            setLoading(loading => {
+                return {
+                    ...loading,
+                    caloriesBurnedData: false,
+                };
+            });
         } catch (err) {
             if (err.response) {
                 // The request was made and the server responded with a status code
@@ -521,19 +528,19 @@ export default function DashboardContent(props) {
                         activitySummary.summary.veryActiveMinutes,
                     goal: activitySummary.goals.activeMinutes,
                 });
-                setLoading(loading => {
-                    return {
-                        ...loading,
-                        calories: false,
-                        steps: false,
-                        distance: false,
-                        floors: false,
-                        activeMinutes: false,
-                    };
-                });
             } else {
                 setSyncError(true);
             }
+            setLoading(loading => {
+                return {
+                    ...loading,
+                    calories: false,
+                    steps: false,
+                    distance: false,
+                    floors: false,
+                    activeMinutes: false,
+                };
+            });
         } catch (err) {
             if (err.response) {
                 // The request was made and the server responded with a status code
@@ -562,15 +569,15 @@ export default function DashboardContent(props) {
             if (res.data.status === 'success') {
                 const heartRateData = res.data.data;
                 setHeartRateData(heartRateData['activities-heart']);
-                setLoading(loading => {
-                    return {
-                        ...loading,
-                        heartRateData: false,
-                    };
-                });
             } else {
                 setSyncError(true);
             }
+            setLoading(loading => {
+                return {
+                    ...loading,
+                    heartRateData: false,
+                };
+            });
         } catch (err) {
             if (err.response) {
                 // The request was made and the server responded with a status code
@@ -599,15 +606,15 @@ export default function DashboardContent(props) {
             if (res.data.status === 'success') {
                 const weightData = res.data.data;
                 setWeightData(weightData['body-weight']);
-                setLoading(loading => {
-                    return {
-                        ...loading,
-                        weightData: false,
-                    };
-                });
             } else {
                 setSyncError(true);
             }
+            setLoading(loading => {
+                return {
+                    ...loading,
+                    weightData: false,
+                };
+            });
         } catch (err) {
             if (err.response) {
                 // The request was made and the server responded with a status code
@@ -641,15 +648,15 @@ export default function DashboardContent(props) {
                     current: weightGoal.goal['current'],
                     goal: weightGoal.goal['weight'],
                 });
-                setLoading(loading => {
-                    return {
-                        ...loading,
-                        weight: false,
-                    };
-                });
             } else {
                 setSyncError(true);
             }
+            setLoading(loading => {
+                return {
+                    ...loading,
+                    weight: false,
+                };
+            });
         } catch (err) {
             if (err.response) {
                 // The request was made and the server responded with a status code
@@ -675,19 +682,18 @@ export default function DashboardContent(props) {
     async function getBMIData() {
         try {
             const res = await axios.get('/api/getbmidata', { headers });
-            console.log(res);
             if (res.data.status === 'success') {
                 const bmiData = res.data.data;
                 setCurrentBMI(bmiData['body-bmi'][0].value);
-                setLoading(loading => {
-                    return {
-                        ...loading,
-                        currentBMI: false,
-                    };
-                });
             } else {
                 setSyncError(true);
             }
+            setLoading(loading => {
+                return {
+                    ...loading,
+                    currentBMI: false,
+                };
+            });
         } catch (err) {
             if (err.response) {
                 // The request was made and the server responded with a status code
@@ -799,17 +805,19 @@ export default function DashboardContent(props) {
                 steps={joyrideSteps}
                 run={!connectionStatus}
                 disableScrolling={true}
-                styles={{
-                    buttonClose: {
-                        display: 'none',
-                    },
-                    tooltipFooter: {
-                        display: 'none',
-                    },
-                    overlay: {
-                        'pointer-events': 'none',
-                    },
-                }}
+                styles={
+                    {
+                        buttonClose: {
+                            display: 'none',
+                        },
+                        tooltipFooter: {
+                            display: 'none',
+                        },
+                        overlay: {
+                            'pointer-events': 'none',
+                        },
+                    }
+                }
             />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -832,7 +840,7 @@ export default function DashboardContent(props) {
                         >
                             {`LAST FITBIT SYNC: ${syncMessage}`}
                         </Typography>
-                        <span id="syncButton">
+                        <span id='syncButton'>
                             <SyncButton
                                 connectionStatus={connectionStatus}
                                 syncError={syncError}
@@ -847,14 +855,42 @@ export default function DashboardContent(props) {
                         style={{ display: completed <= 100 ? '' : 'none' }}
                     />
                 </Grid>
+                {/* Exercise */}
+                <Grid item xs={12}>
+                    <Paper className={clsx((!connectionStatus) && classes.blur, minHeightPaper)}>
+                        <WorkoutRoutine
+                            loading={loading.workoutRoutine}
+                            workoutRoutine={workoutRoutine}
+                            prefersDarkMode={props.prefersDarkMode}
+                        />
+                    </Paper>
+                </Grid>
+                {/* Calories */}
+                <Grid item xs={12} md={8} lg={9}>
+                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
+                        <Calories
+                            loading={loading.caloriesBurnedData}
+                            caloriesBurnedData={caloriesBurnedData}
+                            color={dataColor}
+                            prefersDarkMode={props.prefersDarkMode}
+                        />
+                    </Paper>
+                </Grid>
+                {/* Calories Goal */}
+                <Grid item xs={12} md={4} lg={3}>
+                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
+                        <CaloriesGoal
+                            loading={loading.calories}
+                            current={calories.current}
+                            goal={calories.goal}
+                            color={dataColor}
+                            prefersDarkMode={props.prefersDarkMode}
+                        />
+                    </Paper>
+                </Grid>
                 {/* Steps Goal */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper
-                        className={clsx(
-                            !connectionStatus && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
+                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
                         <StepsGoal
                             loading={loading.steps}
                             current={steps.current}
@@ -866,12 +902,7 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Distance Goal */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper
-                        className={clsx(
-                            !connectionStatus && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
+                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
                         <DistanceGoal
                             loading={loading.distance}
                             current={distance.current}
@@ -883,12 +914,7 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Floors Goal */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper
-                        className={clsx(
-                            !connectionStatus && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
+                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
                         <FloorsGoal
                             loading={loading.floors}
                             current={floors.current}
@@ -900,12 +926,7 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Active Minutes Goal */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper
-                        className={clsx(
-                            !connectionStatus && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
+                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
                         <ActiveMinutesGoal
                             loading={loading.activeMinutes}
                             current={activeMinutes.current}
@@ -915,57 +936,9 @@ export default function DashboardContent(props) {
                         />
                     </Paper>
                 </Grid>
-                {/* Calories */}
-                <Grid item xs={12} md={8} lg={9}>
-                    <Paper
-                        className={clsx(
-                            !connectionStatus && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
-                        <Calories
-                            loading={loading.caloriesBurnedData}
-                            caloriesBurnedData={caloriesBurnedData}
-                            color={dataColor}
-                            prefersDarkMode={props.prefersDarkMode}
-                        />
-                    </Paper>
-                </Grid>
-                {/* Calories Goal */}
-                <Grid item xs={12} md={4} lg={3}>
-                    <Paper
-                        className={clsx(
-                            !connectionStatus && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
-                        <CaloriesGoal
-                            loading={loading.calories}
-                            current={calories.current}
-                            goal={calories.goal}
-                            color={dataColor}
-                            prefersDarkMode={props.prefersDarkMode}
-                        />
-                    </Paper>
-                </Grid>
-                {/* Exercise */}
-                <Grid item xs={12}>
-                    <Paper className={clsx(!connectionStatus && classes.blur, minHeightPaper)}>
-                        <WorkoutRoutine
-                            loading={loading.workoutRoutine}
-                            workoutRoutine={workoutRoutine}
-                            prefersDarkMode={props.prefersDarkMode}
-                        />
-                    </Paper>
-                </Grid>
                 {/* Heart Rate */}
                 <Grid item xs={12} md={6} lg={6}>
-                    <Paper
-                        className={clsx(
-                            !connectionStatus && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
+                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
                         <HeartRateZones
                             loading={loading.heartRateData}
                             heartRateData={heartRateData}
@@ -975,12 +948,7 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Resting Heart Rate */}
                 <Grid item xs={12} md={6} lg={6}>
-                    <Paper
-                        className={clsx(
-                            !connectionStatus && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
+                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
                         <RestingHeartRate
                             loading={loading.heartRateData}
                             heartRateData={heartRateData}
@@ -990,12 +958,7 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Weight */}
                 <Grid item xs={12} md={6} lg={6}>
-                    <Paper
-                        className={clsx(
-                            !connectionStatus && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
+                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
                         <Weight
                             loading={loading.weightData}
                             weightData={weightData}
@@ -1006,12 +969,7 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Weight goal */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper
-                        className={clsx(
-                            !connectionStatus && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
+                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
                         <WeightGoal
                             loading={loading.weight}
                             goalType={weight.goalType}
@@ -1025,12 +983,7 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* BMI */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper
-                        className={clsx(
-                            !connectionStatus && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
+                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
                         <BMI
                             loading={loading.currentBMI}
                             current={currentBMI}
