@@ -28,12 +28,10 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-if(process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production") {
     app.use(nakedRedirect());
     app.use(enforce.HTTPS({ trustProtoHeader: true }));
 }
-// app.use(nakedRedirect());
-// app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 //Static files
 app.use(express.static(path.join(__dirname, 'client/build')));
