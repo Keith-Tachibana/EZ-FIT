@@ -6,14 +6,23 @@ async function getNameById(req, res, next) {
         if (err) {
             next(err);
         } else {
-            res.json({
-                status: 'success',
-                message: 'User found',
-                data: {
-                    firstName: userInfo.contact.firstName,
-                    lastName: userInfo.contact.lastName,
-                },
-            });
+            if (userInfo) {
+                res.json({
+                    status: 'success',
+                    message: 'User found',
+                    data: {
+                        firstName: userInfo.contact.firstName,
+                        lastName: userInfo.contact.lastName,
+                    },
+                });
+            } else {
+                res.json({
+                    status: 'error',
+                    message: 'User not found',
+                    data: null,
+                })
+            }
+
         }
     });
 }
@@ -23,22 +32,30 @@ async function getPersonalInfo(req, res, next) {
         if (err) {
             next(err);
         } else {
-            res.json({
-                status: 'success',
-                message: 'User found',
-                data: {
-                    firstName: userInfo.contact.firstName,
-                    lastName: userInfo.contact.lastName,
-                    email: userInfo.email,
-                    phone: userInfo.contact.phone,
-                    street: userInfo.contact.address.street,
-                    city: userInfo.contact.address.city,
-                    state: userInfo.contact.address.state,
-                    postal: userInfo.contact.address.postal,
-                    country: userInfo.contact.address.country,
-                    additionalInfo: userInfo.contact.additionalInfo,
-                },
-            });
+            if (userInfo) {
+                res.json({
+                    status: 'success',
+                    message: 'User found',
+                    data: {
+                        firstName: userInfo.contact.firstName,
+                        lastName: userInfo.contact.lastName,
+                        email: userInfo.email,
+                        phone: userInfo.contact.phone,
+                        street: userInfo.contact.address.street,
+                        city: userInfo.contact.address.city,
+                        state: userInfo.contact.address.state,
+                        postal: userInfo.contact.address.postal,
+                        country: userInfo.contact.address.country,
+                        additionalInfo: userInfo.contact.additionalInfo,
+                    },
+                });
+            } else {
+                res.json({
+                    status: 'error',
+                    message: 'User not found',
+                    data: null,
+                })
+            }
         }
     });
 }
