@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../app/api/controller/users');
 const { check, validationResult } = require('express-validator');
+const validator = require('validator');
 
 router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
@@ -21,6 +22,7 @@ router.post('/register', [
     // check if password is at least 8 characters
     check('password').isLength({ min: 8 }).withMessage('Password must be 8 chars long.'),
 ], (req, res, next) => {
+    req.body.email = validator.normalizeEmail(req.body.email);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ status: "error", errors: errors.array() });
@@ -43,6 +45,7 @@ router.post('/forgetpassword', [
     // check if is an email
     check('email').isEmail().withMessage('Invalid email.'),
 ], (req, res, next) => {
+    req.body.email = validator.normalizeEmail(req.body.email);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ status: "error", errors: errors.array() });
@@ -60,6 +63,9 @@ router.post('/resetpassword', [
     userController.resetPassword(req, res, next);
 });
 
-router.post('/resendverificationemail', userController.resendVerificationEmail);
+router.post('/resendverificationemail', (req, res, next) => {
+    req.body.email = validator.normalizeEmail(req.body.email);
+    userController.resendVerificationEmail(req, res, next);
+});
 
 module.exports = router;

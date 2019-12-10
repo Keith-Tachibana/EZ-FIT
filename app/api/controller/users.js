@@ -1,8 +1,6 @@
 const userModel = require('../models/users');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const validator = require('validator');
-const axios = require('axios');
 const appConfig = require('../../../config/appConfig');
 const mailgun = require('mailgun-js');
 
@@ -48,7 +46,7 @@ function sendResetEmail(email, resetLink) {
 async function resendVerificationEmail(req, res, next) {
     try {
         const userInfo = await userModel.findOne({
-            email: validator.normalizeEmail(req.body.email),
+            email: req.body.email,
         });
         if (!userInfo) {
             return res.json({
@@ -104,7 +102,7 @@ async function register(req, res, next) {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
             },
-            email: validator.normalizeEmail(req.body.email),
+            email: req.body.email,
             password: req.body.password,
             authToken: {},
             bodyStatus: {},
@@ -156,7 +154,7 @@ async function register(req, res, next) {
 async function signin(req, res, next) {
     try {
         const userInfo = await userModel.findOne({
-            email: validator.normalizeEmail(req.body.email),
+            email: req.body.email,
         });
         if (!userInfo) {
             res.json({
@@ -281,7 +279,7 @@ function updatePassword(req, res, next) {
 async function forgetPassword(req, res, next) {
     try {
         const userInfo = await userModel.findOne({
-            email: validator.normalizeEmail(req.body.email),
+            email: req.body.email,
         });
         if (!userInfo) {
             return res.json({
