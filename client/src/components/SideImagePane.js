@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
             1}.jpg)`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
-        backgroundPosition: 'stretch',
+        backgroundPosition: 'center',
     },
     paper: {
         margin: theme.spacing(8, 4),
