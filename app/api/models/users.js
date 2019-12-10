@@ -146,7 +146,10 @@ var userSchema = new Schema({
         type: Number,
         default: 0,
     },
-    workoutPlan: {},
+    workoutPlan: {
+        type: Mixed,
+        default: {},
+    },
 });
 
 userSchema.pre('save', async function(next) {
