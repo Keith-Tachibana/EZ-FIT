@@ -18,21 +18,6 @@ async function getNameById(req, res, next) {
     });
 }
 
-async function getVerificationStatus(req, res, next) {
-    try {
-        const userInfo = await userModel.findById(req.body.userId);
-        res.json({
-            status: 'success',
-            message: 'User found',
-            data: {
-                isVerified: userInfo.isVerified,
-            },
-        });
-    } catch (err) {
-        next(err);
-    }
-}
-
 async function getPersonalInfo(req, res, next) {
     await userModel.findById(req.body.userId, (err, userInfo) => {
         if (err) {

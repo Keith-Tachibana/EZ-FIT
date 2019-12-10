@@ -34,6 +34,7 @@ router.post('/signin', [
     // check if is an email
     check('email').isEmail().withMessage('Invalid email.'),
 ], (req, res, next) => {
+    req.body.email = validator.normalizeEmail(req.body.email);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ status: "error", errors: errors.array() });
