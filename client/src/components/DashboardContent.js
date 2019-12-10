@@ -745,6 +745,86 @@ export default function DashboardContent(props) {
                         />
                     </Paper>
                 </Grid>
+                {/* Weight */}
+                <Grid item xs={12} md={6} lg={6}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
+                        <Weight
+                            loading={loading.weightData}
+                            weightData={weightData}
+                            color={dataColor}
+                            prefersDarkMode={props.prefersDarkMode}
+                        />
+                    </Paper>
+                </Grid>
+                {/* Weight goal */}
+                <Grid item xs={12} md={3} lg={3}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
+                        <WeightGoal
+                            loading={loading.weight}
+                            goalType={weight.goalType}
+                            start={weight.start}
+                            current={weight.current}
+                            goal={weight.goal}
+                            color={dataColor}
+                            prefersDarkMode={props.prefersDarkMode}
+                        />
+                    </Paper>
+                </Grid>
+                {/* BMI */}
+                <Grid item xs={12} md={3} lg={3}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
+                        <BMI
+                            loading={loading.currentBMI}
+                            current={currentBMI}
+                            prefersDarkMode={props.prefersDarkMode}
+                        />
+                    </Paper>
+                </Grid>
+                {/* Heart Rate */}
+                <Grid item xs={12} md={6} lg={6}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
+                        <HeartRateZones
+                            loading={loading.heartRateData}
+                            heartRateData={heartRateData}
+                            prefersDarkMode={props.prefersDarkMode}
+                        />
+                    </Paper>
+                </Grid>
+                {/* Resting Heart Rate */}
+                <Grid item xs={12} md={6} lg={6}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
+                        <RestingHeartRate
+                            loading={loading.heartRateData}
+                            heartRateData={heartRateData}
+                            prefersDarkMode={props.prefersDarkMode}
+                        />
+                    </Paper>
+                </Grid>
                 {/* Steps Goal */}
                 <Grid item xs={12} md={3} lg={3}>
                     <Paper
@@ -809,86 +889,6 @@ export default function DashboardContent(props) {
                             current={activeMinutes.current}
                             goal={activeMinutes.goal}
                             color={dataColor}
-                            prefersDarkMode={props.prefersDarkMode}
-                        />
-                    </Paper>
-                </Grid>
-                {/* Heart Rate */}
-                <Grid item xs={12} md={6} lg={6}>
-                    <Paper
-                        className={clsx(
-                            (!connectionStatus || syncError) && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
-                        <HeartRateZones
-                            loading={loading.heartRateData}
-                            heartRateData={heartRateData}
-                            prefersDarkMode={props.prefersDarkMode}
-                        />
-                    </Paper>
-                </Grid>
-                {/* Resting Heart Rate */}
-                <Grid item xs={12} md={6} lg={6}>
-                    <Paper
-                        className={clsx(
-                            (!connectionStatus || syncError) && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
-                        <RestingHeartRate
-                            loading={loading.heartRateData}
-                            heartRateData={heartRateData}
-                            prefersDarkMode={props.prefersDarkMode}
-                        />
-                    </Paper>
-                </Grid>
-                {/* Weight */}
-                <Grid item xs={12} md={6} lg={6}>
-                    <Paper
-                        className={clsx(
-                            (!connectionStatus || syncError) && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
-                        <Weight
-                            loading={loading.weightData}
-                            weightData={weightData}
-                            color={dataColor}
-                            prefersDarkMode={props.prefersDarkMode}
-                        />
-                    </Paper>
-                </Grid>
-                {/* Weight goal */}
-                <Grid item xs={12} md={3} lg={3}>
-                    <Paper
-                        className={clsx(
-                            (!connectionStatus || syncError) && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
-                        <WeightGoal
-                            loading={loading.weight}
-                            goalType={weight.goalType}
-                            start={weight.start}
-                            current={weight.current}
-                            goal={weight.goal}
-                            color={dataColor}
-                            prefersDarkMode={props.prefersDarkMode}
-                        />
-                    </Paper>
-                </Grid>
-                {/* BMI */}
-                <Grid item xs={12} md={3} lg={3}>
-                    <Paper
-                        className={clsx(
-                            (!connectionStatus || syncError) && classes.blur,
-                            fixedHeightPaper
-                        )}
-                    >
-                        <BMI
-                            loading={loading.currentBMI}
-                            current={currentBMI}
                             prefersDarkMode={props.prefersDarkMode}
                         />
                     </Paper>
