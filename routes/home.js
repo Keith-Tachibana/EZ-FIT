@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
 });
 
-router.get('/verify', (req, res, next) => {
+router.post('/verify', (req, res, next) => {
     userController.verify(req, res, next);
 });
 
@@ -23,7 +23,7 @@ router.post('/register', [
 ], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ status:"error", errors: errors.array() });
+        return res.status(422).json({ status: "error", errors: errors.array() });
     }
     userController.register(req, res, next);
 });
@@ -34,7 +34,7 @@ router.post('/signin', [
 ], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ status:"error", errors: errors.array() });
+        return res.status(422).json({ status: "error", errors: errors.array() });
     }
     userController.signin(req, res, next);
 });
@@ -45,7 +45,7 @@ router.post('/forgetpassword', [
 ], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ status:"error", errors: errors.array() });
+        return res.status(422).json({ status: "error", errors: errors.array() });
     }
     userController.forgetPassword(req, res, next);
 });
@@ -55,7 +55,7 @@ router.post('/resetpassword', [
 ], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ status:"error", errors: errors.array() });
+        return res.status(422).json({ status: "error", errors: errors.array() });
     }
     userController.resetPassword(req, res, next);
 });

@@ -19,7 +19,7 @@ function sendVerificationEmail(email, verificationLink) {
         't:text': 'yes',
         'v:verification_link': verificationLink,
     };
-    mg.messages().send(data, function(error, body) {
+    mg.messages().send(data, function (error, body) {
         console.log(body);
         if (error) {
             console.log(error);
@@ -37,7 +37,7 @@ function sendResetEmail(email, resetLink) {
         't:text': 'yes',
         'v:reset_link': resetLink,
     };
-    mg.messages().send(data, function(error, body) {
+    mg.messages().send(data, function (error, body) {
         console.log(body);
         if (error) {
             console.log(error);
@@ -167,7 +167,7 @@ async function signin(req, res, next) {
         } else {
             if (!userInfo.isVerified) {
                 return res.json({
-                    status:'error',
+                    status: 'error',
                     message: 'User not verified',
                     data: null,
                 });
@@ -368,8 +368,9 @@ async function resetPassword(req, res, next) {
 }
 
 async function verify(req, res, next) {
-    const userId = req.query.id;
-    const verificationToken = req.query.token;
+    const userId = req.body.id;
+    const verificationToken = req.body.token;
+    console.log(userId);
     try {
         let userInfo = await userModel.findById(userId);
         if (userInfo.isVerified) {

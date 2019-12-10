@@ -6,7 +6,7 @@ export default function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {"Copyright © "}
-            <Link color="inherit" href="https://ezfit.rocks/">
+            <Link color="inherit" href="https://www.ezfit.rocks/">
                 EZ-FIT
             </Link>{" "}
             {new Date().getFullYear()}
