@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -11,29 +11,29 @@ import Verify from './Verify';
 import TOS from './TOS';
 import Policy from './Policy';
 import { Hidden } from '@material-ui/core';
+import SideImage from './SideImage';
 
 const useStyles = makeStyles(theme => ({
     root: {
         height: '100vh',
     },
-    image: {
-        backgroundImage: `url(model${Math.floor(Math.random() * Math.floor(5)) +
-            1}.jpg)`,
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        // backgroundPosition: 'center',
-        width: '100%',
-    },
 }));
 
-export default function SideImagePane() {
+function SideImagePane() {
     const classes = useStyles();
+    const [random, setRandom] = useState(0);
+
+    useEffect(() => {
+        setRandom(Math.floor(Math.random() * Math.floor(5)) + 1);
+    }, [])
 
     return (
         <Grid container component="main" className={classes.root}>
             <CssBaseline />
             <Hidden only='xs'>
-                <Grid item xs={false} sm={4} md={7} className={classes.image} />
+                <Grid item xs={false} sm={4} md={7}>
+                    <SideImage imageNumber={random} />
+                </Grid>
             </Hidden>
             <Grid
                 item
@@ -59,3 +59,5 @@ export default function SideImagePane() {
         </Grid>
     );
 }
+
+export default React.memo(SideImagePane);
