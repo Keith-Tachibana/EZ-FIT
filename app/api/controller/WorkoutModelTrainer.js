@@ -47,7 +47,6 @@ async function getFat(req) {
                 rObj.value = parseFloat(obj.value);
                 return rObj;
             });
-            console.log(fatData);
             return {
                 status: 'success',
                 message: 'Successfully retrieved fat data',
@@ -226,73 +225,101 @@ async function getWorkoutClusterFromModel(req) {
         throw err;
     }
 }
-function getWorkoutForWeek(upperCheck, lowerCheck, workoutCluster) {
+function getWorkoutForWeek(
+    upperCheck,
+    lowerCheck,
+    generalStatus,
+    workoutCluster
+) {
     const weekWorkout = [];
-    const upperWorkoutList =
-        workoutFile.workouts[workoutCluster].workout[upperCheck.category];
-    const lowerWorkoutList =
-        workoutFile.workouts[workoutCluster].workout[lowerCheck.category];
-    const cardioWorkoutList =
-        workoutFile.workouts[workoutCluster].workout['cardio'];
-    const upperWorkoutElement = {
-        name: `Strength Training (${upperCheck.category})`,
-        type: upperCheck.duration.substring(
-            upperCheck.duration.indexOf('_') + 1
-        ),
-        exercises: [],
-    };
-    const lowerWorkoutElement = {
-        name: `Strength Training (${lowerCheck.category})`,
-        type: lowerCheck.duration.substring(
-            lowerCheck.duration.indexOf('_') + 1
-        ),
-        exercises: [],
-    };
-    const cardioWorkoutElement = {
-        name: `Cardio Training`,
-        type: lowerCheck.duration.substring(
-            lowerCheck.duration.indexOf('_') + 1
-        ),
-        exercises: [],
-    };
     const restWorkoutElement = { name: 'Rest day', type: null, exercises: [] };
-
-    upperWorkoutList.map(exerciseObj => {
-        // const { name, category, url, ...durationObj } = exerciseObj;
-        upperWorkoutElement.exercises.push({
-            name: exerciseObj['exercise']['name'],
-            category: exerciseObj['exercise']['category'],
-            url: exerciseObj['exercise']['url'],
-            duration: exerciseObj['exercise'][upperCheck.duration],
-        });
-    });
-    lowerWorkoutList.map(exerciseObj => {
-        // const { name, category, url, ...durationObj } = exerciseObj;
-        lowerWorkoutElement.exercises.push({
-            name: exerciseObj['exercise']['name'],
-            category: exerciseObj['exercise']['category'],
-            url: exerciseObj['exercise']['url'],
-            duration: exerciseObj['exercise'][lowerCheck.duration],
-        });
-    });
-    cardioWorkoutList.map(exerciseObj => {
-        // const { name, category, url, ...durationObj } = exerciseObj;
-        cardioWorkoutElement.exercises.push({
-            name: exerciseObj['exercise']['name'],
-            category: exerciseObj['exercise']['category'],
-            url: exerciseObj['exercise']['url'],
-            duration: exerciseObj['exercise'][lowerCheck.duration],
-        });
-    });
-    weekWorkout.push(
-        upperWorkoutElement,
-        upperWorkoutElement,
-        lowerWorkoutElement,
-        lowerWorkoutElement,
-        restWorkoutElement,
-        restWorkoutElement,
-        cardioWorkoutElement
+    const upperStatus = upperCheck.duration.substring(
+        upperCheck.duration.indexOf('_') + 1
     );
+    const lowerStatus = lowerCheck.duration.substring(
+        lowerCheck.duration.indexOf('_') + 1
+    );
+    console.log(
+        'General:',
+        generalStatus,
+        '\nUpper:',
+        upperStatus,
+        '\nLower:',
+        lowerStatus
+    );
+    if (
+        generalStatus === 'severe' ||
+        (upperStatus === 'severe' && lowerStatus === 'severe')
+    ) {
+        weekWorkout.push(
+            restWorkoutElement,
+            restWorkoutElement,
+            restWorkoutElement,
+            restWorkoutElement,
+            restWorkoutElement,
+            restWorkoutElement,
+            restWorkoutElement
+        );
+    } else {
+        const upperWorkoutList =
+            workoutFile.workouts[workoutCluster].workout[upperCheck.category];
+        const lowerWorkoutList =
+            workoutFile.workouts[workoutCluster].workout[lowerCheck.category];
+        const cardioWorkoutList =
+            workoutFile.workouts[workoutCluster].workout['cardio'];
+        const upperWorkoutElement = {
+            name: `Strength Training (${upperCheck.category})`,
+            type: upperStatus,
+            exercises: [],
+        };
+        const lowerWorkoutElement = {
+            name: `Strength Training (${lowerCheck.category})`,
+            type: lowerStatus,
+            exercises: [],
+        };
+        const cardioWorkoutElement = {
+            name: `Cardio Training`,
+            type: lowerStatus,
+            exercises: [],
+        };
+
+        upperWorkoutList.map(exerciseObj => {
+            // const { name, category, url, ...durationObj } = exerciseObj;
+            upperWorkoutElement.exercises.push({
+                name: exerciseObj['exercise']['name'],
+                category: exerciseObj['exercise']['category'],
+                url: exerciseObj['exercise']['url'],
+                duration: exerciseObj['exercise'][upperCheck.duration],
+            });
+        });
+        lowerWorkoutList.map(exerciseObj => {
+            // const { name, category, url, ...durationObj } = exerciseObj;
+            lowerWorkoutElement.exercises.push({
+                name: exerciseObj['exercise']['name'],
+                category: exerciseObj['exercise']['category'],
+                url: exerciseObj['exercise']['url'],
+                duration: exerciseObj['exercise'][lowerCheck.duration],
+            });
+        });
+        cardioWorkoutList.map(exerciseObj => {
+            // const { name, category, url, ...durationObj } = exerciseObj;
+            cardioWorkoutElement.exercises.push({
+                name: exerciseObj['exercise']['name'],
+                category: exerciseObj['exercise']['category'],
+                url: exerciseObj['exercise']['url'],
+                duration: exerciseObj['exercise'][lowerCheck.duration],
+            });
+        });
+        weekWorkout.push(
+            upperWorkoutElement,
+            upperWorkoutElement,
+            lowerWorkoutElement,
+            lowerWorkoutElement,
+            restWorkoutElement,
+            restWorkoutElement,
+            cardioWorkoutElement
+        );
+    }
     const shuffledWorkoutWeek = shuffle(weekWorkout);
     return shuffledWorkoutWeek;
 }
@@ -319,26 +346,40 @@ async function getWorkout(userInfo, workoutCluster) {
     const generalStatus = userInfo.bodyStatus.general;
     var durationStatus = 'normal';
     var workoutPlan = [];
-    if (generalStatus === 'severe') {
+    if (
+        generalStatus === 'severe' ||
+        (userInfo.bodyStatus.arms === 'severe' &&
+            userInfo.bodyStatus.legs === 'severe')
+    ) {
         durationStatus = 'duration_severe';
         const severeUpper = { category: 'upper', duration: durationStatus };
         const severeLower = { category: 'lower', duration: durationStatus };
         workoutPlan = getWorkoutForWeek(
             severeUpper,
             severeLower,
+            generalStatus,
             workoutCluster
         );
     } else if (generalStatus === 'light') {
         durationStatus = 'duration_light';
         const lightUpper = { category: 'upper', duration: durationStatus };
         const lightLower = { category: 'lower', duration: durationStatus };
-        workoutPlan = getWorkoutForWeek(lightUpper, lightLower, workoutCluster);
+        workoutPlan = getWorkoutForWeek(
+            lightUpper,
+            lightLower,
+            generalStatus,
+            workoutCluster
+        );
     } else if (generalStatus === 'normal') {
         const upperCheck = doArmCheck(userInfo);
         const lowerCheck = doLegCheck(userInfo);
-        workoutPlan = getWorkoutForWeek(upperCheck, lowerCheck, workoutCluster);
+        workoutPlan = getWorkoutForWeek(
+            upperCheck,
+            lowerCheck,
+            generalStatus,
+            workoutCluster
+        );
     }
-    console.log(workoutPlan);
     return workoutPlan;
 }
 async function getPrediction(req, res, next) {
