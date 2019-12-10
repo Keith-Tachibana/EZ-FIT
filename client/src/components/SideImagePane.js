@@ -7,10 +7,10 @@ import { Switch, Route } from 'react-router-dom';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import ForgetPasswordForm from './ForgetPasswordForm';
-import bg from '../../src/signsidebg.jpg';
 import Verify from './Verify';
 import TOS from './TOS';
 import Policy from './Policy';
+import { Hidden } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -21,24 +21,8 @@ const useStyles = makeStyles(theme => ({
             1}.jpg)`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
-    },
-    paper: {
-        margin: theme.spacing(8, 4),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
+        // backgroundPosition: 'center',
+        width: '100%',
     },
 }));
 
@@ -48,7 +32,9 @@ export default function SideImagePane() {
     return (
         <Grid container component="main" className={classes.root}>
             <CssBaseline />
-            <Grid item xs={false} sm={4} md={7} className={classes.image} />
+            <Hidden only='xs'>
+                <Grid item xs={false} sm={4} md={7} className={classes.image} />
+            </Hidden>
             <Grid
                 item
                 xs={12}
