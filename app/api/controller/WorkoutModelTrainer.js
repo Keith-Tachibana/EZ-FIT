@@ -1,71 +1,230 @@
 const workoutFile = require('../data/workouts');
 const userModel = require('../models/users');
 const shuffle = require('knuth-shuffle').knuthShuffle;
+const axios = require('axios');
+const fitbitApi = require('./fitbitApiIntegration');
+const moment = require('moment');
 
-var trainingData;
-var trainedModel;
-// async function trainModel() {
-//     if (appConfig.modelTrained) {
-//         return false;
-//     }
-//     try {
-//         const data = fs.readFileSync('data.csv', function(err, data) {
-//             if (err) {
-//                 console.error(err);
-//                 return false;
-//             }
-//         });
-//         parseData(data);
-//     } catch (err) {
-//         throw err;
-//     }
-// }
-// function parseData(data) {
-//     const records = parse(data);
-//     trainingData = records.slice(1).map(function(d) {
-//         return d.map(function(entry) {
-//             return Number(entry);
-//         });
-//     });
-//     getModel(trainingData);
-// }
-// function getModel(trainingData) {
-//     try {
-//         trainedModel = kmeans(trainingData, 4, [
-//             [6.1, 22, 23.332],
-//             [22.1, 35, 27.325],
-//             [24.2, 40, 29.016],
-//             [32.6, 50, 31.79],
-//         ]);
-//         const saveModel = async () => {
-//             await workoutModelKM.create({
-//                 model: {
-//                     it: trainedModel.it,
-//                     k: trainedModel.k,
-//                     centroids: trainedModel.centroids,
-//                     idxs: trainedModel.idxs,
-//                 },
-//             });
-//             appConfig.modelTrained = true;
-//         };
-//         saveModel();
-//         // var counts = {};
-//         // for (var i = 0; i < trainedModel.idxs.length; i++) {
-//         //     var num = trainedModel.idxs[i];
-//         //     counts[num] = counts[num] ? counts[num] + 1 : 1;
-//         // }
-//         // console.log(counts);
-//         // const saveModel = async docmodel => {
-//         //     await docmodel.save();
-//         // };
-//     } catch (err) {
-//         console.log('Failed', err);
-//     }
-// }
-async function getWorkoutClusterFromModel() {
+/* //Printing a nested object
+function logRecursive(object) {
+    for (key in object) {
+        var value = object[key];
+        if (typeof value === 'object') {
+            console.log('{');
+            logRecursive(value);
+            console.log('}');
+        } else {
+            console.log(value);
+        }
+    }
+} */
+async function getFat(req) {
+    try {
+        const userInfo = await userModel.findById(req.body.userId);
+        const accessToken = userInfo.authToken.access_token;
+        const userId = userInfo.authToken.user_id;
+        const tokenStatus = await fitbitApi.checkTokenStatus(userInfo);
+        if (tokenStatus === false) {
+            return res.json({
+                status: 'error',
+                message: "Couldn't refresh token",
+            });
+        }
+        try {
+            const resp = await axios.get(
+                `https://api.fitbit.com/1/user/${userId}/body/fat/date/today/1d.json`,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                        'Accept-Language': 'en_US',
+                    },
+                }
+            );
+            // const bmiData = resp.data;
+            const fatData = resp.data['body-fat'].map(obj => {
+                let rObj = {};
+                rObj.dateTime = obj.dateTime;
+                rObj.value = parseFloat(obj.value);
+                return rObj;
+            });
+            console.log(fatData);
+            return {
+                status: 'success',
+                message: 'Successfully retrieved fat data',
+                data: { 'body-fat': fatData },
+            };
+        } catch (err) {
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(err.response.data);
+                console.log(err.response.status);
+                console.log(err.response.headers);
+            } else if (err.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(err.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', err.message);
+            }
+            console.log(err.config);
+            return {
+                status: 'error',
+                message: 'Error getting fat data',
+                data: null,
+            };
+        }
+    } catch (err) {
+        throw err;
+    }
+}
+async function getAge(req) {
+    try {
+        const userInfo = await userModel.findById(req.body.userId);
+        const accessToken = userInfo.authToken.access_token;
+        const userId = userInfo.authToken.user_id;
+        const tokenStatus = await fitbitApi.checkTokenStatus(userInfo);
+        if (tokenStatus === false) {
+            return res.json({
+                status: 'error',
+                message: "Couldn't refresh token",
+            });
+        }
+        try {
+            const resp = await axios.get(
+                `https://api.fitbit.com/1/user/${userId}/profile.json`,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                        'Accept-Language': 'en_US',
+                    },
+                }
+            );
+            // const bmiData = resp.data;
+            const ageData = resp.data['user']['age'];
+            return {
+                status: 'success',
+                message: 'Successfully retrieved age data',
+                data: { age: ageData },
+            };
+        } catch (err) {
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(err.response.data);
+                console.log(err.response.status);
+                console.log(err.response.headers);
+            } else if (err.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(err.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', err.message);
+            }
+            console.log(err.config);
+            return {
+                status: 'error',
+                message: 'Error getting Age data',
+                data: null,
+            };
+        }
+    } catch (err) {
+        throw err;
+    }
+}
+async function getBMI(req) {
+    try {
+        const userInfo = await userModel.findById(req.body.userId);
+        const accessToken = userInfo.authToken.access_token;
+        const userId = userInfo.authToken.user_id;
+        const tokenStatus = await fitbitApi.checkTokenStatus(userInfo);
+        if (tokenStatus === false) {
+            return res.json({
+                status: 'error',
+                message: "Couldn't refresh token",
+            });
+        }
+        try {
+            const resp = await axios.get(
+                `https://api.fitbit.com/1/user/${userId}/body/bmi/date/today/1d.json`,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + accessToken,
+                        'Accept-Language': 'en_US',
+                    },
+                }
+            );
+            // const bmiData = resp.data;
+            const bmiData = resp.data['body-bmi'].map(obj => {
+                let rObj = {};
+                rObj.dateTime = obj.dateTime;
+                rObj.value = parseFloat(obj.value);
+                return rObj;
+            });
+            console.log(bmiData);
+            return {
+                status: 'success',
+                message: 'Successfully retrieved weight data',
+                data: { 'body-bmi': bmiData },
+            };
+        } catch (err) {
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(err.response.data);
+                console.log(err.response.status);
+                console.log(err.response.headers);
+            } else if (err.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(err.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', err.message);
+            }
+            console.log(err.config);
+            return {
+                status: 'error',
+                message: 'Error getting BMI data',
+                data: null,
+            };
+        }
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getWorkoutClusterFromModel(req) {
     //Fetch cluster from ezfit2
     //Get bmi, age and fat for prediction first
-    return 0;
+    try {
+        var bmi, age, fat;
+        const bmiResponse = await getBMI(req);
+        if (bmiResponse.status === 'success') {
+            bmi = bmiResponse.data['body-bmi'][0].value;
+        }
+        const ageResponse = await getAge(req);
+        if (ageResponse.status === 'success') {
+            age = ageResponse.data['age'];
+        }
+        const fatResponse = await getFat(req);
+        if (fatResponse.status === 'success') {
+            fat = fatResponse.data['body-fat'][0].value;
+        }
+        const resp = await axios.get(
+            `https://ezfit2.herokuapp.com/model?fat=${fat}&age=${age}&bmi=${bmi}`,
+            {},
+            {}
+        );
+        if (resp.statusText === 'OK') return resp.data.prediction;
+    } catch (err) {
+        throw err;
+    }
 }
 function getWorkoutForWeek(upperCheck, lowerCheck, workoutCluster) {
     const weekWorkout = [];
@@ -75,10 +234,28 @@ function getWorkoutForWeek(upperCheck, lowerCheck, workoutCluster) {
         workoutFile.workouts[workoutCluster].workout[lowerCheck.category];
     const cardioWorkoutList =
         workoutFile.workouts[workoutCluster].workout['cardio'];
-    const upperWorkoutElement = { name: upperCheck.category, exercises: [] };
-    const lowerWorkoutElement = { name: lowerCheck.category, exercises: [] };
-    const cardioWorkoutElement = { name: 'cardio', exercises: [] };
-    const restWorkoutElement = { name: 'rest', exercises: [] };
+    const upperWorkoutElement = {
+        name: `Strength Training (${upperCheck.category})`,
+        type: upperCheck.duration.substring(
+            upperCheck.duration.indexOf('_') + 1
+        ),
+        exercises: [],
+    };
+    const lowerWorkoutElement = {
+        name: `Strength Training (${lowerCheck.category})`,
+        type: lowerCheck.duration.substring(
+            lowerCheck.duration.indexOf('_') + 1
+        ),
+        exercises: [],
+    };
+    const cardioWorkoutElement = {
+        name: `Cardio Training`,
+        type: lowerCheck.duration.substring(
+            lowerCheck.duration.indexOf('_') + 1
+        ),
+        exercises: [],
+    };
+    const restWorkoutElement = { name: 'Rest day', type: null, exercises: [] };
 
     upperWorkoutList.map(exerciseObj => {
         // const { name, category, url, ...durationObj } = exerciseObj;
@@ -161,22 +338,45 @@ async function getWorkout(userInfo, workoutCluster) {
         const lowerCheck = doLegCheck(userInfo);
         workoutPlan = getWorkoutForWeek(upperCheck, lowerCheck, workoutCluster);
     }
+    console.log(workoutPlan);
     return workoutPlan;
 }
 async function getPrediction(req, res, next) {
     try {
-        const workoutCluster = await getWorkoutClusterFromModel();
+        const workoutCluster = await getWorkoutClusterFromModel(req);
         const userId = req.body.userId;
         if (userId !== null) {
             const userInfo = await userModel.findById(userId);
             if (userInfo) {
-                const workoutPlan = await getWorkout(userInfo, workoutCluster);
-                console.log('Gottteeeeem', workoutPlan);
-                res.json({
-                    status: 'success',
-                    message: 'Obtained workout plan for the week',
-                    data: workoutPlan,
-                });
+                const workoutExpiry = userInfo.workoutExpiry < moment();
+                if (!workoutExpiry) {
+                    const workoutPlan = await getWorkout(
+                        userInfo,
+                        workoutCluster
+                    );
+                    //Use the below function to get the full workout printed out
+                    // logRecursive(workoutPlan);
+                    await userModel.updateOne(
+                        { _id: req.body.userId },
+                        {
+                            $set: {
+                                workoutPlan: workoutPlan,
+                                workoutExpiry: moment().endOf('week'),
+                            },
+                        }
+                    );
+                    res.json({
+                        status: 'success',
+                        message: 'Obtained workout plan for the week',
+                        data: workoutPlan,
+                    });
+                } else {
+                    res.json({
+                        status: 'success',
+                        message: 'Obtained workout plan for the week',
+                        data: userInfo.workoutPlan,
+                    });
+                }
             }
         }
     } catch (err) {
