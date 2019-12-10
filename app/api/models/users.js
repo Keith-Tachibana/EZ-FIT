@@ -147,7 +147,7 @@ var userSchema = new Schema({
         default: 0,
     },
     workoutPlan: {
-        type: Mixed,
+        type: Schema.Types.Mixed,
         default: {},
     },
 });
