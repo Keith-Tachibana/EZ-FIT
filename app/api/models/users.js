@@ -144,7 +144,7 @@ var userSchema = new Schema({
     },
     workoutExpiry: {
         type: Number,
-        default: moment() - 1000,
+        default: 0,
     },
     workoutPlan: {},
 });
