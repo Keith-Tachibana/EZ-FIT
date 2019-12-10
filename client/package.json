@@ -14,9 +14,12 @@
         "react-dom": "^16.10.2",
         "react-joyride": "^2.1.1",
         "react-oauth-popup": "^0.1.0",
+        "react-progressive-bg-image": "^3.0.0",
+        "react-progressive-image": "^0.6.0",
         "react-router-dom": "^5.1.2",
-        "react-scripts": "3.2.0",
-        "recharts": "^1.8.5"
+        "react-scripts": "^3.3.0",
+        "recharts": "^1.8.5",
+        "styled-components": "^4.4.1"
     },
     "scripts": {
         "start": "react-scripts start",

@@ -20,6 +20,7 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import ProgressiveImage from "react-progressive-image";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -296,7 +297,12 @@ export default function BodyStatusForm(props) {
                 </Grid>
               </Grid>
               <Grid item xs={7}>
-                <img src='/body_injury.jpeg' alt='body injury' width={'100%'} />
+                <ProgressiveImage
+                  src='/body_injury.jpg'
+                  placeholder='/body_injury-min.jpg'
+                >
+                  {(src, loading) => <img src={src} alt='body injury' width={'100%'} style={{ filter: loading ? 'blur(5px)' : 'none', transition: 'all 0.3s ease-in-out' }} />}
+                </ProgressiveImage>
               </Grid>
             </Grid>
             <Grid item xs={12}>
