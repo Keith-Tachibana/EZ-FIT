@@ -4,6 +4,7 @@ const validator = require('validator');
 const appConfig = require('../../../config/appConfig');
 const saltRounds = appConfig.saltRounds;
 const Schema = mongoose.Schema;
+const moment = require('moment');
 
 var contactSchema = new Schema({
     firstName: {
@@ -143,6 +144,7 @@ var userSchema = new Schema({
     },
     workoutExpiry: {
         type: Number,
+        default: moment() - 1000,
     },
     workoutPlan: {},
 });
