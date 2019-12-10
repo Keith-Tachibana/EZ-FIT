@@ -374,4 +374,5 @@ module.exports = {
     getWeightData,
     getWeightGoal,
     getBMIData,
+    checkTokenStatus,
 };

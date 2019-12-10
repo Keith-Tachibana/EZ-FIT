@@ -25,19 +25,23 @@ export default function Workout(props) {
     const classes = useStyles();
     const today = props.day === moment().format('dddd');
     const [showExerciseDialog, setShowExerciseDialog] = useState(false);
-    const [shadow, setShadow] = useState(1)
+    const [shadow, setShadow] = useState(1);
 
     const onMouseOver = () => {
-        setShadow(shadow => {
-            setShadow(shadow + 7);
-        });
+        if (props.name !== 'Rest day') {
+            setShadow(shadow => {
+                setShadow(shadow + 7);
+            });
+        }
     };
 
     const onMouseOut = () => {
-        setShadow(shadow => {
-            setShadow(shadow - 7);
-        });
-    }
+        if (props.name !== 'Rest day') {
+            setShadow(shadow => {
+                setShadow(shadow - 7);
+            });
+        }
+    };
 
     const handleClickOpen = () => {
         setShowExerciseDialog(true);
@@ -52,7 +56,7 @@ export default function Workout(props) {
         } else {
             setShadow(1);
         }
-    }, [today])
+    }, [today]);
 
     return (
         <Card
@@ -62,28 +66,38 @@ export default function Workout(props) {
             className={clsx(today && classes.todayCard)}
         >
             <CardContent>
-                <Typography variant='h6' gutterBottom>
+                <Typography variant="h6" gutterBottom>
                     {props.day}
                 </Typography>
                 <Typography
                     variant="body2"
                     style={{ minHeight: 40 }}
-                    className={clsx(!props.type && classes.restDay, props.type === 'light' && classes.lightWorkout)}
+                    className={clsx(
+                        !props.type && classes.restDay,
+                        props.type === 'light' && classes.lightWorkout
+                    )}
                 >
-                    {props.name}{(props.type === 'light') ? '(Light)' : ''}
+                    {props.name}
+                    {props.type === 'light' ? '(Light)' : ''}
                 </Typography>
             </CardContent>
-            <CardActions style={{ visibility: props.name === 'Rest' ? 'hidden' : '' }}>
-                <Button size="small" onClick={handleClickOpen}>View workout</Button>
+            <CardActions
+                style={{
+                    visibility: props.name === 'Rest day' ? 'hidden' : '',
+                }}
+            >
+                <Button size="small" onClick={handleClickOpen}>
+                    View workout
+                </Button>
             </CardActions>
-            {props.exercises ?
+            {props.exercises ? (
                 <WorkoutDialog
                     open={showExerciseDialog}
                     handleClose={handleClose}
                     name={props.name}
                     exercises={props.exercises}
-                /> :
-                null}
-        </Card >
+                />
+            ) : null}
+        </Card>
     );
 }

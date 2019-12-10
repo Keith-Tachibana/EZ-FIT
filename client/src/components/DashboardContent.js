@@ -21,7 +21,7 @@ import { Typography, Hidden, Button } from '@material-ui/core';
 import SyncButton from './SyncButton';
 // import ConnectDialog from './ConnectDialog';
 import Joyride from 'react-joyride';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import WorkoutRoutine from './WorkoutRoutine';
 
 function toLocaleStringSupportsLocales() {
@@ -115,80 +115,31 @@ export default function DashboardContent(props) {
         current: 0,
         goal: 5000,
     });
-    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const days = [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday',
+    ];
     const [workoutRoutine, setWorkoutRoutine] = useState([
         {
             day: days[0],
             name: `Strength Training (Upper Body)`,
             type: `light`,
-            exercises: [
-                {
-                    "name": "Warm Up",
-                    "duration": "10 minutes",
-                    "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
-                },
-                {
-                    "name": "Bench Press",
-                    "duration": "12 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Bench_press"
-                },
-                {
-                    "name": "Dips",
-                    "duration": "12 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Dip_(exercise)"
-                },
-                {
-                    "name": "Pulldown",
-                    "duration": "12 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Pulldown_exercise"
-                },
-                {
-                    "name": "Overhead Press",
-                    "duration": "12 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Overhead_press"
-                },
-                {
-                    "name": "Triceps extension",
-                    "duration": "10 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Lying_triceps_extensions"
-                }
-            ],
+            exercises: [],
         },
         {
             day: days[1],
             name: `Strength Training (Lower Body)`,
             type: `normal`,
-            exercises: [
-                {
-                    "name": "Warm Up",
-                    "duration": "10 minutes",
-                    "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
-                },
-                {
-                    "name": "Leg raise",
-                    "duration": "6 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Leg_raise"
-                },
-                {
-                    "name": "Leg raises",
-                    "duration": "6 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Leg_raise"
-                },
-                {
-                    "name": "Lunge",
-                    "duration": "6 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Lunge_(exercise)"
-                },
-                {
-                    "name": "Leg extension",
-                    "duration": "6 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Leg_extension"
-                }
-            ],
+            exercises: [],
         },
         {
             day: days[2],
-            name: `Rest`,
+            name: `Rest day`,
             type: null,
             exercises: [],
         },
@@ -196,74 +147,17 @@ export default function DashboardContent(props) {
             day: days[3],
             name: `Strength Training (Upper Body)`,
             type: `light`,
-            exercises: [
-                {
-                    "name": "Warm Up",
-                    "duration": "10 minutes",
-                    "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
-                },
-                {
-                    "name": "Bench Press",
-                    "duration": "12 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Bench_press"
-                },
-                {
-                    "name": "Dips",
-                    "duration": "12 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Dip_(exercise)"
-                },
-                {
-                    "name": "Pulldown",
-                    "duration": "12 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Pulldown_exercise"
-                },
-                {
-                    "name": "Overhead Press",
-                    "duration": "12 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Overhead_press"
-                },
-                {
-                    "name": "Triceps extension",
-                    "duration": "10 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Lying_triceps_extensions"
-                }
-            ],
+            exercises: [],
         },
         {
             day: days[4],
             name: `Strength Training (Lower Body)`,
             type: `normal`,
-            exercises: [
-                {
-                    "name": "Warm Up",
-                    "duration": "10 minutes",
-                    "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
-                },
-                {
-                    "name": "Leg raise",
-                    "duration": "6 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Leg_raise"
-                },
-                {
-                    "name": "Leg raises",
-                    "duration": "6 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Leg_raise"
-                },
-                {
-                    "name": "Lunge",
-                    "duration": "6 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Lunge_(exercise)"
-                },
-                {
-                    "name": "Leg extension",
-                    "duration": "6 x 3 reps",
-                    "url": "https://en.wikipedia.org/wiki/Leg_extension"
-                }
-            ],
+            exercises: [],
         },
         {
             day: days[5],
-            name: `Rest`,
+            name: `Rest day`,
             type: null,
             exercises: [],
         },
@@ -271,28 +165,7 @@ export default function DashboardContent(props) {
             day: days[6],
             name: `Cardio`,
             type: `normal`,
-            exercises: [
-                {
-                    "name": "Warm Up",
-                    "duration": "10 minutes",
-                    "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
-                },
-                {
-                    "name": "Elliptical",
-                    "duration": "10 minutes",
-                    "url": "https://en.wikipedia.org/wiki/Elliptical_trainer"
-                },
-                {
-                    "name": "Treadmill",
-                    "duration": "10 minutes",
-                    "url": "https://en.wikipedia.org/wiki/Treadmill"
-                },
-                {
-                    "name": "Running",
-                    "duration": "10 minutes",
-                    "url": "https://en.wikipedia.org/wiki/Deadlift"
-                }
-            ],
+            exercises: [],
         },
     ]);
     const [heartRateData, setHeartRateData] = useState([
@@ -665,7 +538,9 @@ export default function DashboardContent(props) {
     }
     async function getWorkoutRoutine() {
         try {
-            const res = await axios.get('/api/getWorkoutPrediction', { headers });
+            const res = await axios.get('/api/getWorkoutPrediction', {
+                headers,
+            });
             if (res.data.status === 'success') {
                 let generatedWorkout = res.data.data;
                 generatedWorkout.forEach((workout, index) => {
@@ -774,19 +649,17 @@ export default function DashboardContent(props) {
                 steps={joyrideSteps}
                 run={!connectionStatus}
                 disableScrolling={true}
-                styles={
-                    {
-                        buttonClose: {
-                            display: 'none',
-                        },
-                        tooltipFooter: {
-                            display: 'none',
-                        },
-                        overlay: {
-                            'pointer-events': 'none',
-                        },
-                    }
-                }
+                styles={{
+                    buttonClose: {
+                        display: 'none',
+                    },
+                    tooltipFooter: {
+                        display: 'none',
+                    },
+                    overlay: {
+                        'pointer-events': 'none',
+                    },
+                }}
             />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -809,7 +682,7 @@ export default function DashboardContent(props) {
                         >
                             {`LAST FITBIT SYNC: ${syncMessage}`}
                         </Typography>
-                        <span id='syncButton'>
+                        <span id="syncButton">
                             <SyncButton
                                 connectionStatus={connectionStatus}
                                 syncError={syncError}
@@ -826,7 +699,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Exercise */}
                 <Grid item xs={12}>
-                    <Paper className={clsx((!connectionStatus) && classes.blur, minHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            !connectionStatus && classes.blur,
+                            minHeightPaper
+                        )}
+                    >
                         <WorkoutRoutine
                             loading={loading.workoutRoutine}
                             workoutRoutine={workoutRoutine}
@@ -836,7 +714,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Calories */}
                 <Grid item xs={12} md={8} lg={9}>
-                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <Calories
                             loading={loading.caloriesBurnedData}
                             caloriesBurnedData={caloriesBurnedData}
@@ -847,7 +730,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Calories Goal */}
                 <Grid item xs={12} md={4} lg={3}>
-                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <CaloriesGoal
                             loading={loading.calories}
                             current={calories.current}
@@ -859,7 +747,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Steps Goal */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <StepsGoal
                             loading={loading.steps}
                             current={steps.current}
@@ -871,7 +764,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Distance Goal */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <DistanceGoal
                             loading={loading.distance}
                             current={distance.current}
@@ -883,7 +781,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Floors Goal */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <FloorsGoal
                             loading={loading.floors}
                             current={floors.current}
@@ -895,7 +798,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Active Minutes Goal */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <ActiveMinutesGoal
                             loading={loading.activeMinutes}
                             current={activeMinutes.current}
@@ -907,7 +815,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Heart Rate */}
                 <Grid item xs={12} md={6} lg={6}>
-                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <HeartRateZones
                             loading={loading.heartRateData}
                             heartRateData={heartRateData}
@@ -917,7 +830,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Resting Heart Rate */}
                 <Grid item xs={12} md={6} lg={6}>
-                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <RestingHeartRate
                             loading={loading.heartRateData}
                             heartRateData={heartRateData}
@@ -927,7 +845,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Weight */}
                 <Grid item xs={12} md={6} lg={6}>
-                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <Weight
                             loading={loading.weightData}
                             weightData={weightData}
@@ -938,7 +861,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* Weight goal */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <WeightGoal
                             loading={loading.weight}
                             goalType={weight.goalType}
@@ -952,7 +880,12 @@ export default function DashboardContent(props) {
                 </Grid>
                 {/* BMI */}
                 <Grid item xs={12} md={3} lg={3}>
-                    <Paper className={clsx((!connectionStatus || syncError) && classes.blur, fixedHeightPaper)}>
+                    <Paper
+                        className={clsx(
+                            (!connectionStatus || syncError) && classes.blur,
+                            fixedHeightPaper
+                        )}
+                    >
                         <BMI
                             loading={loading.currentBMI}
                             current={currentBMI}
