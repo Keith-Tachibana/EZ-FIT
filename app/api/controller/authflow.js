@@ -163,12 +163,14 @@ async function storeToken(userId, resp) {
 
 async function obtainToken(req, res, next) {
     try {
+        console.log('The code is:', req.body.code);
         const resp = await axios.post(
             'https://api.fitbit.com/oauth2/token',
             qs.stringify({
                 grant_type: 'authorization_code',
                 // redirect_uri: 'http://localhost:3000/api/checkOAuthTokenStatus',
-                redirect_uri: 'https://www.ezfit.rocks/api/checkOAuthTokenStatus',
+                redirect_uri:
+                    'https://www.ezfit.rocks/api/checkOAuthTokenStatus',
                 code: req.body.code,
             }),
             {
