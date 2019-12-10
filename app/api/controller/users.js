@@ -9,15 +9,14 @@ const mg = mailgun({ apiKey: appConfig.mailgunApiKey, domain: DOMAIN });
 
 function sendVerificationEmail(email, verificationLink) {
     const data = {
-        from:
-            'EZ-FIT <no-reply@mail.ezfit.rocks>',
+        from: 'EZ-FIT <no-reply@mail.ezfit.rocks>',
         to: email,
         subject: '[EZ-FIT] Activate your account',
         template: 'confirm_email',
         't:text': 'yes',
         'v:verification_link': verificationLink,
     };
-    mg.messages().send(data, function (error, body) {
+    mg.messages().send(data, function(error, body) {
         console.log(body);
         if (error) {
             console.log(error);
@@ -27,15 +26,14 @@ function sendVerificationEmail(email, verificationLink) {
 
 function sendResetEmail(email, resetLink) {
     const data = {
-        from:
-            'EZ-FIT <no-reply@mail.ezfit.rocks>',
+        from: 'EZ-FIT <no-reply@mail.ezfit.rocks>',
         to: email,
         subject: '[EZ-FIT] Password reset',
         template: 'reset_email',
         't:text': 'yes',
         'v:reset_link': resetLink,
     };
-    mg.messages().send(data, function (error, body) {
+    mg.messages().send(data, function(error, body) {
         console.log(body);
         if (error) {
             console.log(error);
@@ -106,6 +104,7 @@ async function register(req, res, next) {
             password: req.body.password,
             authToken: {},
             bodyStatus: {},
+            workoutPlan: {},
         });
         if (userInfo) {
             const createdDate = new Date(userInfo.createdDate);
@@ -128,7 +127,8 @@ async function register(req, res, next) {
             sendVerificationEmail(userInfo.email, verificationLink);
             res.json({
                 status: 'success',
-                message: 'Your account has been created.  Please check your email for verification.',
+                message:
+                    'Your account has been created.  Please check your email for verification.',
                 data: null,
             });
         } else {
