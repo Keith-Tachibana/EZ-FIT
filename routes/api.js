@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
+const validator = require('validator');
 const dashboardController = require('../app/api/controller/dashboard');
 const userController = require('../app/api/controller/users');
 const authController = require('../app/api/controller/authflow');
@@ -12,7 +13,23 @@ router.get('/getname', dashboardController.getNameById);
 router.get('/getpersonalinfo', dashboardController.getPersonalInfo);
 router.get('/getbodystatus', dashboardController.getBodyStatus);
 router.get('/signout', userController.signout);
-router.post('/updatepersonalinfo', dashboardController.updatePersonalInfo);
+router.post('/updatepersonalinfo', [
+    // check if firstName exists
+    check('firstName').isLength({ min: 1 }).withMessage('First name can\'t be blank.'),
+    // check if lastName exists
+    check('lastName').isLength({ min: 1 }).withMessage('Last name can\'t be blank.'),
+    // check if is an email
+    check('email').isEmail().withMessage('Invalid email.'),
+], (req, res, next) => {
+    req.body.email = validator.normalizeEmail(req.body.email);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res
+            .status(422)
+            .json({ status: 'error', errors: errors.array() });
+    }
+    dashboardController.updatePersonalInfo(req, res, next);
+});
 router.post('/updatepassword', userController.updatePassword);
 
 router.post(
