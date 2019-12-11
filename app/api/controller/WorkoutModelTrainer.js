@@ -401,8 +401,10 @@ async function getPrediction(req, res, next) {
                         { _id: req.body.userId },
                         {
                             $set: {
-                                'workout.workoutPlan': workoutPlan,
-                                'workout.workoutExpiry': moment().endOf('week'),
+                                workout: {
+                                    workoutPlan: workoutPlan,
+                                    workoutExpiry: moment().endOf('week'),
+                                },
                             },
                         }
                     );
