@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import OauthPopup from 'react-oauth-popup';
 import axios from 'axios';
+import { LinearProgress, CircularProgress } from '@material-ui/core';
+import ProgressiveImage from 'react-progressive-image';
 
 const useStyles = makeStyles({
     card: {
@@ -17,14 +19,25 @@ const useStyles = makeStyles({
         width: 300,
         margin: 'auto',
     },
+    wrapper: {
+        position: 'relative',
+    },
+    buttonProgress: {
+        color: 'primary',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
+    },
 });
 
 function ConnectDescription() {
     return (
         <Typography variant="body2" color="textSecondary" component="p">
             Connect your Fitbit account and your data will sync with the
-            dashboard automatically on login or you can start a sync
-            manually using the sync button.
+            dashboard automatically on login or you can start a sync manually
+            using the sync button.
         </Typography>
     );
 }
@@ -32,8 +45,8 @@ function ConnectDescription() {
 function DisconnectDescription() {
     return (
         <Typography variant="body2" color="textSecondary" component="p">
-            Disconnect your Fitbit account and your data will not sync with
-            the Dashboard.
+            Disconnect your Fitbit account and your data will not sync with the
+            Dashboard.
         </Typography>
     );
 }
@@ -48,85 +61,91 @@ function Description(props) {
 
 export default function FitbitConnection() {
     const headers = {
-        'x-access-token': sessionStorage.getItem('access-token'),
+        'x-access-token': localStorage.getItem('access-token'),
     };
     const classes = useStyles();
+    const [loading, setLoading] = useState(true);
     const [connectionStatus, setConnectionStatus] = useState(false);
+    const [buttonLoading, setButtonLoading] = useState(false);
 
     useEffect(() => {
         checkTokenStatus();
-        // Add the checkTokenStatus
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const checkTokenStatus = async () => {
-        console.log('Did I enter here');
+        setLoading(true);
         try {
-            const response = await axios.get(
-                '/user/checkOAuthTokenStatus',
-                {
-                    headers,
-                }
-            );
-            console.log('Whats the reponse', response);
-            console.log('Entering success');
-            if (response.data.status === 'success')
-                setConnectionStatus(true);
+            const response = await axios.get('/api/checkOAuthTokenStatus', {
+                headers,
+            });
+            if (response.data.status === 'success') setConnectionStatus(true);
             else {
                 setConnectionStatus(false);
             }
+            setLoading(false);
         } catch (err) {
             console.log(err.response.data.errors);
         }
     };
     const syncConnection = async code => {
         handleConnection(code);
-        console.log(code);
     };
     const handleConnection = async code => {
-        // TODO: Add fitbit connection oauth flow
         console.log('Connecting...');
+        setButtonLoading(true);
         const oauthCode = code;
         try {
             const resultToken = await axios.post(
-                '/user/obtainToken',
+                '/api/obtainToken',
                 { code: oauthCode },
                 { headers }
             );
-            console.log('Resultstokens', resultToken);
             if (resultToken.data.status === 'success')
                 setConnectionStatus(true);
             else setConnectionStatus(false);
+            setButtonLoading(false);
         } catch (err) {
             console.log(err.message);
+            setButtonLoading(false);
         }
     };
 
     const handleDisconnection = async () => {
-        // TODO: Add fitbit disconnection flow
+        setButtonLoading(true);
         try {
-            console.log('Disconnecting...');
-            const res = await axios.post(
-                '/user/revokeToken',
-                {},
-                { headers }
-            );
-            console.log(res, 'Before response');
+            const res = await axios.post('/api/revokeToken', {}, { headers });
             if (res.data.status === 'success') setConnectionStatus(false);
-            console.log('Disconnected!');
+            setButtonLoading(false);
         } catch (err) {
             console.log(err.message);
+            setButtonLoading(false);
         }
     };
-
     return (
         <Card className={classes.card}>
+            <LinearProgress
+                style={{ display: loading ? '' : 'none', marginTop: -10 }}
+            />
             <CardMedia className={classes.media}>
-                <img
+                <ProgressiveImage
                     src="/Fitbit_logo_RGB.png"
-                    alt="Fitbit logo"
-                    height="100%"
-                    width="100%"
-                />
+                    placeholder="/Fitbit_logo_RGB-low.png"
+                >
+                    {(src, loading) => (
+                        <img
+                            src={src}
+                            alt="Fitbit"
+                            height={'100%'}
+                            width={'100%'}
+                            style={{
+                                filter: loading ? 'blur(5px)' : 'none',
+                                transition: 'all 0.3s ease-in-out',
+                                'pointer-events': 'none',
+                            }}
+                        />
+                    )}
+                </ProgressiveImage>
             </CardMedia>
             <CardContent>
                 <Typography
@@ -135,30 +154,55 @@ export default function FitbitConnection() {
                     component="h2"
                     align="center"
                 >
-                    {connectionStatus ? 'Connected' : 'Not connected'}
+                    <span style={{ display: loading ? '' : 'none' }}>
+                        Retrieving connection status
+                    </span>
+                    <span style={{ display: loading ? 'none' : '' }}>
+                        {connectionStatus ? 'Connected' : 'Not connected'}
+                    </span>
                 </Typography>
                 <Description connected={connectionStatus} />
             </CardContent>
-            <span style={{ display: connectionStatus ? 'none' : '' }}>
-                <OauthPopup
-                    url="https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22BC4H&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fuser%2FcheckOAuthTokenStatus&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800"
-                    onCode={syncConnection}
-                >
-                    <Button variant="contained" color="primary" fullWidth>
+            <div className={classes.wrapper}>
+                <span style={{ display: connectionStatus ? 'none' : '' }}>
+                    <OauthPopup
+                        url="https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22B9NQ&redirect_uri=https%3A%2F%2Fwww.ezfit.rocks%2Fuser%2Fconnecttracker&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800" //www.ezfit.rocks/api/checkOAuthTokenStatus
+                        onCode={syncConnection}
+                    >
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            disabled={loading || buttonLoading}
+                            fullWidth
+                        >
+                            {connectionStatus ? 'Disconnect' : 'Connect'}
+                        </Button>
+                        {buttonLoading && (
+                            <CircularProgress
+                                size={24}
+                                className={classes.buttonProgress}
+                            />
+                        )}
+                    </OauthPopup>
+                </span>
+                <span style={{ display: connectionStatus ? '' : 'none' }}>
+                    <Button
+                        onClick={handleDisconnection}
+                        color="secondary"
+                        variant="contained"
+                        disabled={loading || buttonLoading}
+                        fullWidth
+                    >
                         {connectionStatus ? 'Disconnect' : 'Connect'}
                     </Button>
-                </OauthPopup>
-            </span>
-            <span style={{ display: connectionStatus ? '' : 'none' }}>
-                <Button
-                    onClick={handleDisconnection}
-                    variant="contained"
-                    color="secondary"
-                    fullWidth
-                >
-                    {connectionStatus ? 'Disconnect' : 'Connect'}
-                </Button>
-            </span>
+                    {buttonLoading && (
+                        <CircularProgress
+                            size={24}
+                            className={classes.buttonProgress}
+                        />
+                    )}
+                </span>
+            </div>
         </Card>
     );
 }

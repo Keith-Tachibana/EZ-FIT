@@ -55,6 +55,26 @@ var contactSchema = new Schema({
     },
 });
 
+var bodyStatusSchema = new Schema({
+    general: {
+        type: String,
+        trim: true,
+        default: 'normal',
+    },
+    arms: {
+        type: String,
+        trim: true,
+        default: 'normal',
+    },
+    legs: {
+        type: String,
+        trim: true,
+        default: 'normal',
+    },
+});
+var exerciseSchema = new Schema({});
+var workoutPlanSchema = new Schema({});
+
 var userSchema = new Schema({
     email: {
         type: String,
@@ -117,14 +137,33 @@ var userSchema = new Schema({
             default: '',
         },
     },
+    bodyStatus: {
+        type: bodyStatusSchema,
+    },
     weight: {
         type: [Number],
+    },
+    workout: {
+        workoutExpiry: {
+            type: Number,
+            default: 0,
+        },
+        workoutPlan: {},
     },
 });
 
 userSchema.pre('save', async function(next) {
-    this.password = await bcrypt.hash(this.password, saltRounds);
-    next();
+    var user = this;
+    if (!user.isModified('password')) {
+        return next();
+    }
+    try {
+        console.log('entering update password');
+        this.password = await bcrypt.hash(this.password, saltRounds);
+        next();
+    } catch (err) {
+        next(err);
+    }
 });
 
 module.exports = mongoose.model('Users', userSchema);

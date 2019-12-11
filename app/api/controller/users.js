@@ -1,23 +1,19 @@
 const userModel = require('../models/users');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const validator = require('validator');
-const axios = require('axios');
-const qs = require('querystring');
-var ObjectID = require('mongodb').ObjectID;
 const appConfig = require('../../../config/appConfig');
 const mailgun = require('mailgun-js');
 
-const DOMAIN = 'sandboxd31d40913ae7494594ae79a6b92131df.mailgun.org';
+const DOMAIN = appConfig.mailDomain;
 const mg = mailgun({ apiKey: appConfig.mailgunApiKey, domain: DOMAIN });
 
 function sendVerificationEmail(email, verificationLink) {
     const data = {
-        from:
-            'Mailgun Sandbox <postmaster@sandboxd31d40913ae7494594ae79a6b92131df.mailgun.org>',
+        from: 'EZ-FIT <no-reply@mail.ezfit.rocks>',
         to: email,
         subject: '[EZ-FIT] Activate your account',
         template: 'confirm_email',
+        't:text': 'yes',
         'v:verification_link': verificationLink,
     };
     mg.messages().send(data, function(error, body) {
@@ -30,11 +26,11 @@ function sendVerificationEmail(email, verificationLink) {
 
 function sendResetEmail(email, resetLink) {
     const data = {
-        from:
-            'Mailgun Sandbox <postmaster@sandboxd31d40913ae7494594ae79a6b92131df.mailgun.org>',
+        from: 'EZ-FIT <no-reply@mail.ezfit.rocks>',
         to: email,
         subject: '[EZ-FIT] Password reset',
         template: 'reset_email',
+        't:text': 'yes',
         'v:reset_link': resetLink,
     };
     mg.messages().send(data, function(error, body) {
@@ -47,18 +43,20 @@ function sendResetEmail(email, resetLink) {
 
 async function resendVerificationEmail(req, res, next) {
     try {
-        const userInfo = await userModel.findById(req.body.userId);
+        const userInfo = await userModel.findOne({
+            email: req.body.email,
+        });
         if (!userInfo) {
             return res.json({
-                status: 'success',
-                message: 'Verification email sent.',
+                status: 'error',
+                message: 'Error sending verification email',
                 data: null,
             });
         }
         if (userInfo.isVerified) {
             return res.json({
-                status: 'success',
-                message: 'User already verificed.',
+                status: 'error',
+                message: 'User already verified',
                 data: null,
             });
         }
@@ -73,8 +71,7 @@ async function resendVerificationEmail(req, res, next) {
             { expiresIn: 86400 } // 24 hour expiration
         );
         const verificationLink =
-            req.protocol +
-            '://' +
+            'https://' +
             req.hostname +
             '/verify?id=' +
             userInfo._id +
@@ -83,7 +80,7 @@ async function resendVerificationEmail(req, res, next) {
         sendVerificationEmail(userInfo.email, verificationLink);
         res.json({
             status: 'success',
-            message: 'Verification email sent.',
+            message: 'Verification email sent',
             data: null,
         });
     } catch (err) {
@@ -103,9 +100,11 @@ async function register(req, res, next) {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
             },
-            email: validator.normalizeEmail(req.body.email),
+            email: req.body.email,
             password: req.body.password,
-            fitbitToken: {},
+            authToken: {},
+            bodyStatus: {},
+            workout: { workoutExpiry: 0, workoutPlan: {} },
         });
         if (userInfo) {
             const createdDate = new Date(userInfo.createdDate);
@@ -119,8 +118,7 @@ async function register(req, res, next) {
                 { expiresIn: 86400 } // 24 hour expiration
             );
             const verificationLink =
-                req.protocol +
-                '://' +
+                'https://' +
                 req.hostname +
                 '/verify?id=' +
                 userInfo._id +
@@ -129,7 +127,8 @@ async function register(req, res, next) {
             sendVerificationEmail(userInfo.email, verificationLink);
             res.json({
                 status: 'success',
-                message: 'User added successfully',
+                message:
+                    'Your account has been created.  Please check your email for verification.',
                 data: null,
             });
         } else {
@@ -155,7 +154,7 @@ async function register(req, res, next) {
 async function signin(req, res, next) {
     try {
         const userInfo = await userModel.findOne({
-            email: validator.normalizeEmail(req.body.email),
+            email: req.body.email,
         });
         if (!userInfo) {
             res.json({
@@ -164,6 +163,13 @@ async function signin(req, res, next) {
                 data: null,
             });
         } else {
+            if (!userInfo.isVerified) {
+                return res.json({
+                    status: 'error',
+                    message: 'User not verified',
+                    data: null,
+                });
+            }
             const expireTime = req.body.remember ? 86400 : 3600; // 24 hour if remember else 1 hour
             try {
                 const match = await bcrypt.compare(
@@ -222,7 +228,6 @@ function updatePassword(req, res, next) {
                 'New password must not be the same as the current password',
             data: null,
         });
-        next(err);
     }
     var userId = req.body.userId;
     if (userId !== null) {
@@ -236,28 +241,21 @@ function updatePassword(req, res, next) {
                         userInfo.password
                     );
                     if (match) {
-                        const hashedPassword = await bcrypt.hash(
-                            req.body.password,
-                            appConfig.saltRounds
-                        );
-                        userModel.updateOne(
-                            {
-                                _id: ObjectID(userId),
-                            },
-                            {
-                                $set: {
-                                    password: hashedPassword,
-                                },
-                            },
-                            async err => {
-                                res.json({
-                                    status: 'success',
-                                    message:
-                                        'Successfully updated password',
-                                    data: null,
-                                });
-                            }
-                        );
+                        userInfo.password = req.body.password;
+                        try {
+                            await userInfo.save();
+                            res.json({
+                                status: 'success',
+                                message: 'Successfully updated password',
+                                data: null,
+                            });
+                        } catch (err) {
+                            res.json({
+                                status: 'error',
+                                message: 'Error updating password',
+                                data: null,
+                            });
+                        }
                     } else {
                         res.json({
                             status: 'error',
@@ -281,7 +279,7 @@ function updatePassword(req, res, next) {
 async function forgetPassword(req, res, next) {
     try {
         const userInfo = await userModel.findOne({
-            email: validator.normalizeEmail(req.body.email),
+            email: req.body.email,
         });
         if (!userInfo) {
             return res.json({
@@ -298,8 +296,7 @@ async function forgetPassword(req, res, next) {
             { expiresIn: 86400 } // 24 hour expiration
         );
         const resetLink =
-            req.protocol +
-            '://' +
+            'https://' +
             req.hostname +
             '/resetpassword?id=' +
             userInfo._id +
@@ -341,8 +338,8 @@ async function resetPassword(req, res, next) {
                         });
                     } else {
                         userInfo.password = req.body.password;
-                        await userInfo.save();
                         try {
+                            await userInfo.save();
                             res.json({
                                 status: 'success',
                                 message: 'Successfully reset password',
@@ -354,7 +351,6 @@ async function resetPassword(req, res, next) {
                                 message: 'Invalid reset token',
                                 data: null,
                             });
-                            next(err);
                         }
                     }
                 }
@@ -365,14 +361,14 @@ async function resetPassword(req, res, next) {
                 message: 'Invalid reset token',
                 data: null,
             });
-            next(err);
         }
     }
 }
 
 async function verify(req, res, next) {
-    const userId = req.query.id;
-    const verificationToken = req.query.token;
+    const userId = req.body.id;
+    const verificationToken = req.body.token;
+    console.log(userId);
     try {
         let userInfo = await userModel.findById(userId);
         if (userInfo.isVerified) {
@@ -434,4 +430,5 @@ module.exports = {
     forgetPassword,
     resetPassword,
     verify,
+    resendVerificationEmail,
 };

@@ -1,0 +1,634 @@
+{
+    "workouts": [
+        {
+            "workout": {
+                "upper": [
+                    {
+                        "exercise": {
+                            "name": "Warm Up",
+                            "duration_normal": "10 minutes",
+                            "duration_light": "10 minutes",
+                            "duration_severe": "None",
+                            "category": "warmup",
+                            "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Bench Press",
+                            "duration_normal": "12 x 3 reps",
+                            "duration_light": "6 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Bench_press"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Dips",
+                            "duration_normal": "12 x 3 reps",
+                            "duration_light": "6 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Dip_(exercise)"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Pulldown",
+                            "duration_normal": "12 x 3 reps",
+                            "duration_light": "6 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Pulldown_exercise"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Overhead Press",
+                            "duration_normal": "12 x 3 reps",
+                            "duration_light": "6 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Overhead_press"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Triceps extension",
+                            "duration_normal": "10 x 3 reps",
+                            "duration_light": "5 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Lying_triceps_extensions"
+                        }
+                    }
+                ],
+                "lower": [
+                    {
+                        "exercise": {
+                            "name": "Warm Up",
+                            "duration_normal": "10 minutes",
+                            "duration_light": "10 minutes",
+                            "duration_severe": "None",
+                            "category": "warmup",
+                            "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Crunches",
+                            "duration_normal": "12 x 3 reps",
+                            "duration_light": "6 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Crunch_(exercise)"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Leg raises",
+                            "duration_normal": "12 x 3 reps",
+                            "duration_light": "6 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Leg_raise"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Deadlifts",
+                            "duration_normal": "12 x 3 reps",
+                            "duration_light": "None",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Deadlift"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Leg extension",
+                            "duration_normal": "10 x 3 reps",
+                            "duration_light": "5 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Leg_extension"
+                        }
+                    }
+                ],
+                "cardio": [
+                    {
+                        "exercise": {
+                            "name": "Warm Up",
+                            "duration_normal": "10 minutes",
+                            "duration_light": "10 minutes",
+                            "duration_severe": "None",
+                            "category": "warmup",
+                            "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Elliptical",
+                            "duration_normal": "30 minutes",
+                            "duration_light": "None",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Elliptical_trainer"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Treadmill",
+                            "duration_normal": "30 minutes",
+                            "duration_light": "None",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Treadmill"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Running",
+                            "duration_normal": "30 minutes",
+                            "duration_light": "None",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Running"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "workout": {
+                "upper": [
+                    {
+                        "exercise": {
+                            "name": "Warm Up",
+                            "duration_normal": "10 minutes",
+                            "duration_light": "10 minutes",
+                            "duration_severe": "None",
+                            "category": "warmup",
+                            "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Bench Press",
+                            "duration_normal": "10 x 3 reps",
+                            "duration_light": "5 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Bench_press"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Dips",
+                            "duration_normal": "10 x 3 reps",
+                            "duration_light": "5 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Dip_(exercise)"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Pulldown",
+                            "duration_normal": "10 x 3 reps",
+                            "duration_light": "5 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Pulldown_exercise"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Overhead Press",
+                            "duration_normal": "10 x 3 reps",
+                            "duration_light": "5 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Overhead_press"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Triceps extension",
+                            "duration_normal": "10 x 3 reps",
+                            "duration_light": "5 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Lying_triceps_extensions"
+                        }
+                    }
+                ],
+                "lower": [
+                    {
+                        "exercise": {
+                            "name": "Warm Up",
+                            "duration_normal": "10 minutes",
+                            "duration_light": "10 minutes",
+                            "duration_severe": "None",
+                            "category": "warmup",
+                            "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Crunches",
+                            "duration_normal": "10 x 3 reps",
+                            "duration_light": "5 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Crunch_(exercise)"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Leg raises",
+                            "duration_normal": "10 x 3 reps",
+                            "duration_light": "5 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Leg_raise"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Deadlifts",
+                            "duration_normal": "10 x 3 reps",
+                            "duration_light": "None",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Deadlift"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Leg extension",
+                            "duration_normal": "10 x 3 reps",
+                            "duration_light": "5 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Leg_extension"
+                        }
+                    }
+                ],
+                "cardio": [
+                    {
+                        "exercise": {
+                            "name": "Warm Up",
+                            "duration_normal": "10 minutes",
+                            "duration_light": "10 minutes",
+                            "duration_severe": "None",
+                            "category": "warmup",
+                            "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Elliptical",
+                            "duration_normal": "25 minutes",
+                            "duration_light": "None",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Elliptical_trainer"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Treadmill",
+                            "duration_normal": "25 minutes",
+                            "duration_light": "None",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Treadmill"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Running",
+                            "duration_normal": "25 minutes",
+                            "duration_light": "None",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Running"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "workout": {
+                "upper": [
+                    {
+                        "exercise": {
+                            "name": "Warm Up",
+                            "duration_normal": "10 minutes",
+                            "duration_light": "10 minutes",
+                            "duration_severe": "None",
+                            "category": "warmup",
+                            "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Bench Press",
+                            "duration_normal": "8 x 3 reps",
+                            "duration_light": "4 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Bench_press"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Dips",
+                            "duration_normal": "8 x 3 reps",
+                            "duration_light": "4 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Dip_(exercise)"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Pulldown",
+                            "duration_normal": "8 x 3 reps",
+                            "duration_light": "4 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Pulldown_exercise"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Overhead Press",
+                            "duration_normal": "8 x 3 reps",
+                            "duration_light": "4 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Overhead_press"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Triceps extension",
+                            "duration_normal": "8 x 3 reps",
+                            "duration_light": "4 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Lying_triceps_extensions"
+                        }
+                    }
+                ],
+                "lower": [
+                    {
+                        "exercise": {
+                            "name": "Warm Up",
+                            "duration_normal": "10 minutes",
+                            "duration_light": "10 minutes",
+                            "duration_severe": "None",
+                            "category": "warmup",
+                            "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Crunches",
+                            "duration_normal": "8 x 3 reps",
+                            "duration_light": "4 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Crunch_(exercise)"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Leg raises",
+                            "duration_normal": "8 x 3 reps",
+                            "duration_light": "4 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Leg_raise"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Deadlifts",
+                            "duration_normal": "8 x 3 reps",
+                            "duration_light": "None",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Deadlift"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Leg extension",
+                            "duration_normal": "8 x 3 reps",
+                            "duration_light": "4 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Leg_extension"
+                        }
+                    }
+                ],
+                "cardio": [
+                    {
+                        "exercise": {
+                            "name": "Warm Up",
+                            "duration_normal": "10 minutes",
+                            "duration_light": "10 minutes",
+                            "duration_severe": "None",
+                            "category": "warmup",
+                            "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Elliptical",
+                            "duration_normal": "20 minutes",
+                            "duration_light": "None",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Elliptical_trainer"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Treadmill",
+                            "duration_normal": "20 minutes",
+                            "duration_light": "None",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Treadmill"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Running",
+                            "duration_normal": "20 minutes",
+                            "duration_light": "None",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Running"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "workout": {
+                "upper": [
+                    {
+                        "exercise": {
+                            "name": "Warm Up",
+                            "duration_normal": "10 minutes",
+                            "duration_light": "10 minutes",
+                            "duration_severe": "None",
+                            "category": "warmup",
+                            "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Bench Press",
+                            "duration_normal": "6 x 3 reps",
+                            "duration_light": "3 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Bench_press"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Dips",
+                            "duration_normal": "6 x 3 reps",
+                            "duration_light": "3 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Dip_(exercise)"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Pulldown",
+                            "duration_normal": "6 x 3 reps",
+                            "duration_light": "3 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Pulldown_exercise"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Overhead Press",
+                            "duration_normal": "6 x 3 reps",
+                            "duration_light": "3 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Overhead_press"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Triceps extension",
+                            "duration_normal": "6 x 3 reps",
+                            "duration_light": "3 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "arms",
+                            "url": "https://en.wikipedia.org/wiki/Lying_triceps_extensions"
+                        }
+                    }
+                ],
+                "lower": [
+                    {
+                        "exercise": {
+                            "name": "Warm Up",
+                            "duration_normal": "10 minutes",
+                            "duration_light": "10 minutes",
+                            "duration_severe": "None",
+                            "category": "warmup",
+                            "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Leg raise",
+                            "duration_normal": "6 x 3 reps",
+                            "duration_light": "3 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Leg_raise"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Lunge",
+                            "duration_normal": "6 x 3 reps",
+                            "duration_light": "3 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Lunge_(exercise)"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Leg extension",
+                            "duration_normal": "6 x 3 reps",
+                            "duration_light": "3 x 2 reps",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Leg_extension"
+                        }
+                    }
+                ],
+                "cardio": [
+                    {
+                        "exercise": {
+                            "name": "Warm Up",
+                            "duration_normal": "10 minutes",
+                            "duration_light": "10 minutes",
+                            "duration_severe": "None",
+                            "category": "warmup",
+                            "url": "https://greatist.com/fitness/full-body-dynamic-warm-up#The-benefits-of-dynamic-stretching"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Elliptical",
+                            "duration_normal": "10 minutes",
+                            "duration_light": "None",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Elliptical_trainer"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Treadmill",
+                            "duration_normal": "10 minutes",
+                            "duration_light": "None",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Treadmill"
+                        }
+                    },
+                    {
+                        "exercise": {
+                            "name": "Running",
+                            "duration_normal": "10 minutes",
+                            "duration_light": "None",
+                            "duration_severe": "None",
+                            "category": "legs",
+                            "url": "https://en.wikipedia.org/wiki/Running"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

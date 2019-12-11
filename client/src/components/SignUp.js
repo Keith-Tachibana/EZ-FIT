@@ -1,15 +1,13 @@
-import React, {useState} from 'react';
-import Avatar from '@material-ui/core/Avatar';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Link from '@material-ui/core/Link';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -18,21 +16,10 @@ import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import axios from 'axios';
+import Copyright from './Copyright';
+import EzfitIcon from './EzfitIcon';
 
 const Link1 = React.forwardRef((props, ref) => <RouterLink innerRef={ref} {...props} />);
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        EZ-PHR
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -45,10 +32,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -93,25 +76,21 @@ export default function SignUp() {
 
   const handleChange = (e) => {
     setValues({
-        ...values,
-        [e.target.name]: e.target.value,
+      ...values,
+      [e.target.name]: e.target.value,
     });
   };
-  
+
   const handleClickShowPassword = () => {
     setValues({
-      ...values, 
-      showPassword: !values.showPassword 
+      ...values,
+      showPassword: !values.showPassword
     });
   };
 
   const handleMouseDownPassword = event => {
     event.preventDefault();
   };
-
-  // React.useEffect(() => {
-  //   console.log(errors);
-  // }, [errors])
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -121,65 +100,101 @@ export default function SignUp() {
       email: values.email,
       password: values.password,
     })
-    .then(res => {
-      console.log(res);
-      if (res.data.status === "error"){
-        setError(res.data.message);
-      } else if (res.data.status === "success") {
-        setStatus(res.data.message);
-      }
-    })
-    .catch(err => {
-      const errs = err.response.data.errors;
-      let currentErrors = {
-        firstName: {
-          status: false,
-          message: null,
-        },
-        lastName: {
-          status: false,
-          message: null,
-        },
-        email: {
-          status: false,
-          message: null,
-        },
-        password: {
-          status: false,
-          message: null,
-        },
-      };
-      let error;
-      for (error of errs){
-        Object.assign(currentErrors, {
-          [error.param]: {
-            status: true,
-            message: error.msg,
-          },
-        });
-      }
-      setErrors(currentErrors);
-      // console.log(err.response);
-    })
+      .then(res => {
+        console.log(res);
+        if (res.data.status === "error") {
+          setStatus(0);
+          setError(res.data.message);
+        } else if (res.data.status === "success") {
+          setError(0);
+          setStatus(res.data.message);
+          setErrors({
+            firstName: {
+              status: false,
+              message: null,
+            },
+            lastName: {
+              status: false,
+              message: null,
+            },
+            email: {
+              status: false,
+              message: null,
+            },
+            password: {
+              status: false,
+              message: null,
+            },
+          });
+        }
+      })
+      .catch(err => {
+        setStatus(0);
+        if (err.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+          const errs = err.response.data.errors;
+          let currentErrors = {
+            firstName: {
+              status: false,
+              message: null,
+            },
+            lastName: {
+              status: false,
+              message: null,
+            },
+            email: {
+              status: false,
+              message: null,
+            },
+            password: {
+              status: false,
+              message: null,
+            },
+          };
+          if (errs instanceof Array) {
+            let error;
+            for (error of errs) {
+              Object.assign(currentErrors, {
+                [error.param]: {
+                  status: true,
+                  message: error.msg,
+                },
+              });
+            }
+          }
+          setErrors(currentErrors);
+        } else if (err.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(err.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', err.message);
+        }
+        console.log(err.config);
+      })
   };
 
   return (
     <Container component="main">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
+        <EzfitIcon />
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form 
+        <form
           className={classes.form}
           onSubmit={submitHandler}
-          action="register" 
-          method="post" 
+          action="register"
+          method="post"
           noValidate
-          >
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -187,7 +202,7 @@ export default function SignUp() {
                 variant="outlined"
                 id="firstName"
                 label="First Name"
-                autoComplete="fname"
+                autoComplete="given-name"
                 onChange={handleChange}
                 error={errors.firstName.status}
                 helperText={errors.firstName.message}
@@ -202,7 +217,7 @@ export default function SignUp() {
                 id="lastName"
                 label="Last Name"
                 name="lastName"
-                autoComplete="lname"
+                autoComplete="family-name"
                 onChange={handleChange}
                 error={errors.lastName.status}
                 helperText={errors.lastName.message}
@@ -270,17 +285,17 @@ export default function SignUp() {
                 </Grid>
               </Grid>
             </span>
-            <span id="status" style={{display: status ? 'inline' : 'none' }}>
-                <Grid container direction="row" alignItems="center">
-                    <Grid item>
-                        <CheckCircleIcon color="primary"/>
-                    </Grid>
-                    <Grid item>
-                        <Typography id="statusMessage" variant="subtitle1" display="inline">
-                            {status}
-                        </Typography>
-                    </Grid>
+            <span id="status" style={{ display: status ? 'inline' : 'none' }}>
+              <Grid container direction="row" alignItems="center">
+                <Grid item>
+                  <CheckCircleIcon color="primary" />
                 </Grid>
+                <Grid item>
+                  <Typography id="statusMessage" variant="subtitle1" display="inline">
+                    {status}
+                  </Typography>
+                </Grid>
+              </Grid>
             </span>
           </Grid>
           <Button

@@ -1,27 +1,38 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { Button, CardHeader, Divider, TextField, Grid } from '@material-ui/core';
+import { Button, CardHeader, Divider, TextField, Grid, LinearProgress, CircularProgress } from '@material-ui/core';
 import { useHistory } from "react-router-dom";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
     root: {},
+    wrapper: {
+        position: 'relative',
+    },
     form: {
         width: '100%', // Fix IE 11 issue.
         marginTop: theme.spacing(1),
-      },
+    },
     submit: {},
+    buttonProgress: {
+        color: 'primary',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
+    },
 }));
 
-export default function PersonalInfoForm(){
+export default function PersonalInfoForm() {
     const history = useHistory();
     const classes = useStyles();
-    
+
     const [values, setValues] = useState({
         firstName: '',
         lastName: '',
@@ -35,7 +46,25 @@ export default function PersonalInfoForm(){
         additionalInfo: '',
     });
 
+    const [loading, setLoading] = useState(true);
+    const [buttonLoading, setButtonLoading] = useState(false);
     const [status, setStatus] = useState(0);
+
+
+    const [errors, setErrors] = useState({
+        firstName: {
+            status: false,
+            message: null,
+        },
+        lastName: {
+            status: false,
+            message: null,
+        },
+        email: {
+            status: false,
+            message: null,
+        },
+    });
 
     const handleChange = (e) => {
         setValues({
@@ -45,70 +74,136 @@ export default function PersonalInfoForm(){
     }
 
     const headers = {
-        'x-access-token': sessionStorage.getItem("access-token"),
+        'x-access-token': localStorage.getItem("access-token"),
+    };
+
+    async function fetchPersonalInfo() {
+        setLoading(true);
+        try {
+            const res = await axios.get('/api/getpersonalinfo', { headers });
+            // console.log(res.data);
+            if (res.data.status === "error") {
+                if (res.data.message === "jwt expired") {
+                    //pass
+                }
+                localStorage.removeItem("access-token");
+                history.push("/");
+            } else {
+                let info = res.data.data;
+                let currentInfo = {
+                    ...values,
+                };
+                Object.assign(currentInfo, info);
+                setValues(currentInfo);
+            }
+            setLoading(false);
+        }
+        catch (err) {
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(err.response.data);
+                console.log(err.response.status);
+                console.log(err.response.headers);
+            } else if (err.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(err.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', err.message);
+            }
+            console.log(err.config);
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
-        async function fetchPersonalInfo(){
-            const res = await axios.get('/user/getpersonalinfo', {headers});
-            try{
-                // console.log(res.data);
-                if (res.data.status === "error"){
-                    if (res.data.message === "jwt expired"){
-                        //pass
-                    }
-                sessionStorage.removeItem("access-token");
-                history.push("/");
-                } else {
-                    let info = res.data.data
-                    let currentInfo = {
-                        ...values
-                    };
-                    Object.assign(currentInfo, info);
-                    setValues(currentInfo);
-                }
-            }
-            catch (err) {
-                console.log(err.response);
-            }
-        };
         fetchPersonalInfo();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    async function updatePersonalInfo() {
+        setButtonLoading(true)
+        try {
+            const res = await axios.post('/api/updatepersonalinfo', values, { headers });
+            // console.log(res.data);
+            if (res.data.status === "error") {
+                setStatus(0);
+                if (res.data.message === "jwt expired") {
+                    //pass
+                }
+                localStorage.removeItem("access-token");
+                history.push("/");
+            } else {
+                setStatus(res.data.message);
+            }
+            setButtonLoading(false);
+        }
+        catch (err) {
+            setButtonLoading(false);
+            if (err.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(err.response.data);
+                console.log(err.response.status);
+                console.log(err.response.headers);
+                const errs = err.response.data.errors;
+                let currentErrors = {
+                    firstName: {
+                        status: false,
+                        message: null,
+                    },
+                    lastName: {
+                        status: false,
+                        message: null,
+                    },
+                    email: {
+                        status: false,
+                        message: null,
+                    },
+                };
+                if (errs instanceof Array) {
+                    let error;
+                    for (error of errs) {
+                        Object.assign(currentErrors, {
+                            [error.param]: {
+                                status: true,
+                                message: error.msg,
+                            },
+                        });
+                    }
+                }
+                setErrors(currentErrors);
+            } else if (err.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(err.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', err.message);
+            }
+            console.log(err.config);
+        }
+    }
+
     const submitHandler = (e) => {
         e.preventDefault();
-        async function updatePersonalInfo(){
-            const res = await axios.post('/user/updatepersonalinfo', values, {headers});
-            try {
-                // console.log(res.data);
-                if (res.data.status === "error"){
-                    setStatus(0);
-                    if (res.data.message === "jwt expired"){
-                        //pass
-                    }
-                sessionStorage.removeItem("access-token");
-                history.push("/");
-                } else {
-                    setStatus(res.data.message);
-                }
-            }
-            catch (err) {
-                console.log(err.response);
-            }
-        }
         updatePersonalInfo();
     };
 
     return (
         <Card className={classes.root}>
+            <LinearProgress style={{ display: loading ? '' : 'none' }} />
             <form
                 className={classes.form}
                 onSubmit={submitHandler}
                 action="updatepersonalinfo"
                 method="post"
                 noValidate>
-                <CardHeader 
+                <CardHeader
                     title="Personal Information"
                     subheader="Update personal information"
                 />
@@ -116,7 +211,7 @@ export default function PersonalInfoForm(){
                 <CardContent>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
-                            <TextField 
+                            <TextField
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -128,11 +223,13 @@ export default function PersonalInfoForm(){
                                 autoComplete="given-name"
                                 value={values.firstName}
                                 onChange={handleChange}
+                                error={errors.firstName.status}
+                                helperText={errors.firstName.message}
                                 autoFocus
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <TextField 
+                            <TextField
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -144,10 +241,12 @@ export default function PersonalInfoForm(){
                                 autoComplete="family-name"
                                 value={values.lastName}
                                 onChange={handleChange}
+                                error={errors.lastName.status}
+                                helperText={errors.lastName.message}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <TextField 
+                            <TextField
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -159,10 +258,12 @@ export default function PersonalInfoForm(){
                                 autoComplete="email"
                                 value={values.email}
                                 onChange={handleChange}
+                                error={errors.email.status}
+                                helperText={errors.email.message}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <TextField 
+                            <TextField
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -177,7 +278,7 @@ export default function PersonalInfoForm(){
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField 
+                            <TextField
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -192,7 +293,7 @@ export default function PersonalInfoForm(){
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <TextField 
+                            <TextField
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -207,7 +308,7 @@ export default function PersonalInfoForm(){
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <TextField 
+                            <TextField
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -222,7 +323,7 @@ export default function PersonalInfoForm(){
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <TextField 
+                            <TextField
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -237,7 +338,7 @@ export default function PersonalInfoForm(){
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
-                            <TextField 
+                            <TextField
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -252,7 +353,7 @@ export default function PersonalInfoForm(){
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField 
+                            <TextField
                                 variant="outlined"
                                 margin="normal"
                                 required
@@ -269,10 +370,10 @@ export default function PersonalInfoForm(){
                             />
                         </Grid>
                     </Grid>
-                    <span id="status" style={{display: status ? 'inline' : 'none' }}>
+                    <span id="status" style={{ display: status ? 'inline' : 'none' }}>
                         <Grid container direction="row" alignItems="center">
                             <Grid item>
-                                <CheckCircleIcon color="primary"/>
+                                <CheckCircleIcon color="primary" />
                             </Grid>
                             <Grid item>
                                 <Typography id="statusMessage" variant="subtitle1" display="inline">
@@ -284,13 +385,17 @@ export default function PersonalInfoForm(){
                 </CardContent>
                 <Divider />
                 <CardActions>
-                    <Button 
-                        type="submit"
-                        color="primary"
-                        variant="contained"
-                        className={classes.submit}>
-                        Update
-                    </Button>
+                    <div className={classes.wrapper}>
+                        <Button
+                            type="submit"
+                            color="primary"
+                            variant="contained"
+                            disabled={buttonLoading}
+                            className={classes.submit}>
+                            Update
+                        </Button>
+                        {buttonLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                    </div>
                 </CardActions>
             </form>
         </Card>
