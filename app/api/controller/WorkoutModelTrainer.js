@@ -390,7 +390,7 @@ async function getPrediction(req, res, next) {
             const userInfo = await userModel.findById(userId);
             if (userInfo) {
                 const workoutExpiry = userInfo.workout.workoutExpiry < moment();
-                if (!workoutExpiry) {
+                if (workoutExpiry) {
                     const workoutPlan = await getWorkout(
                         userInfo,
                         workoutCluster
