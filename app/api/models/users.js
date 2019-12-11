@@ -80,7 +80,7 @@ var workoutSchema = new Schema({
     },
     workoutPlan: {
         type: Schema.Types.Mixed,
-        default: {},
+        default: { version: 1 },
     },
 }, { minimize: false });
 
