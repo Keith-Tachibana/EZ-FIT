@@ -220,7 +220,10 @@ async function getWorkoutClusterFromModel(req) {
             {},
             {}
         );
-        if (resp.statusText === 'OK') return resp.data.prediction;
+        if (resp.statusText === 'OK') {
+            console.log('Prediction from model:', resp.data.prediction);
+            return resp.data.prediction;
+        }
     } catch (err) {
         throw err;
     }
@@ -390,10 +393,15 @@ async function getPrediction(req, res, next) {
             const userInfo = await userModel.findById(userId);
             if (userInfo) {
                 const workoutExpiry = userInfo.workout.workoutExpiry < moment();
+                console.log('Workout Expiry result', workoutExpiry);
                 if (workoutExpiry) {
                     const workoutPlan = await getWorkout(
                         userInfo,
                         workoutCluster
+                    );
+                    console.log(
+                        'Retrieved workout plan successfully',
+                        workoutPlan
                     );
                     //Use the below function to get the full workout printed out
                     // logRecursive(workoutPlan);
