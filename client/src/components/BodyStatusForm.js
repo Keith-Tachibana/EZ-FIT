@@ -299,7 +299,7 @@ export default function BodyStatusForm(props) {
               <Grid item xs={7}>
                 <ProgressiveImage
                   src='/body_injury.jpg'
-                  placeholder='/body_injury-min.jpg'
+                  placeholder='/body_injury-low.jpg'
                 >
                   {(src, loading) => <img src={src} alt='body injury' width={'100%'} style={{ filter: loading ? 'blur(5px)' : 'none', transition: 'all 0.3s ease-in-out', 'pointer-events': 'none' }} />}
                 </ProgressiveImage>
