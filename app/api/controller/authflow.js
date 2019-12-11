@@ -169,7 +169,8 @@ async function obtainToken(req, res, next) {
             qs.stringify({
                 grant_type: 'authorization_code',
                 // redirect_uri: 'http://localhost:3000/api/checkOAuthTokenStatus',
-                redirect_uri: 'https://www.ezfit.rocks/fitbit/obtainToken',
+                redirect_uri:
+                    'https://www.ezfit.rocks/fitbit/checkOAuthTokenStatus',
                 code: req.body.code,
             }),
             {
