@@ -73,16 +73,16 @@ var bodyStatusSchema = new Schema({
     },
 });
 
-var workoutSchema = new Schema({
-    workoutExpiry: {
-        type: Number,
-        default: 0,
+var workoutSchema = new Schema(
+    {
+        workoutExpiry: {
+            type: Number,
+            default: 0,
+        },
+        workoutPlan: {},
     },
-    workoutPlan: {
-        type: Schema.Types.Mixed,
-        default: { version: 1 },
-    },
-}, { minimize: false });
+    { minimize: false }
+);
 
 var userSchema = new Schema({
     email: {
@@ -157,7 +157,7 @@ var userSchema = new Schema({
     },
 });
 
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function(next) {
     var user = this;
     if (!user.isModified('password')) {
         return next();
