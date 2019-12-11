@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
         'pointer-events': 'none',
     },
     minHeight: {
-        minHeight: 240,
+        minHeight: 250,
     },
 }));
 
@@ -701,7 +701,7 @@ export default function DashboardContent(props) {
                 <Grid item xs={12}>
                     <Paper
                         className={clsx(
-                            !connectionStatus && classes.blur,
+                            (!connectionStatus || syncError) && classes.blur,
                             minHeightPaper
                         )}
                     >

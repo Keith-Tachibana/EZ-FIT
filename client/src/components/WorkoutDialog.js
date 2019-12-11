@@ -22,7 +22,7 @@ function WorkoutDialog(props) {
             keepMounted
             onClose={handleClose}
             fullWidth={true}
-            maxWidth='sm'
+            maxWidth='xs'
             aria-labelledby="workout-dialog-title"
             aria-describedby="workout-dialog-description"
         >
