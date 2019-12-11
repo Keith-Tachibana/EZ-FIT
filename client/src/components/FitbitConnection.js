@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import OauthPopup from 'react-oauth-popup';
 import axios from 'axios';
 import { LinearProgress, CircularProgress } from '@material-ui/core';
+import ProgressiveImage from "react-progressive-image";
 
 const useStyles = makeStyles({
     card: {
@@ -127,12 +128,12 @@ export default function FitbitConnection() {
                 style={{ display: loading ? '' : 'none', marginTop: -10 }}
             />
             <CardMedia className={classes.media}>
-                <img
-                    src="/Fitbit_logo_RGB.png"
-                    alt="Fitbit logo"
-                    height="100%"
-                    width="100%"
-                />
+                <ProgressiveImage
+                    src='/Fitbit_logo_RGB.png'
+                    placeholder='/Fitbit_logo_RGB-low.png'
+                >
+                    {(src, loading) => <img src={src} alt='Fitbit' height={'100%'} width={'100%'} style={{ filter: loading ? 'blur(5px)' : 'none', transition: 'all 0.3s ease-in-out', 'pointer-events': 'none' }} />}
+                </ProgressiveImage>
             </CardMedia>
             <CardContent>
                 <Typography
