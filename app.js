@@ -39,7 +39,6 @@ app.use(express.static('client/public'));
 
 //Api private route
 app.use('/api', validateUser, api);
-app.use('/fitbit', api);
 //Public route
 app.use('/', home);
 
