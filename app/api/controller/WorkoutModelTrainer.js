@@ -425,7 +425,7 @@ async function getPrediction(req, res, next) {
                     res.json({
                         status: 'success',
                         message: 'Obtained workout plan for the week',
-                        data: userInfo.workoutPlan,
+                        data: userInfo.workout.workoutPlan,
                     });
                 }
             }
