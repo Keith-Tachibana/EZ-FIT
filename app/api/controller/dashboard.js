@@ -142,7 +142,7 @@ async function updateBodyStatus(req, res, next) {
                             'bodyStatus.general': req.body.general,
                             'bodyStatus.arms': req.body.arms,
                             'bodyStatus.legs': req.body.legs,
-                            workoutExpiry: moment() + 1000,
+                            'workout.workoutExpiry': moment() + 1000,
                         },
                     }
                 );

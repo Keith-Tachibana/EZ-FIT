@@ -4,7 +4,6 @@ const validator = require('validator');
 const appConfig = require('../../../config/appConfig');
 const saltRounds = appConfig.saltRounds;
 const Schema = mongoose.Schema;
-const moment = require('moment');
 
 var contactSchema = new Schema({
     firstName: {
@@ -74,6 +73,17 @@ var bodyStatusSchema = new Schema({
     },
 });
 
+var workoutSchema = new Schema({
+    workoutExpiry: {
+        type: Number,
+        default: 0,
+    },
+    workoutPlan: {
+        type: Schema.Types.Mixed,
+        default: {},
+    },
+}, { minimize: false });
+
 var userSchema = new Schema({
     email: {
         type: String,
@@ -142,17 +152,12 @@ var userSchema = new Schema({
     weight: {
         type: [Number],
     },
-    workoutExpiry: {
-        type: Number,
-        default: 0,
-    },
-    workoutPlan: {
-        type: Schema.Types.Mixed,
-        default: {},
+    workout: {
+        type: workoutSchema,
     },
 });
 
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
     var user = this;
     if (!user.isModified('password')) {
         return next();

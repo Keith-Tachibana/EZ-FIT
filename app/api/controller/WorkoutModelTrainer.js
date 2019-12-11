@@ -389,7 +389,7 @@ async function getPrediction(req, res, next) {
         if (userId !== null) {
             const userInfo = await userModel.findById(userId);
             if (userInfo) {
-                const workoutExpiry = userInfo.workoutExpiry < moment();
+                const workoutExpiry = userInfo.workout.workoutExpiry < moment();
                 if (!workoutExpiry) {
                     const workoutPlan = await getWorkout(
                         userInfo,
@@ -401,8 +401,8 @@ async function getPrediction(req, res, next) {
                         { _id: req.body.userId },
                         {
                             $set: {
-                                workoutPlan: workoutPlan,
-                                workoutExpiry: moment().endOf('week'),
+                                'workout.workoutPlan': workoutPlan,
+                                'workout.workoutExpiry': moment().endOf('week'),
                             },
                         }
                     );

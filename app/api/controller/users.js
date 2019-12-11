@@ -16,7 +16,7 @@ function sendVerificationEmail(email, verificationLink) {
         't:text': 'yes',
         'v:verification_link': verificationLink,
     };
-    mg.messages().send(data, function(error, body) {
+    mg.messages().send(data, function (error, body) {
         console.log(body);
         if (error) {
             console.log(error);
@@ -33,7 +33,7 @@ function sendResetEmail(email, resetLink) {
         't:text': 'yes',
         'v:reset_link': resetLink,
     };
-    mg.messages().send(data, function(error, body) {
+    mg.messages().send(data, function (error, body) {
         console.log(body);
         if (error) {
             console.log(error);
@@ -104,7 +104,6 @@ async function register(req, res, next) {
             password: req.body.password,
             authToken: {},
             bodyStatus: {},
-            workoutPlan: {},
         });
         if (userInfo) {
             const createdDate = new Date(userInfo.createdDate);
