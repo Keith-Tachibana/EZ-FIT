@@ -104,6 +104,7 @@ async function register(req, res, next) {
             password: req.body.password,
             authToken: {},
             bodyStatus: {},
+            workout: { workoutExpiry: 0, workoutPlan: {} },
         });
         if (userInfo) {
             const createdDate = new Date(userInfo.createdDate);
