@@ -72,17 +72,48 @@ var bodyStatusSchema = new Schema({
         default: 'normal',
     },
 });
-
-var workoutSchema = new Schema(
-    {
-        workoutExpiry: {
-            type: Number,
-            default: 0,
-        },
-        workoutPlan: {},
+var exerciseSchema = new Schema({
+    name: {
+        type: String,
+        trim: true,
+        default: '',
     },
-    { minimize: false }
-);
+    duration: {
+        type: String,
+        trim: true,
+        default: '',
+    },
+    category: {
+        type: String,
+        trim: true,
+        default: '',
+    },
+    url: {
+        type: String,
+        trim: true,
+        default: '',
+    },
+});
+var workoutPlanSchema = new Schema({
+    name: {
+        type: String,
+        trim: true,
+        default: '',
+    },
+    type: {
+        type: String,
+        trim: true,
+        default: '',
+    },
+    exercises: [exerciseSchema],
+});
+var workoutSchema = new Schema({
+    workoutExpiry: {
+        type: Number,
+        default: 0,
+    },
+    workoutPlan: [workoutPlanSchema],
+});
 
 var userSchema = new Schema({
     email: {
