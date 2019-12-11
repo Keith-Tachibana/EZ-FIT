@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import OauthPopup from 'react-oauth-popup';
 import axios from 'axios';
 import { LinearProgress, CircularProgress } from '@material-ui/core';
-import ProgressiveImage from "react-progressive-image";
+import ProgressiveImage from 'react-progressive-image';
 
 const useStyles = makeStyles({
     card: {
@@ -129,10 +129,22 @@ export default function FitbitConnection() {
             />
             <CardMedia className={classes.media}>
                 <ProgressiveImage
-                    src='/Fitbit_logo_RGB.png'
-                    placeholder='/Fitbit_logo_RGB-low.png'
+                    src="/Fitbit_logo_RGB.png"
+                    placeholder="/Fitbit_logo_RGB-low.png"
                 >
-                    {(src, loading) => <img src={src} alt='Fitbit' height={'100%'} width={'100%'} style={{ filter: loading ? 'blur(5px)' : 'none', transition: 'all 0.3s ease-in-out', 'pointer-events': 'none' }} />}
+                    {(src, loading) => (
+                        <img
+                            src={src}
+                            alt="Fitbit"
+                            height={'100%'}
+                            width={'100%'}
+                            style={{
+                                filter: loading ? 'blur(5px)' : 'none',
+                                transition: 'all 0.3s ease-in-out',
+                                'pointer-events': 'none',
+                            }}
+                        />
+                    )}
                 </ProgressiveImage>
             </CardMedia>
             <CardContent>
@@ -154,7 +166,7 @@ export default function FitbitConnection() {
             <div className={classes.wrapper}>
                 <span style={{ display: connectionStatus ? 'none' : '' }}>
                     <OauthPopup
-                        url="https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22B9NQ&redirect_uri=https%3A%2F%2Fwww.ezfit.rocks%2Fapi%2FcheckOAuthTokenStatus&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800" //www.ezfit.rocks/api/checkOAuthTokenStatus
+                        url="https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=22B9NQ&redirect_uri=https%3A%2F%2Fwww.ezfit.rocks%2Ffitbit%2FobtainToken&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&expires_in=604800" //www.ezfit.rocks/api/checkOAuthTokenStatus
                         onCode={syncConnection}
                     >
                         <Button
