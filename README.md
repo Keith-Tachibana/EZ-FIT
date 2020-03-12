@@ -34,7 +34,7 @@ Try the application live at [our website](https://ezfit.rocks/)
 - -Anyone can sign up for an account which sends the user an auto-generated welcome e-mail
 - -User can instantly switch themes between light or dark mode
 - -Features a one-of-a-kind injury tracking system not found on other fitness tracking applications
-- -Gives a 7-day schedule of workout suggestions generated using k-means clustering and decision trees with Python Flask
+- -Gives a 7-day schedule of workout suggestions generated using k-means clustering and decision trees
 - -Machine learning algorithmns look at 4 factors: body mass index (BMI), body fat, age, and injuries
 - -
 ## Preview
@@ -45,16 +45,3 @@ Try the application live at [our website](https://ezfit.rocks/)
 - -MongoDB 4 or higher
 - -Node.js 10 or higher
 - -NPM 6 or higher
-#### Getting Started
-1. Clone the repository
-  ```shell
-  git clone https://github.com/Keith-Tachibana/EZ-FIT.git
-  ```
-2. Change directory to cloned folder
-  ```shell
-  cd E-Commerce_Site_Fullstack/
-  ```
-3. Install all dependencies with NPM
-  ```shell
-  npm install
-  ```
