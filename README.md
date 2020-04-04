@@ -1,32 +1,34 @@
 # EZ-FIT
 A full-stack web application that syncs a user's FitBit data in order to generate workout suggestions
 ## Technologies Used
-- -@Material-UI/Core 4.5.1
-- -@Material-UI/Icons 4.5.1
-- -Axios 0.19.0
-- -Bcrypt 3.0.6
-- -Body Parser 1.19.0
-- -CSV 5.3.0
-- -Dotenv 8.2.0
-- -Express 4.17.1
-- -Express Naked Redirect 0.1.4
-- -Express SSLify 1.2.0
-- -Express Validator 6.2.0
-- -Flask 1.1.1
-- -Heroku CLI 7.38.2
-- -JSON Web Token 8.5.1
-- -Knuth Shuffle 1.0.8
-- -Mailgun JS 0.22.0
-- -Moment 2.24.0
-- -MongoDB 4.0.3
-- -Mongoose 5.7.5
-- -Morgan 1.9.1
-- -Node 10.15.3
-- -NPM 6.4.1
-- -React 16.10.2
-- -ReactDOM 16.10.2
-- -React Router DOM 5.1.2
-- -Serve Favicon 2.5.0
+|         Dependency       |  Version  |
+|--------------------------|----------:|
+| @Material-UI/Core        |   4.5.1   | 
+| @Material-UI/Icons       |   4.5.1   |
+| Axios                    |  0.19.0   |
+| Bcrypt                   |   3.0.6   |
+| Body Parser              |  1.19.0   |
+| CSV                      |   5.3.0   |
+| Dotenv                   |   8.2.0   |
+| Express                  |   4.17.1  |
+| Express-Naked-Redirect   |   0.1.4   |
+| Express-SSLify           |   1.2.0   |
+| Express-Validator        |   6.2.0   |
+| Flask                    |   1.1.1   |
+| Heroku-CLI               |   7.38.2  |
+| JSON-Web-Token           |   8.5.1   |
+| Knuth-Shuffle            |   1.0.8   |
+| Mailgun-JS               |   0.22.0  |
+| Moment                   |   2.24.0  |
+| MongoDB                  |   4.0.3   |
+| Mongoose                 |   5.7.5   |
+| Morgan                   |   1.9.1   |
+| Node                     |  10.15.3  |
+| NPM                      |   6.4.1   |
+| React                    |  16.10.2  |
+| React-DOM                |  16.10.2  |
+| React-Router-DOM         |   5.1.2   |
+| Serve-Favicon            |   2.5.0   |
 ## Live Demo
 Try the application live at [our website](https://ezfit.rocks/)
 ## Features
@@ -41,7 +43,9 @@ Try the application live at [our website](https://ezfit.rocks/)
 ![EZ-FIT Preview](preview.gif "EZ-FIT Preview")
 ## Development
 #### System Requirements
-- -Heroku 7 or higher
-- -MongoDB 4 or higher
-- -Node.js 10 or higher
-- -NPM 6 or higher
+|  Requirement  |      Version     |
+|---------------|-----------------:|
+| Heroku        |    7 or higher   |
+| MongoDB       |    4 or higher   |
+| Node.js       |   10 or higher   |
+| NPM           |    6 or higher   |
