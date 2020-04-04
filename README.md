@@ -25,8 +25,6 @@ UCI Master of Computer Science students Ashwin Balachandran, Harry Pham, and Kei
 | MongoDB                  |   4.0.3   |
 | Mongoose                 |   5.7.5   |
 | Morgan                   |   1.9.1   |
-| Node                     |  10.15.3  |
-| NPM                      |   6.4.1   |
 | React                    |  16.10.2  |
 | React-DOM                |  16.10.2  |
 | React-Router-DOM         |   5.1.2   |
