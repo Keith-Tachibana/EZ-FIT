@@ -9,7 +9,7 @@ UCI Master of Computer Science students Ashwin Balachandran, Harry Pham, and Kei
 | @Material-UI/Icons       |   4.5.1   |
 | Axios                    |  0.19.0   |
 | Bcrypt                   |   3.0.6   |
-| Body Parser              |  1.19.0   |
+| Body-Parser              |  1.19.0   |
 | CSV                      |   5.3.0   |
 | Dotenv                   |   8.2.0   |
 | Express                  |   4.17.1  |
