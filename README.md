@@ -1,5 +1,7 @@
 # EZ-FIT
 A full-stack web application that syncs a user's FitBit data in order to generate workout suggestions
+## Developed By
+UCI Master of Computer Science students Ashwin Balachandran, Harry Pham, and Keith Tachibana for course CS 297P: Capstone Design Project
 ## Technologies Used
 |         Dependency       |  Version  |
 |--------------------------|----------:|
