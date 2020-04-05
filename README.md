@@ -32,13 +32,12 @@ Ashwin Balachandran, Harry Pham, and Keith Tachibana
 ## Live Demo
 Try the application live at [our website](https://ezfit.rocks/)
 ## Features
-- -Utilizes the FitBit API to sync a user's fitness data to display on the Material-UI themed dashboard
-- -Anyone can sign up for an account which sends the user an auto-generated welcome e-mail
-- -User can instantly switch themes between light or dark mode
-- -Features a one-of-a-kind injury tracking system not found on other fitness tracking applications
-- -Gives a 7-day schedule of workout suggestions generated using k-means clustering and decision trees
-- -Machine learning algorithmns look at 4 factors: body mass index (BMI), body fat, age, and injuries
-- -
+- Utilizes the FitBit API to sync a user's fitness data to display on the Material-UI themed dashboard
+- Anyone can sign up for an account which sends the user an auto-generated welcome e-mail
+- User can instantly switch themes between light or dark mode
+- Features a one-of-a-kind injury tracking system not found on other fitness tracking applications
+- Gives a 7-day schedule of workout suggestions generated using k-means clustering and decision trees
+- Machine learning algorithmns look at 4 factors: body mass index (BMI), body fat, age, and injuries
 ## Preview
 ![EZ-FIT Preview](preview.gif "EZ-FIT Preview")
 ## Development
