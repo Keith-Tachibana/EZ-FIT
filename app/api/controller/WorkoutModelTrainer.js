@@ -216,7 +216,7 @@ async function getWorkoutClusterFromModel(req) {
             fat = fatResponse.data['body-fat'][0].value;
         }
         const resp = await axios.get(
-            `https://ezfit2.herokuapp.com/model?fat=${fat}&age=${age}&bmi=${bmi}`,
+            `https://ezfit.keith-tachibana.com/model?fat=${fat}&age=${age}&bmi=${bmi}`,
             {},
             {}
         );

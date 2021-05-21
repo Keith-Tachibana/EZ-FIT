@@ -8,12 +8,12 @@ import { makeStyles } from '@material-ui/core/styles';
       flexDirection: 'column',
     },
 }));
-  
+
 
 export default function Policy() {
     const classes = useStyles();
     console.log('here');
-  
+
     return (
         <div className={classes.paper}>
           <h1>Privacy Policy</h1>
@@ -22,7 +22,7 @@ export default function Policy() {
           <p>Effective date: December 01, 2019</p>
 
 
-          <p>EZ-FIT ("us", "we", or "our") operates the https://www.ezfit.rocks website (hereinafter referred to as the "Service").</p>
+            <p>EZ-FIT ("us", "we", or "our") operates the https://ezfit.keith-tachibana.com website (hereinafter referred to as the "Service").</p>
 
           <p>This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data. The Privacy Policy  for EZ-FIT has been created with the help of <a href="https://www.termsfeed.com/privacy-policy-generator/">Privacy Policy Generator</a>.</p>
 
@@ -32,7 +32,7 @@ export default function Policy() {
           <ul>
               <li>
                   <p><strong>Service</strong></p>
-                          <p>Service is the https://www.ezfit.rocks website operated by EZ-FIT</p>
+                    <p>Service is the https://ezfit.keith-tachibana.com website operated by EZ-FIT</p>
                       </li>
               <li>
                   <p><strong>Personal Data</strong></p>
@@ -76,8 +76,8 @@ export default function Policy() {
           </ul>
 
           <h2>Use of Data</h2>
-              
-          <p>EZ-FIT uses the collected data for various purposes:</p>    
+
+          <p>EZ-FIT uses the collected data for various purposes:</p>
           <ul>
               <li>To provide and maintain the Service</li>
               <li>To notify you about changes to our Service</li>
@@ -115,7 +115,7 @@ export default function Policy() {
           <p>We may employ third party companies and individuals to facilitate our Service ("Service Providers"), to provide the Service on our behalf, to perform Service-related services or to assist us in analyzing how our Service is used.</p>
           <p>These third parties have access to your Personal Data only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose.</p>
 
-          
+
 
 
           <h2>Links to Other Sites</h2>

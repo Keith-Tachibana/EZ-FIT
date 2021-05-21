@@ -8,12 +8,12 @@ import { makeStyles } from '@material-ui/core/styles';
       flexDirection: 'column',
     },
 }));
-  
+
 
 export default function Policy() {
     const classes = useStyles();
     console.log('here');
-  
+
     return (
         <div className={classes.paper}>
             <h1>Terms of Service ("Terms")</h1>
@@ -22,7 +22,7 @@ export default function Policy() {
             <p>Last updated: December 01, 2019</p>
 
 
-            <p>Please read these Terms of Service ("Terms", "Terms of Service") carefully before using the https://www.ezfit.rocks website (the "Service") operated by EZ-FIT ("us", "we", or "our").</p>
+            <p>Please read these Terms of Service ("Terms", "Terms of Service") carefully before using the https://ezfit.keith-tachibana.com website (the "Service") operated by EZ-FIT ("us", "we", or "our").</p>
 
             <p>Your access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users and others who access or use the Service.</p>
 

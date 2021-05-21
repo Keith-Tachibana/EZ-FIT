@@ -10,7 +10,7 @@ app = Flask(__name__)
 api = Api(app)
 
 
-model = load('lib/models/model.joblib') 
+model = load('lib/models/model.joblib')
 
 # argument parsing
 parser = reqparse.RequestParser()
@@ -25,7 +25,7 @@ class PredictWorkout(Resource):
         fat = args['fat']
         age = args['age']
         bmi = args['bmi']
-        
+
         query = [fat, age, bmi]
         print("Query: Fat: {} Age: {} BMI: {} ".format(fat, age, bmi))
 
@@ -35,7 +35,7 @@ class PredictWorkout(Resource):
         print("Prediction: ", int(prediction[0]))
         # create JSON object
         output = {'prediction': int(prediction[0])}
-        
+
         return output
 
 
@@ -43,8 +43,8 @@ class PredictWorkout(Resource):
 # Route the URL to the resource
 api.add_resource(PredictWorkout, '/model')
 
-@app.errorhandler(404) 
-def invalid_route(e): 
+@app.errorhandler(404)
+def invalid_route(e):
     return jsonify({
         'errorCode': 404,
         'message': 'Route not found'
