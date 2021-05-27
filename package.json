@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "cd client && npm run build && cd ../ && npm run start",
+    "deploy": "cd client && npm run build && cd ../ && node app.js",
     "start": "node app.js",
     "heroku-postbuild": "cd client && npm install && npm run build",
     "compile": "cd client && npm run build"
@@ -32,7 +32,7 @@
     "body-parser": "^1.19.0",
     "create-react-app": "^4.0.3",
     "csv": "^5.5.0",
-    "dotenv": "^9.0.2",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-naked-redirect": "^0.1.9",
     "express-sslify": "^1.2.0",
@@ -41,14 +41,14 @@
     "knuth-shuffle": "^1.0.8",
     "mailgun-js": "^0.22.0",
     "moment": "^2.29.1",
-    "mongoose": "^5.12.10",
+    "mongoose": "^5.12.11",
     "morgan": "^1.10.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
     "serve-favicon": "^2.5.0",
-    "typescript": "^4.2.4"
+    "typescript": "^4.3.2"
   },
   "engines": {
     "node": "14.x"
