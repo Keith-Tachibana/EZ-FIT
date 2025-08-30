@@ -32,7 +32,7 @@ Ashwin Balachandran, Harry Pham, and Keith Tachibana
 ## Live Demo
 Try the application live at [our website](https://ezfit.rocks/)
 ## Features
-- _*_ Utilizes the FitBit API to sync a user's fitness data to display on the Material-UI themed dashboard
+- Utilizes the FitBit API to sync a user's fitness data to display on the Material-UI themed dashboard
 - _*_ Anyone can sign up for an account which sends the user an auto-generated welcome e-mail
 - _*_ User can instantly switch themes between light or dark mode
 - _*_ Features a one-of-a-kind injury tracking system not found on other fitness tracking applications
